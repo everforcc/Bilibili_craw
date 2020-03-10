@@ -1,8 +1,6 @@
 package c.c.bilibili;
 
-import c.c.utils.Constant;
-import c.c.utils.Method_down;
-import c.c.utils.Request_Method;
+import c.c.utils.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.junit.Test;
@@ -30,15 +28,36 @@ public class Bilibili_Flv {
             //获取视频个数
             //重新构造请求地址
             // 前两个使用GET请求
-            String flv_vlist = (String) flvCount(Request_Method.js_commom(allFlvUrl(poster_uid,"1"),null,"GET"), Constant.count);// 1.获取用户视频总数
-            System.out.println("flv_vlist:"+flv_vlist);
-            //2. https://api.bilibili.com/x/web-interface/view?aid=170001
-            List<String> aid_list = (List<String>) flvCount(Request_Method.js_commom(allFlvUrl(poster_uid,flv_vlist),null,"GET"), Constant.aid); // 2.获取用户所有的av号
+            String flv_vlist = (String) flvCount(Request_Method.js_commom(allFlvUrl(poster_uid,1,1),null,"GET"), Constant.count);// 1.获取用户视频总数
+            println.println("flv_vlist:"+flv_vlist);
+            // b站视频最多一次请求100个
+            int count = Integer.valueOf(flv_vlist);
+            int pn =  count/100;
+            int remainder = count % 100;
+            List<String> aid_list = new ArrayList<String>();
+            for(int i=1;i<=pn+1;i++) { // 处理前几页
+                println.println("正在获取第"+i+"页");
+                List<String> aid_list_i = (List<String>) flvCount(Request_Method.js_commom(allFlvUrl(poster_uid, 100,i), null, "GET"), Constant.aid); // 2.获取用户所有的av号
+                for(String str_aid:aid_list_i){
+                    aid_list.add(str_aid);
+                }
+            }
+            /*if(remainder!=0){ // 处理最后一页
+                int last = pn+1;
+                println.println("正在获取第"+ last +"页");
+                List<String> aid_list_i = (List<String>) flvCount(Request_Method.js_commom(allFlvUrl(poster_uid, remainder,last), null, "GET"), Constant.aid); // 2.获取用户所有的av号
+                for(String str_aid:aid_list_i){
+                    aid_list.add(str_aid);
+                }
+            }*/
+
+            System.out.println("一共有"+aid_list.size()+"个视频待下载");
+
             //av 号码的集合
             for (String aid : aid_list) { // av号集合
                 //根据av号下载
                 downAV(aid,true);
-                System.out.println("一共下载了:"+totalcount+++"个视频");
+                println.println("一共下载了:"+totalcount+++"个视频");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,11 +69,14 @@ public class Bilibili_Flv {
      */
     private  String poster_uid;
 
+    Print_Record println;
+
     /**
      * 根据up id下载全集
      * @param poster_uid
      */
     public Bilibili_Flv(String poster_uid) {
+        println = Print_Record.getInstanse(poster_uid);
         this.poster_uid = poster_uid;
     }
 
@@ -71,9 +93,9 @@ public class Bilibili_Flv {
      * @param ps
      * @return
      */
-    public String allFlvUrl(String mid,String ps){
+    public String allFlvUrl(String mid,int ps,int pn){
         // pn 页码 mid up id  ps pagesize页面尺寸
-        return "https://api.bilibili.com/x/space/arc/search?tid=0&pn=1&keyword=&order=pubdate&jsonp=jsonp&ps="+ps+"&mid="+mid;
+        return "https://api.bilibili.com/x/space/arc/search?tid=0&keyword=&order=pubdate&jsonp=jsonp&pn="+pn+"&ps="+ps+"&mid="+mid;
     }
 
     /**
@@ -145,14 +167,24 @@ public class Bilibili_Flv {
         JSONObject json_date = jsonObject.getJSONObject("data");
         List<Map<String,String>> cid_list = new ArrayList<Map<String,String>>();
         Map<String,String> cid_map;
+        String title = json_date.getString("title");
+        JSONObject json_date_owner = json_date.getJSONObject("owner");
+        String mid = json_date_owner.getString("mid");
+        String name = json_date_owner.getString("name");
         JSONArray json_date_pages = json_date.getJSONArray("pages");
+        if(json_date_pages.size()!=1){
+            System.out.println(json_date.getString("aid"));
+        }
         for(int i=0;i<json_date_pages.size();i++){
             cid_map = new HashMap<String, String>();
             JSONObject json_date_page = (JSONObject)json_date_pages.get(i);
             cid_map.put("cid",json_date_page.getString("cid"));
             cid_map.put("part",json_date_page.getString("part"));
+            cid_map.put("owner",mid+"_"+name);
+            cid_map.put("title",title);
             cid_list.add(cid_map);
         }
+        println.println("需要的参数:"+cid_list);
         return cid_list;
     }
     /**
@@ -171,7 +203,7 @@ public class Bilibili_Flv {
             JSONObject json_date_durl_page = (JSONObject)json_date_durl.get(i);
             url_list.add(json_date_durl_page.getString("url"));
         }
-
+        println.println("需要的参数 "+ url_list.size() + "个:" +url_list);
         return url_list;
     }
 
@@ -181,7 +213,9 @@ public class Bilibili_Flv {
      * @throws Exception
      */
     public void downAV(String aid,Boolean down)throws Exception{
-        System.out.println("AV:" + aid);
+        println = Print_Record.getInstanse(aid);
+        println.println("");
+        println.println("下载视频的AV号:" + aid);
         //获取对应的cid
         // js();
         // 3.获取cid相关信息  AV号码相关的cid集合
@@ -196,12 +230,17 @@ public class Bilibili_Flv {
             List<String> url_list = flvUrlList(Request_Method.js_headers(getFlvUrl(aid,cid),"GET")); // 4.根据av号和cid获取真实视频的地址
             for (int j=0;j<url_list.size();j++) { // 视频地址集合，有主要的有备用的，目前只取了主要的
                 String flvUrl = url_list.get(j).replaceAll("\\u0026", "&"); //视频地址的 \u0026 这个表示&符转换一下
-                System.out.println("具体视频url:" + flvUrl);
+                println.println("具体视频url:" + flvUrl);
                 if(down) {
                     //5.下载  后缀名待完善 , 再加个aid 为好
-                    String dir="视频\\" + poster_uid;
-                    String fileName="aid" + aid + "cid" + cid + map.get("part") + j + ".flv";
-                    Method_down.downFlv(flvUrl , aid, dir , fileName,"GET"); //根据地址下载视频
+                    String dir="视频\\" + map.get("owner");
+                    //String fileName="aid" + aid + "_cid" + cid + "_" + map.get("part") + ".flv";
+
+
+                    String rename="aid" + aid + "_cid" + cid + "_" + map.get("title") + "_"+ map.get("part") + ".flv";
+                    //Method_down.downFlv(flvUrl , aid, dir , rename,"GET"); //根据地址下载视频
+                    //改名
+                    //Method_down.rename(dir + "\\" +fileName,dir + "\\" + rename);
                 }
             }
         }

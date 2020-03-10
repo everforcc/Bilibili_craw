@@ -12,6 +12,7 @@ import java.util.Set;
  */
 public class Request_Heard {
 
+    private static Print_Record println = Print_Record.getInstanse("");
     //static String cookie="";
 
     /**
@@ -21,6 +22,7 @@ public class Request_Heard {
      * @param requestMethod
      */
     public static HttpURLConnection requestHeard_downFlv(String flvUrl,String avNuM,String requestMethod)throws Exception{
+        println.println("------------------------------------------headers-------------------------------------------------------------------------------");
         URL url = new URL(flvUrl);
         //2, 打开连接
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -44,9 +46,10 @@ public class Request_Heard {
         Set<String> keys = headers.keySet();
         for( String key : keys ){
             String val = conn.getHeaderField(key);
-            System.out.println(key+"    "+val);
+            println.println(key+"    "+val);
         }
-        System.out.println( conn.getLastModified() );
+        println.println("上次修改时间:" + ToolTime.nowTime(conn.getLastModified()));
+        println.println("------------------------------------------headers-------------------------------------------------------------------------------");
         return conn;
     }
 

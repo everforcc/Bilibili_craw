@@ -7,11 +7,13 @@ import org.junit.Test;
  */
 public class T_Flv {
 
-    Bilibili_Flv bilibili_flv=new Bilibili_Flv("77019542");
+    Bilibili_Flv bilibili_flv=new Bilibili_Flv("437316738");
+    //Bilibili_Flv bilibili_flv=new Bilibili_Flv();
 
     @Test
     public void downUp(){
         try {
+            Bilibili_Flv bilibili_flv=new Bilibili_Flv("437316738");
             bilibili_flv.requestFlow();
         }catch (Exception e){
             e.printStackTrace();
@@ -21,7 +23,7 @@ public class T_Flv {
     @Test
     public void downAV(){
         try {
-            bilibili_flv.downAV("78097482", true);
+            bilibili_flv.downAV("84864707", true);
         }catch (Exception e){
             e.printStackTrace();
         }

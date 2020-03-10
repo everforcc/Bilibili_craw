@@ -2,9 +2,7 @@ package c.c.utils;
 
 import c.c.utils.Constant;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
@@ -16,6 +14,8 @@ import java.util.Set;
  * 2020/3/3
  */
 public class Method_down {
+
+    private static Print_Record println = Print_Record.getInstanse("");
 
     /**
      * 下载自定义文件名称
@@ -41,11 +41,11 @@ public class Method_down {
          * 截取网络图片的名字和参数
          */
         String imageName = urlPath.substring(urlPath.lastIndexOf("/") + 1, urlPath.length());
-        System.out.println("生成文件名:" + imageName);
+        println.println("生成文件名:" + imageName);
         if (imageName.contains("?")) {
-            System.out.println("处理字符串");
+            println.println("处理字符串");
             imageName = imageName.substring(0, imageName.lastIndexOf("@"));
-            System.out.println("再次生成文件名" + imageName);
+            println.println("再次生成文件名" + imageName);
         }
         URL uri = new URL(urlPath);
         file(uri.openStream(),Constant.rootFilePath+dir+"\\",imageName);
@@ -69,6 +69,12 @@ public class Method_down {
         file(conn.getInputStream(),Constant.rootFilePath+dir+"\\",fileName);
     }
 
+    public static void rename(String oldName,String newName){
+        File file = new File(Constant.rootFilePath+oldName);
+        file.renameTo(new File(Constant.rootFilePath+newName));
+        println.println(Constant.rootFilePath+oldName + "改名为:" + Constant.rootFilePath+newName);
+    }
+
     /**
      * 用来下载文件
      * @param in
@@ -87,7 +93,13 @@ public class Method_down {
         if (!saveFile.exists()) {
             saveFile.mkdirs();
         }
-        FileOutputStream fo = new FileOutputStream(new File(filePath+fileName));
+        File file = new File(filePath+fileName);
+        if(file.exists()){
+            println.println("文件已经存在:"+fileName);
+           return;
+        }
+        println.println("开始下载");
+        FileOutputStream fo = new FileOutputStream(file);
 
         /**
          * 以流的方式进行下载
@@ -99,13 +111,31 @@ public class Method_down {
         }
         in.close();
         fo.close();
-        System.out.println(fileName + "下载完成");
+        println.println(fileName + "下载完成");
         /**
          * 计算下载所用时间
          */
         Date enddate = new Date();
         double time = enddate.getTime() - begindate.getTime();
-        System.out.println("耗时：" + time / 1000 + "s");
+        println.println("耗时：" + time / 1000 + "s");
+    }
+
+    public static void record(String dir,String fileName, String content){
+        try {
+
+            File file = new File(dir);
+            if (!file.exists()) {
+                file.mkdirs();
+                new File(fileName);
+            }
+
+            //打开一个写文件器，构造函数中的第二个参数true表示以追加形式写文件
+            FileWriter writer = new FileWriter(fileName, true);
+            writer.write("\r\n"+content);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
