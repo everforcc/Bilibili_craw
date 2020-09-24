@@ -107,7 +107,7 @@ public class Bilibili_Album {
 
                 if(down) {
                     //调用下载
-                    Method_down.down(json_pic.getString("img_src"),"相册\\"+poster_uid);
+                    Method_down.down(json_pic.getString("img_src"),"相册\\"+poster_uid + "\\" + jsonObj.getString("doc_id"));
                     //System.out.println("图片下载地址:"+json_pic.getString("img_src"));
                 }
                 System.out.println("图片下载地址:"+json_pic.getString("img_src"));

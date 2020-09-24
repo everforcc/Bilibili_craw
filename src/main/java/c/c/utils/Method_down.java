@@ -65,8 +65,15 @@ public class Method_down {
          * 根据地址去请求获取下载视频的链接
          */
         HttpURLConnection conn = Request_Heard.requestHeard_downFlv(flvUrl,"av"+aid,requestMethod);
-
-        file(conn.getInputStream(),Constant.rootFilePath+dir+"\\",fileName);
+        System.out.println("视频大小:"+conn.getContentLength());
+        // 文件如何拆分的问题，估计最后还是的计算，但是结果可以就好
+        // 增加1023 加载自身一位正好1 k
+        // 可以分批下载到本地再合并，多个线程
+        /*for(int i=0;i<38287700;i++) {
+            conn = Request_Heard.requestHeard_downFlvBySplit(flvUrl,"av"+aid,requestMethod,"bytes=" + i +"-"+(i+=1023) );
+            file(conn.getInputStream(), Constant.rootFilePath + dir + "\\", i + fileName);
+        }*/
+        file(conn.getInputStream(), Constant.rootFilePath + dir + "\\",  fileName);
     }
 
     public static void rename(String oldName,String newName){
@@ -95,7 +102,7 @@ public class Method_down {
         }
         File file = new File(filePath+fileName);
         if(file.exists()){
-            println.println("文件已经存在:"+fileName);
+            println.println( "文件已经存在:" + filePath + fileName );
            return;
         }
         println.println("开始下载");
@@ -111,7 +118,7 @@ public class Method_down {
         }
         in.close();
         fo.close();
-        println.println(fileName + "下载完成");
+        println.println(filePath+fileName + "下载完成");
         /**
          * 计算下载所用时间
          */

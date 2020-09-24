@@ -1,5 +1,7 @@
 package c.c.utils;
 
+import java.io.File;
+
 /**
  * Yukino
  * 2020/3/3
@@ -9,9 +11,8 @@ public class Constant {
     /**
      * 设置为自己的文件夹
      */
-    public static final String rootFilePath = "D:\\test\\github\\";
-    static String cookie="_uuid=B12C70F0-DCA2-46BC-D28D-8C8E1FB3A17324567infoc; buvid3=64E2389B-F33E-4BFB-997E-EC791DBE770353923infoc; sid=hxyu20pz; CURRENT_FNVAL=16; stardustvideo=1; LIVE_BUVID=AUTO4315775147642650; rpdid=|(J|)J|ukluk0J'ul~~luR~YY; CURRENT_QUALITY=80; im_notify_type_58572396=0; Hm_lvt_8a6e55dbd2870f0f5bc9194cddf32a02=1580288228,1581048406,1581840591,1581840703; DedeUserID=58572396; DedeUserID__ckMd5=20e54bd3090b9e60; SESSDATA=b01aedd7%2C1585875470%2C2909b331; bili_jct=31f7aadfbfed82ad88d94336e6851885; flash_player_gray=false; bp_t_offset_58572396=364260235120844938; INTVER=1";
-
+    public static final String rootFilePath = "E:" + File.separator + "test" + File.separator + "github" + File.separator ;
+    static String cookie="l=v; _uuid=8B9D4BFE-64EF-B8B6-E901-BC64AA36FA6B81905infoc; buvid3=34DEA7B4-4819-4329-841A-F1D908941268138392infoc; sid=6bgvpmoi; DedeUserID=58572396; DedeUserID__ckMd5=20e54bd3090b9e60; SESSDATA=40c8ae33%2C1616331012%2Caa953*91; bili_jct=d9767064501a2b1a310c59e20f1e3721; CURRENT_FNVAL=80; blackside_state=1; rpdid=|(J|)J|uullJ0J'uY||~~m|Ru; bsource=search_baidu; bp_video_offset_58572396=438132817916329216; bp_t_offset_58572396=438132817916329216";
 
     public static String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/"+ ToolTime.nowTime("yyyyMMdd")+" Firefox/29.0";
     public static final String Chrome = "Chrome";
@@ -19,6 +20,9 @@ public class Constant {
     public static final String count = "count" ;
     public static final String vlist = "vlist";
     public static final String aid = "aid" ;
+
+    // 地址 s 来代替
+    // 复制出来的请求头放到文件里面初始化格式
 
     //http://i0.hdslb.com/bfs/archive/74af0a6d77214ae7be8f2c11de0079d9004689c9.jpg
     //

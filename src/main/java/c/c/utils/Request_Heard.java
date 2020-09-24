@@ -37,7 +37,8 @@ public class Request_Heard {
         conn.setRequestProperty("Cookie", Constant.cookie);
         //3, 设置提交类型
         conn.setRequestMethod(requestMethod);
-
+        // 这个位置可以设置分批下载
+        // conn.setRequestProperty("Range", "bytes=0-10000000");
         //4, 设置允许写出数据,默认是不允许 false
         conn.setDoOutput(true);
         conn.setDoInput(true);//当前的连接可以从服务器读取内容, 默认是true
@@ -50,6 +51,31 @@ public class Request_Heard {
         }
         println.println("上次修改时间:" + ToolTime.nowTime(conn.getLastModified()));
         println.println("------------------------------------------headers-------------------------------------------------------------------------------");
+        return conn;
+    }
+
+    public static HttpURLConnection requestHeard_downFlvBySplit(String flvUrl,String avNuM,String requestMethod,String range)throws Exception{
+        println.println("------------------------------------------headers-------------------------------------------------------------------------------");
+        URL url = new URL(flvUrl);
+        //2, 打开连接
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestProperty("Accept", " */*");
+        conn.setRequestProperty("Accept-Encoding", " gzip, deflate, br");
+        conn.setRequestProperty("Accept-Language", " zh-CN,zh;q=0.9");
+        conn.setRequestProperty("Connection", " keep-alive");
+        conn.setRequestProperty("Host", " upos-sz-mirrorcos.bilivideo.com");
+        conn.setRequestProperty("Referer", "https://www.bilibili.com/video/"+avNuM);
+        conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36");
+        conn.setRequestProperty("X-Requested-With", " ShockwaveFlash/29.0.0.171");
+        conn.setRequestProperty("Cookie", Constant.cookie);
+        //3, 设置提交类型
+        conn.setRequestMethod(requestMethod);
+        // 这个位置可以设置分批下载
+        conn.setRequestProperty("Range", range );
+        //4, 设置允许写出数据,默认是不允许 false
+        conn.setDoOutput(true);
+        conn.setDoInput(true);//当前的连接可以从服务器读取内容, 默认是true
+
         return conn;
     }
 

@@ -206,7 +206,7 @@ public class Bilibili_Flv {
         println.println("需要的参数 "+ url_list.size() + "个:" +url_list);
         return url_list;
     }
-
+    BilHelper bilHelper = new BilHelper();
     /**
      *  5.根据av号下载av
      * @param aid
@@ -215,6 +215,7 @@ public class Bilibili_Flv {
     public void downAV(String aid,Boolean down)throws Exception{
         println = Print_Record.getInstanse(aid);
         println.println("");
+        aid = bilHelper.inputToAV(aid);
         println.println("下载视频的AV号:" + aid);
         //获取对应的cid
         // js();
@@ -228,6 +229,10 @@ public class Bilibili_Flv {
             // js() 请求具体视频的地址
             // 4.获取到视频的具体地址
             List<String> url_list = flvUrlList(Request_Method.js_headers(getFlvUrl(aid,cid),"GET")); // 4.根据av号和cid获取真实视频的地址
+
+
+
+            // 这个地方的取值还要再考虑，多个地址或许就是慢的原因
             for (int j=0;j<url_list.size();j++) { // 视频地址集合，有主要的有备用的，目前只取了主要的
                 String flvUrl = url_list.get(j).replaceAll("\\u0026", "&"); //视频地址的 \u0026 这个表示&符转换一下
                 println.println("具体视频url:" + flvUrl);
@@ -238,7 +243,7 @@ public class Bilibili_Flv {
 
 
                     String rename="aid" + aid + "_cid" + cid + "_" + map.get("title") + "_"+ map.get("part") + ".flv";
-                    //Method_down.downFlv(flvUrl , aid, dir , rename,"GET"); //根据地址下载视频
+                    Method_down.downFlv(flvUrl , aid, dir , rename,"GET"); //根据地址下载视频
                     //改名
                     //Method_down.rename(dir + "\\" +fileName,dir + "\\" + rename);
                 }

@@ -1,5 +1,6 @@
 package c.c.bilibili;
 
+import c.c.utils.BilHelper;
 import c.c.utils.Constant;
 import c.c.utils.Method_down;
 import org.jsoup.Connection;
@@ -32,9 +33,10 @@ public class Bilibili_Cover {
      * @param avnum
      * @throws Exception
      */
-    public void getImgByAV(String avnum) throws Exception{
+    public static void getImgByAV(String avnum) throws Exception{
+        BilHelper bilHelper = new BilHelper();
         //avnum="69345392";
-        Connection connection = Jsoup.connect("https://www.bilibili.com/video/av"+avnum);// 获取连接
+        Connection connection = Jsoup.connect("https://www.bilibili.com/video/av"+ bilHelper.inputToAV(avnum));// 获取连接
         connection.header("User-Agent",Constant.userAgent);// 配置模拟浏览器
         Connection.Response login = connection.execute();// 获取响应
         Document d1 = Jsoup.parse(login.body());// 转换为Dom树
