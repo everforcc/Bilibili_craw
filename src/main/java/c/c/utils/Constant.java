@@ -46,4 +46,6 @@ public class Constant {
     public static final String quality_480 = "32" ;
     public static final String quality_360 = "16" ;
 
+    //bilibili的视频地址的请求目前都是GET
+    public static final String GET = "GET" ;
 }

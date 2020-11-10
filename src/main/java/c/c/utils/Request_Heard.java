@@ -22,7 +22,7 @@ public class Request_Heard {
      * @param requestMethod
      */
     public static HttpURLConnection requestHeard_downFlv(String flvUrl,String avNuM,String requestMethod)throws Exception{
-        println.println("------------------------------------------headers-------------------------------------------------------------------------------");
+        println.println("---"+flvUrl);
         URL url = new URL(flvUrl);
         //2, 打开连接
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -47,10 +47,10 @@ public class Request_Heard {
         Set<String> keys = headers.keySet();
         for( String key : keys ){
             String val = conn.getHeaderField(key);
-            println.println(key+"    "+val);
+            //println.println(key+"    "+val);
         }
-        println.println("上次修改时间:" + ToolTime.nowTime(conn.getLastModified()));
-        println.println("------------------------------------------headers-------------------------------------------------------------------------------");
+        //println.println("上次修改时间:" + ToolTime.nowTime(conn.getLastModified()));
+        //println.println("------------------------------------------headers-------------------------------------------------------------------------------");
         return conn;
     }
 

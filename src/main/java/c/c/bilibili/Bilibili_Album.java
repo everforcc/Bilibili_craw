@@ -19,7 +19,7 @@ import java.util.Map;
 public class Bilibili_Album {
 
     public void requestFlow()throws Exception{
-        Thread.sleep(1000);
+        // Thread.sleep(1000);
         //先根据链接获取个数
         String countJson = Request_Method.js_commom(forCountUrl+poster_uid,"","POST");
         //得到了相册的个数

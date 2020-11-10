@@ -1,5 +1,7 @@
 package c.c.bilibili;
 
+import c.c.thread.ThreadDownFlv;
+import c.c.thread.ThreadGroupDown;
 import c.c.utils.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -16,63 +18,22 @@ import java.util.Map;
  */
 public class Bilibili_Flv {
 
-    //bilibili的视频地址的请求目前都是GET
-
-    public void requestFlow() {
-        try {
-            //poster_uid="474672071";
-            //发送请求的流程
-            int totalcount=1;
-            //1.根据up ID 获取所有AV号
-            //
-            //获取视频个数
-            //重新构造请求地址
-            // 前两个使用GET请求
-            String flv_vlist = (String) flvCount(Request_Method.js_commom(allFlvUrl(poster_uid,1,1),null,"GET"), Constant.count);// 1.获取用户视频总数
-            println.println("flv_vlist:"+flv_vlist);
-            // 没有和0都没有意义，不用进来
-            if(null!=flv_vlist||!"0".equals(flv_vlist)) {
-                // b站视频最多一次请求100个
-                int count = Integer.valueOf(flv_vlist);
-                int pn = count / 100;
-                int remainder = count % 100;
-                List<String> aid_list = new ArrayList<String>();
-                for (int i = 1; i <= pn + 1; i++) { // 处理前几页
-                    println.println("正在获取第" + i + "页");
-                    List<String> aid_list_i = (List<String>) flvCount(Request_Method.js_commom(allFlvUrl(poster_uid, 100, i), null, "GET"), Constant.aid); // 2.获取用户所有的av号
-                    for (String str_aid : aid_list_i) {
-                        aid_list.add(str_aid);
-                    }
-                }
-            /*if(remainder!=0){ // 处理最后一页
-                int last = pn+1;
-                println.println("正在获取第"+ last +"页");
-                List<String> aid_list_i = (List<String>) flvCount(Request_Method.js_commom(allFlvUrl(poster_uid, remainder,last), null, "GET"), Constant.aid); // 2.获取用户所有的av号
-                for(String str_aid:aid_list_i){
-                    aid_list.add(str_aid);
-                }
-            }*/
-
-                println.println("一共有" + aid_list.size() + "个视频待下载");
-
-                //av 号码的集合
-                for (String aid : aid_list) { // av号集合
-                    //根据av号下载
-                    downAV(aid, true);
-                    println.println("一共下载了:" + totalcount++ + "个视频");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     /**
      * UP主ID
      */
     private  String poster_uid;
 
     Print_Record println;
+
+    // aid和bid转换使用
+    BilHelper bilHelper = new BilHelper();
+
+    /**
+     * 下载指定av号
+     */
+    public Bilibili_Flv() {
+        // 可以不传参数，下载给个号就行
+    }
 
     /**
      * 根据up id下载全集
@@ -83,52 +44,67 @@ public class Bilibili_Flv {
         this.poster_uid = poster_uid;
     }
 
-    /**
-     * 下载指定av号
-     */
-    public Bilibili_Flv() {
+
+
+    // 下载单个视频
+    public void downAV(String aid)throws Exception{
+        ThreadGroupDown threadGroupDown = new ThreadGroupDown(downNeedMsg(aid));
+        threadGroupDown.run();
     }
 
     /**
-     * 根据给定up的id来请求
-     * 为了获取所有视频的地址
-     * @param mid
-     * @param ps
-     * @return
+     * 1.根据up ID 获取所有AV号
+     * 2.获取视频个数
+     * 3.重新构造请求地址
      */
-    public String allFlvUrl(String mid,int ps,int pn){
-        // pn 页码 mid up id  ps pagesize页面尺寸
-        return "https://api.bilibili.com/x/space/arc/search?tid=0&keyword=&order=pubdate&jsonp=jsonp&pn="+pn+"&ps="+ps+"&mid="+mid;
+    public void requestFlow() {
+        try {
+            String flv_vlist = (String) flvCount(Request_Method.js_commom(ConstantURL.allFlvUrl(poster_uid,1,1),null,"GET"), Constant.count);// 1.获取用户视频总数
+            println.println("flv_vlist:"+flv_vlist);
+            // 没有和0都没有意义，不用进来
+            if(null!=flv_vlist||!"0".equals(flv_vlist)) {
+                // b站视频最多一次请求100个
+                int count = Integer.valueOf(flv_vlist);
+                int pn = count / 100;
+                int remainder = count % 100;
+                List<String> aid_list = new ArrayList<String>();
+                // 处理前几页
+                for (int i = 1; i <= pn + 1; i++) {
+                    println.println("正在获取第" + i + "页");
+                    List<String> aid_list_i = (List<String>) flvCount(Request_Method.js_commom(ConstantURL.allFlvUrl(poster_uid, 100, i), null, "GET"), Constant.aid); // 2.获取用户所有的av号
+                    for (String str_aid : aid_list_i) {
+                        aid_list.add(str_aid);
+                    }
+                }
+                // 假如给的值超出了，会按照最多的计算
+            /*if(remainder!=0){ // 处理最后一页
+                int last = pn+1;
+                println.println("正在获取第"+ last +"页");
+                List<String> aid_list_i = (List<String>) flvCount(Request_Method.js_commom(allFlvUrl(poster_uid, remainder,last), null, "GET"), Constant.aid); // 2.获取用户所有的av号
+                for(String str_aid:aid_list_i){
+                    aid_list.add(str_aid);
+                }
+            }*/
+
+                println.println("一共有" + aid_list.size() + "组视频待下载");
+                List<String[]> strList = new ArrayList<>();
+                ThreadGroup downGroup = new ThreadGroup("down");
+                List<String[]> listGroupData = new ArrayList<>();
+                //av 号码的集合
+                for (String aid : aid_list) { // av号集合
+                    //根据av号下载
+                    strList = downNeedMsg(aid);
+                    strList.forEach(listGroupData::add);
+                }
+                ThreadGroupDown threadGroupDown = new ThreadGroupDown(listGroupData);
+                threadGroupDown.run();
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            println.printErrln("下载up全部视频异常:" + e.toString());
+        }
     }
-
-    /**
-     *  获取视频对应的cid
-     * @param aid
-     * @return
-     */
-    public String getCidUrl(String aid){
-        return "https://api.bilibili.com/x/web-interface/view?aid="+aid;
-    }
-
-    /**
-     * 获取具体视频的url
-     * @param avid
-     * @param cid
-     * @return
-     */
-    public String getFlvUrl(String avid,String cid){
-        //cid: 152777757
-        //avid: 89453968
-        //qn: 80  视频质量
-        //otype: json
-        //      "accept_format": "hdflv2,flv,flv720,flv480,mp4",
-        //		"accept_description": ["高清 1080P+", "高清 1080P", "高清 720P", "清晰 480P", "流畅 360P"],
-        //		"accept_quality": [112, 80, 64, 32, 16],
-        //requestFrom: bilibili-helper
-        return "https://api.bilibili.com/x/player/playurl?fnval=2&otype=json&avid="+avid+"&fnver=0&qn="+Constant.quality_1080_up+"&player=1&cid="+cid;
-    }
-
-
 
     /**
      *  1. 用户ID 请求获取AV号的集合
@@ -230,21 +206,23 @@ public class Bilibili_Flv {
         JSONArray json_date_durl = json_date.getJSONArray("durl");
         List<String> url_list = new ArrayList<String>();
 
-        //没搞明白这个集合的作用
+        // 这个未知实际上只有一个，但是返回的是个数组，就先这样子取吧，没有影响
         for(int i=0;i<json_date_durl.size();i++){
             JSONObject json_date_durl_page = (JSONObject)json_date_durl.get(i);
-            url_list.add(json_date_durl_page.getString("url"));
+            url_list.add(json_date_durl_page.getString("url"));// 这个是主要地址还有个backup_url
         }
         println.println("需要的参数 "+ url_list.size() + "个:" +url_list);
         return url_list;
     }
-    BilHelper bilHelper = new BilHelper();
+
+
     /**
-     *  5.根据av号下载av
+     * 5.根据av号返回下载所需信息
      * @param aid
+     * @return
      * @throws Exception
      */
-    public void downAV(String aid,Boolean down)throws Exception{
+    public List<String[]> downNeedMsg(String aid)throws Exception{
         println = Print_Record.getInstanse(aid);
         println.println("");
         aid = bilHelper.inputToAV(aid);
@@ -253,8 +231,8 @@ public class Bilibili_Flv {
         // js();
         // 3.获取cid相关信息  AV号码相关的cid集合
         // 单独设置请求头
-        List<Map<String, String>> cidMapList = flvMsgList(Request_Method.js_headers(getCidUrl(aid),"GET")); // 3.根据av号查询出对应的真实cid
-
+        List<Map<String, String>> cidMapList = flvMsgList(Request_Method.js_headers(ConstantURL.getCidUrl(aid),Constant.GET)); // 3.根据av号查询出对应的真实cid
+        List<String[]> downMsg = new ArrayList<>();
         if(null!=cidMapList&&!cidMapList.isEmpty()) {
             for (Map<String, String> map : cidMapList) { // cid集合
                 String cid = map.get("cid");
@@ -262,26 +240,23 @@ public class Bilibili_Flv {
                 // 根据cid和aid请求flv地址
                 // js() 请求具体视频的地址
                 // 4.获取到视频的具体地址
-                List<String> url_list = flvUrlList(Request_Method.js_headers(getFlvUrl(aid, cid), "GET")); // 4.根据av号和cid获取真实视频的地址
+                List<String> url_list = flvUrlList(Request_Method.js_headers(ConstantURL.getFlvUrl(aid, cid), Constant.GET)); // 4.根据av号和cid获取真实视频的地址
 
-                // 这个地方的取值还要再考虑，多个地址或许就是慢的原因
+                //  这个是返回的就是集合，但是见到的都是一个的，所以先这样没问题
                 for (int j = 0; j < url_list.size(); j++) { // 视频地址集合，有主要的有备用的，目前只取了主要的
                     String flvUrl = url_list.get(j).replaceAll("\\u0026", "&"); //视频地址的 \u0026 这个表示&符转换一下
                     println.println("具体视频url:" + flvUrl);
-                    if (down) {
-                        //5.下载  后缀名待完善 , 再加个aid 为好
-                        // 目录结构
-                        String dir = "视频\\" + map.get("owner");
-                        // 命名规则
-                        String rename = "aid" + aid + "_cid" + cid + "_" + map.get("title") + "_" + map.get("part") + ".flv";
-                        //根据地址下载视频
-                        Method_down.downFlv(flvUrl, aid, dir, rename, "GET");
-                        //改名
-                        //Method_down.rename(dir + "\\" +fileName,dir + "\\" + rename);
-                    }
+                    //5.下载  后缀名待完善 , 再加个aid 为好
+                    // 目录结构 视频根目录加上 归属人
+                    String dir = "视频\\" + map.get("owner");
+                    // 命名规则
+                    String fileName = "aid" + aid + "_cid" + cid + "_" + map.get("title") + "_" + map.get("part") + ".flv";
+                    // 下载所需的信息
+                    downMsg.add(new String[]{flvUrl, aid, dir, fileName, Constant.GET});
                 }
             }
         }
+        return downMsg;
     }
 
 

@@ -39,17 +39,21 @@ public class Request_Method {
     /**
      * 为了获取json数据
      * @param urlPath
-     * @param requistType
+     * @param requestType
      * @return
      * @throws Exception
      */
-    public static String js_headers(String urlPath,String requistType)throws Exception{
+    public static String js_headers(String urlPath,String requestType)throws Exception{
         println.println("js_headers请求地址为:"+urlPath);
-        HttpURLConnection conn = Request_Heard.requestHeard_FlvUrl(urlPath,requistType);
+        HttpURLConnection conn = Request_Heard.requestHeard_FlvUrl(urlPath,requestType);
         BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        String str = br.readLine();
-        println.println("js_headers响应内容为:" + str);
-        return  str;
+        String str;
+        StringBuffer content = new StringBuffer("");
+        while((str=br.readLine())!=null) {
+            content.append(str);
+        }
+        println.println("js_headers响应内容为:" + content);
+        return  content.toString();
     }
 
     /**
