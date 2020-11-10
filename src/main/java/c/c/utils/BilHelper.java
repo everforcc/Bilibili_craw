@@ -17,7 +17,7 @@ public class BilHelper {
         }else if (aid.startsWith("BV")){ // BV格式的判断       'BV1  4 1 7  '    正则表达式来判断
             // 解决方案1.计算出来
             // 解决方案2 http://api.bilibili.com/x/web-interface/archive/stat?bvid=BV17x411w7KC 还是使用接口去查询
-            System.out.println(String.valueOf(Bilibili_base58.dec(aid)));
+            // System.out.println(String.valueOf(Bilibili_base58.dec(aid)));
             return String.valueOf(Bilibili_base58.dec(aid));
         }else if((aid.matches("\\d*"))){//判断是否为纯数字
             return aid;

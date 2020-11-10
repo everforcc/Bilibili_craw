@@ -39,5 +39,11 @@ public class Constant {
         return "";
     }
 
+    //["高清 1080P+", "高清 1080P", "高清 720P", "清晰 480P", "流畅 360P"] [112, 80, 64, 32, 16]
+    public static final String quality_1080_up = "112" ;
+    public static final String quality_1080 = "80" ;
+    public static final String quality_720 = "64" ;
+    public static final String quality_480 = "32" ;
+    public static final String quality_360 = "16" ;
 
 }

@@ -3,8 +3,11 @@ package c.c.utils;
 import c.c.utils.Constant;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
@@ -16,6 +19,9 @@ import java.util.Set;
 public class Method_down {
 
     private static Print_Record println = Print_Record.getInstanse("");
+
+    // 视频大小
+    private static BigDecimal fileLength = new BigDecimal(0);
 
     /**
      * 下载自定义文件名称
@@ -36,7 +42,7 @@ public class Method_down {
      * @param dir
      * @throws Exception
      */
-    public static void down(String urlPath,String dir)throws Exception{
+    public static void down(String urlPath,String dir){
         /**
          * 截取网络图片的名字和参数
          */
@@ -47,8 +53,19 @@ public class Method_down {
             imageName = imageName.substring(0, imageName.lastIndexOf("@"));
             println.println("再次生成文件名" + imageName);
         }
-        URL uri = new URL(urlPath);
-        file(uri.openStream(),Constant.rootFilePath+dir+"\\",imageName);
+        URL uri = null;
+        try {
+            uri = new URL(urlPath);
+        } catch (MalformedURLException e) {
+            println.printErrln("URL错误" + e.toString());
+            e.printStackTrace();
+        }
+        try {
+            file(uri.openStream(),Constant.rootFilePath+dir+"\\",imageName);
+        } catch (Exception e) {
+            println.printErrln("URL.openStream错误" + e.toString());
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -65,7 +82,8 @@ public class Method_down {
          * 根据地址去请求获取下载视频的链接
          */
         HttpURLConnection conn = Request_Heard.requestHeard_downFlv(flvUrl,"av"+aid,requestMethod);
-        System.out.println("视频大小:"+conn.getContentLength());
+        fileLength = new BigDecimal(conn.getContentLength());
+        println.println("视频大小:"+conn.getContentLength());
         // 文件如何拆分的问题，估计最后还是的计算，但是结果可以就好
         // 增加1023 加载自身一位正好1 k
         // 可以分批下载到本地再合并，多个线程
@@ -107,13 +125,19 @@ public class Method_down {
         }
         println.println("开始下载");
         FileOutputStream fo = new FileOutputStream(file);
-
+        DecimalFormat df = new DecimalFormat("00%");
+        // 比例
         /**
          * 以流的方式进行下载
          */
         byte[] buf = new byte[1024];
         int length = 0;
+        BigDecimal tempLength = new BigDecimal(length);
+
         while ((length = in.read(buf, 0, buf.length)) != -1) {
+            tempLength = tempLength.add(new BigDecimal(length));
+            // 每 1% 跳出一行数据
+            println.println("tempLength:"+tempLength+","+"fileLength:"+fileLength+"," + df.format(tempLength.divide(fileLength,2,BigDecimal.ROUND_HALF_UP)));
             fo.write(buf, 0, length);
         }
         in.close();
@@ -124,7 +148,9 @@ public class Method_down {
          */
         Date enddate = new Date();
         double time = enddate.getTime() - begindate.getTime();
-        println.println("耗时：" + time / 1000 + "s");
+        println.println(fileLength.divide(new BigDecimal(1024),2, BigDecimal.ROUND_HALF_UP)+"");
+        // 也可以进一步优化，比如速度超过1024优化为b,kb,M，G等  1024~n 次方  有个方法找出接近2的n次方 hashmap     可以用递归取结果的方式 =0 i 累加
+        println.println("耗时：" + time / 1000 + "s" + ",速度:" + fileLength.divide(new BigDecimal(1024)).divide(new BigDecimal(time / 1000),2, BigDecimal.ROUND_HALF_UP) + "kb/s" );
     }
 
     public static void record(String dir,String fileName, String content){
