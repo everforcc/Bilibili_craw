@@ -25,6 +25,9 @@ public class ThreadGroupDown {
         if(null!=strAryList&&strAryList.size()!=0){
            if(strAryList.size()<=downQueue){
                strAryList.forEach(ThreadGroupDown::down);
+               while(downGroup.activeCount() > 0) {
+
+               }
            } else {
                for(int i=0;i<downQueue;i++){
                    down(strAryList.get(i));

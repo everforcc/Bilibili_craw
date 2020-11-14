@@ -3,6 +3,7 @@ package c.c.bilibili;
 import c.c.entity.Bilibili_album;
 import c.c.entity.Bilibili_album_pic;
 import c.c.utils.Method_down;
+import c.c.utils.Print_Record;
 import c.c.utils.Request_Method;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -18,13 +19,15 @@ import java.util.Map;
  */
 public class Bilibili_Album {
 
+    // 记录日志
+    private static Print_Record println = Print_Record.getInstanse("");
+
     public void requestFlow()throws Exception{
-        // Thread.sleep(1000);
         //先根据链接获取个数
         String countJson = Request_Method.js_commom(forCountUrl+poster_uid,"","POST");
         //得到了相册的个数
         String count = albumCount(countJson);
-        System.out.println("一共有"+count+"个相册");
+        println.println("一共有"+count+"个相册");
         String allImgJson = Request_Method.js_commom(setForAllImgUrl(poster_uid,count),"","POST");
         allImgUrl(allImgJson,true);
     }
@@ -58,7 +61,7 @@ public class Bilibili_Album {
      * @return
      */
     public  String albumCount(String json){
-        System.out.println("albumCount:"+json);
+        println.println("albumCount:"+json);
         JSONObject jsonObject = JSONObject.fromObject(json);
         JSONObject jsonObjectDate = jsonObject.getJSONObject("data");
         String count = jsonObjectDate.getString("all_count");
@@ -73,7 +76,7 @@ public class Bilibili_Album {
      */
     public  Map<String,Object> allImgUrl(String json,Boolean down)throws Exception{
         Map<String,Object> map = new HashMap<String,Object>();
-        System.out.println("allImgUrl:"+json);
+        println.println("allImgUrl:"+json);
         Bilibili_album bilibili_album;
         Bilibili_album_pic bilibili_album_pic;
         JSONObject jsonObject = JSONObject.fromObject(json);
@@ -106,11 +109,21 @@ public class Bilibili_Album {
                 bilibili_album_pic.setImg_src(json_pic.getString("img_src"));
 
                 if(down) {
+                    String urlPath = json_pic.getString("img_src");
+                    /**
+                     * 截取网络图片的名字和参数
+                     */
+                    String imageName = urlPath.substring(urlPath.lastIndexOf("/") + 1, urlPath.length());
+                    println.println("生成文件名:" + imageName);
+                    if (imageName.contains("?")) {
+                        println.println("处理字符串");
+                        imageName = imageName.substring(0, imageName.lastIndexOf("@"));
+                        println.println("再次生成文件名" + imageName);
+                    }
                     //调用下载
-                    Method_down.down(json_pic.getString("img_src"),"相册\\"+poster_uid + "\\" + jsonObj.getString("doc_id"));
-                    //System.out.println("图片下载地址:"+json_pic.getString("img_src"));
+                    Method_down.downByUrl(urlPath,"相册\\"+poster_uid + "\\" + jsonObj.getString("doc_id"),imageName);
                 }
-                System.out.println("图片下载地址:"+json_pic.getString("img_src"));
+                println.println("图片下载地址:"+json_pic.getString("img_src"));
 
                 bilibili_album_pic.setImg_width(json_pic.getString("img_width"));
                 bilibili_album_pic.setImg_height(json_pic.getString("img_height"));

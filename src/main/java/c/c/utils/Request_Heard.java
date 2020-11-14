@@ -2,6 +2,7 @@ package c.c.utils;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Map;
 import java.util.Set;
@@ -12,76 +13,67 @@ import java.util.Set;
  */
 public class Request_Heard {
 
+    // 记录日志
     private static Print_Record println = Print_Record.getInstanse("");
-    //static String cookie="";
 
     /**
      * 下载视频的 请求头 链接等信息
      * @param flvUrl
-     * @param avNuM
+     * @param id
      * @param requestMethod
      */
-    public static HttpURLConnection requestHeard_downFlv(String flvUrl,String avNuM,String requestMethod)throws Exception{
+    public static HttpURLConnection requestHeard_downFlv(String flvUrl,String id,String requestMethod)throws Exception{
         println.println("---"+flvUrl);
         URL url = new URL(flvUrl);
         //2, 打开连接
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestProperty("Accept", " */*");
-        conn.setRequestProperty("Accept-Encoding", " gzip, deflate, br");
-        conn.setRequestProperty("Accept-Language", " zh-CN,zh;q=0.9");
-        conn.setRequestProperty("Connection", " keep-alive");
-        conn.setRequestProperty("Host", " upos-sz-mirrorcos.bilivideo.com");
-        conn.setRequestProperty("Referer", "https://www.bilibili.com/video/"+avNuM);
-        conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36");
-        conn.setRequestProperty("X-Requested-With", " ShockwaveFlash/29.0.0.171");
-        conn.setRequestProperty("Cookie", Constant.cookie);
-        //3, 设置提交类型
-        conn.setRequestMethod(requestMethod);
-        // 这个位置可以设置分批下载
-        // conn.setRequestProperty("Range", "bytes=0-10000000");
-        //4, 设置允许写出数据,默认是不允许 false
-        conn.setDoOutput(true);
-        conn.setDoInput(true);//当前的连接可以从服务器读取内容, 默认是true
-
-        Map headers = conn.getHeaderFields();
-        Set<String> keys = headers.keySet();
-        for( String key : keys ){
-            String val = conn.getHeaderField(key);
-            //println.println(key+"    "+val);
+        conn.setRequestProperty("Accept-Encoding", " gzip, deflate, br"); // 视频这个没发现问题就先这样吧
+        if(id!=null) {
+            if(id.startsWith("av")) {
+                conn.setRequestProperty("Accept-Language", " zh-CN,zh;q=0.9");
+                conn.setRequestProperty("Connection", " keep-alive");
+                conn.setRequestProperty("Host", " upos-sz-mirrorcos.bilivideo.com");
+                conn.setRequestProperty("Referer", "https://www.bilibili.com/video/" + id);
+            }else if(id.startsWith("ep")||id.startsWith("ss")){
+                conn.setRequestProperty("Accept-Language", " zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7");
+                conn.setRequestProperty("referer", "https://www.bilibili.com/bangumi/play/" + id + "?theme=movie");
+                conn.setRequestProperty("sec-fetch-mode", "no-cors");
+                conn.setRequestProperty("sec-fetch-site", "cross-site");
+            }else {
+                println.println("id格式异常");
+                throw new Exception("id格式异常");
+            }
         }
-        //println.println("上次修改时间:" + ToolTime.nowTime(conn.getLastModified()));
-        //println.println("------------------------------------------headers-------------------------------------------------------------------------------");
-        return conn;
-    }
-
-    public static HttpURLConnection requestHeard_downFlvBySplit(String flvUrl,String avNuM,String requestMethod,String range)throws Exception{
-        println.println("------------------------------------------headers-------------------------------------------------------------------------------");
-        URL url = new URL(flvUrl);
-        //2, 打开连接
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestProperty("Accept", " */*");
-        conn.setRequestProperty("Accept-Encoding", " gzip, deflate, br");
-        conn.setRequestProperty("Accept-Language", " zh-CN,zh;q=0.9");
-        conn.setRequestProperty("Connection", " keep-alive");
-        conn.setRequestProperty("Host", " upos-sz-mirrorcos.bilivideo.com");
-        conn.setRequestProperty("Referer", "https://www.bilibili.com/video/"+avNuM);
-        conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36");
         conn.setRequestProperty("X-Requested-With", " ShockwaveFlash/29.0.0.171");
-        conn.setRequestProperty("Cookie", Constant.cookie);
-        //3, 设置提交类型
-        conn.setRequestMethod(requestMethod);
-        // 这个位置可以设置分批下载
-        conn.setRequestProperty("Range", range );
-        //4, 设置允许写出数据,默认是不允许 false
-        conn.setDoOutput(true);
-        conn.setDoInput(true);//当前的连接可以从服务器读取内容, 默认是true
 
+        conn = commonProperty(conn);
         return conn;
     }
 
     /**
-     * json数据等
-     * 请求视频地址的请求头
+     * 下载视频的 请求头 链接等信息
+     * @param flvUrl
+     * @param flvUrl
+     * @param id
+     */
+    public static HttpURLConnection requestHeard_downEPFlv(String flvUrl,String id)throws Exception{
+        println.println("---"+flvUrl);
+        URL url = new URL(flvUrl);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestProperty("Accept", " */*");
+        conn.setRequestProperty("Accept-Language", " zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7");
+        conn.setRequestProperty("referer", "https://www.bilibili.com/bangumi/play/" + id);// 需要添加
+        conn.setRequestProperty("sec-fetch-mode", "no-cors");
+        conn.setRequestProperty("sec-fetch-site", "cross-site");
+        conn.setRequestProperty("x-requested-with", "ShockwaveFlash/29.0.0.171");
+
+        conn = commonProperty(conn);
+        return conn;
+    }
+
+    /**
+     *  bilibili搜索功能用
      * @param urlPath
      * @param requistType
      */
@@ -89,17 +81,37 @@ public class Request_Heard {
         URL url = new URL(urlPath);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestProperty("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
-        //conn.setRequestProperty("Accept-Encoding","gzip, deflate, br"); 不选择压缩否则会乱码https://zhuanlan.zhihu.com/p/35643926
         conn.setRequestProperty("Accept-Language","zh-CN,zh;q=0.9");
         conn.setRequestProperty("Cache-Control","max-age=0");
         conn.setRequestProperty("Connection","keep-alive");
         conn.setRequestProperty("Host","api.bilibili.com");
         conn.setRequestProperty("Upgrade-Insecure-Requests","1");
-        conn.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36");
+        conn = commonProperty(conn);
+        return conn;
+    }
+
+    private static HttpURLConnection commonProperty(HttpURLConnection conn){
+        /**
+         * 1. conn.setRequestProperty("Accept-Encoding", " gzip, deflate, br"); //加了这个会莫名其妙的乱码 注意存下来
+         * 不选择压缩否则会乱码https://zhuanlan.zhihu.com/p/35643926
+         */
+        conn.setRequestProperty("User-Agent",Constant.userAgent);
         conn.setRequestProperty("Cookie",Constant.cookie);
-        conn.setRequestMethod(requistType);
+        try {
+            conn.setRequestMethod(Constant.GET); //全都是get
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        }
         conn.setDoOutput(true);
         conn.setDoInput(true);//当前的连接可以从服务器读取内容, 默认是true
+
+        Map headers = conn.getHeaderFields();
+        Set<String> keys = headers.keySet();
+        for( String key : keys ){
+            String val = conn.getHeaderField(key);
+            println.println(key+"    "+val);
+        }
+        //println.println("上次修改时间:" + ToolTime.nowTime(conn.getLastModified()));
         return conn;
     }
 
@@ -114,6 +126,10 @@ public class Request_Heard {
         //4, 设置允许写出数据,默认是不允许 false
         conn.setDoOutput(true);
         conn.setDoInput(true);//当前的连接可以从服务器读取内容, 默认是true
+
+        // 这个位置可以设置分批下载
+        // conn.setRequestProperty("Range", "bytes=0-10000000");
+
         if(sendMsg!=null) {
             //5, 获取向服务器写出数据的流
             OutputStream os = conn.getOutputStream();
@@ -122,23 +138,6 @@ public class Request_Heard {
             os.flush();
         }
         return conn;
-    }
-
-
-    /**
-     * 模拟手机浏览器请求
-     * @param conn
-     * @param avNuM
-     */
-    public static void Android(HttpURLConnection conn, String avNuM){
-            conn.setRequestProperty("Accept", "*/*");
-            conn.setRequestProperty("Accept-Encoding", "identity;q=1, *;q=0");
-            conn.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9");
-            conn.setRequestProperty("Connection", "keep-alive");
-            conn.setRequestProperty("Host", "upos-sz-mirrorks3.bilivideo.com");
-            conn.setRequestProperty("Range", "bytes=0-");
-            conn.setRequestProperty("Referer", "https://m.bilibili.com/video/"+avNuM);
-            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; U; Android 4.4.2; en-us; LGMS323 Build/KOT49I.MS32310c) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/69.0.3497.100 Mobile Safari/537.36");
     }
 
 }

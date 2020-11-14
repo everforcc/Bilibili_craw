@@ -18,10 +18,8 @@ import java.util.Set;
  */
 public class Method_down {
 
+    // 记录日志
     private static Print_Record println = Print_Record.getInstanse("");
-
-    // 视频大小
-    //private BigDecimal fileLength = new BigDecimal(0);
 
     /**
      * 下载自定义文件名称
@@ -32,59 +30,25 @@ public class Method_down {
     public static void downByUrl(String url,String dir,String fileName) throws Exception{
         URL uri = new URL(url);
         InputStream in = uri.openStream();
-        file(uri.openStream(),Constant.rootFilePath+dir+"\\",fileName,new BigDecimal(1));
-    }
-
-    /**
-     *
-     * 根据网络路径命名
-     * @param urlPath
-     * @param dir
-     * @throws Exception
-     */
-    public static void down(String urlPath,String dir){
-        /**
-         * 截取网络图片的名字和参数
-         */
-        String imageName = urlPath.substring(urlPath.lastIndexOf("/") + 1, urlPath.length());
-        println.println("生成文件名:" + imageName);
-        if (imageName.contains("?")) {
-            println.println("处理字符串");
-            imageName = imageName.substring(0, imageName.lastIndexOf("@"));
-            println.println("再次生成文件名" + imageName);
-        }
-        URL uri = null;
-        try {
-            uri = new URL(urlPath);
-        } catch (MalformedURLException e) {
-            println.printErrln("URL错误" + e.toString());
-            e.printStackTrace();
-        }
-        try {
-
-            file(uri.openStream(),Constant.rootFilePath+dir+"\\",imageName,new BigDecimal(1));
-        } catch (Exception e) {
-            println.printErrln("URL.openStream错误" + e.toString());
-            e.printStackTrace();
-        }
+        commonDownFile(uri.openStream(),Constant.rootFilePath+dir+"\\",fileName,new BigDecimal(1));
     }
 
     /**
      * 下载视频，需要请求头
      * @param flvUrl
-     * @param aid
+     * @param id
      * @param dir
      * @param fileName
+     * @param requestMethod
      * @throws Exception
      */
-    public static void downFlv(String flvUrl,String aid,String dir,String fileName,String requestMethod)throws Exception{
-
-        /**
-         * 根据地址去请求获取下载视频的链接
-         */
-        HttpURLConnection conn = Request_Heard.requestHeard_downFlv(flvUrl,"av"+aid,requestMethod);
+    public static void downFlv(String flvUrl,String id,String dir,String fileName,String requestMethod)throws Exception{
+        HttpURLConnection conn = Request_Heard.requestHeard_downFlv(flvUrl,id,requestMethod);
         BigDecimal fileLength = new BigDecimal(conn.getContentLength());
-        println.println("视频大小:"+conn.getContentLength());
+        if(fileLength.compareTo(new BigDecimal(1))<1) {
+            fileLength = new BigDecimal(conn.getHeaderField("Content-Length"));
+        }
+        println.println("视频大小:" + calSize(fileLength));
         // 文件如何拆分的问题，估计最后还是的计算，但是结果可以就好
         // 增加1023 加载自身一位正好1 k
         // 可以分批下载到本地再合并，多个线程
@@ -92,26 +56,29 @@ public class Method_down {
             conn = Request_Heard.requestHeard_downFlvBySplit(flvUrl,"av"+aid,requestMethod,"bytes=" + i +"-"+(i+=1023) );
             file(conn.getInputStream(), Constant.rootFilePath + dir + "\\", i + fileName);
         }*/
-        file(conn.getInputStream(), Constant.rootFilePath + dir + "\\",  fileName,fileLength);
+        commonDownFile(conn.getInputStream(), Constant.rootFilePath + dir + "\\",  fileName,fileLength);
     }
 
-    public static void rename(String oldName,String newName){
+    // 改名字的时候用
+    /*public static void rename(String oldName,String newName){
         File file = new File(Constant.rootFilePath+oldName);
         file.renameTo(new File(Constant.rootFilePath+newName));
         println.println(Constant.rootFilePath+oldName + "改名为:" + Constant.rootFilePath+newName);
-    }
+    }*/
 
     /**
-     * 用来下载文件
+     *  公共的下载文件的方法
      * @param in
      * @param filePath
      * @param fileName
      * @throws Exception
      */
-    private static void file(InputStream in,String filePath,String fileName,BigDecimal fileLength)throws Exception{
+    private static void commonDownFile(InputStream in,String filePath,String fileName,BigDecimal fileLength)throws Exception{
         // 总时间
         Date begindate = new Date();
 
+        // windows的命名规则校验, 文件夹暂时不需要
+        fileName = Common_Method.checkFileName(fileName);
         /**
          * 创建文件夹和文件名
          */
@@ -156,18 +123,44 @@ public class Method_down {
         double time = enddate.getTime() - begindate.getTime();
         // println.println(fileLength.divide(new BigDecimal(1024),2, BigDecimal.ROUND_HALF_UP)+"");
         // 也可以进一步优化，比如速度超过1024优化为b,kb,M，G等  1024~n 次方  有个方法找出接近2的n次方 hashmap     可以用递归取结果的方式 =0 i 累加
-        println.println("耗时：" + time / 1000 + "s" + ",速度:" + fileLength.divide(new BigDecimal(1024)).divide(new BigDecimal(time / 1000),2, BigDecimal.ROUND_HALF_UP) + "kb/s" );
+        BigDecimal bigDecimal = fileLength.divide(new BigDecimal(time / 1000),2, BigDecimal.ROUND_HALF_UP);
+        println.println("耗时：" + time / 1000 + "s" + ",速度:" + calSize(bigDecimal) + "/s" );
     }
 
-    public static void record(String dir,String fileName, String content){
-        try {
+    private static String calSize(BigDecimal bigDecimal){
+        BigDecimal base = new BigDecimal("1");
+        if(bigDecimal.compareTo(base = base.multiply(new BigDecimal(1024)))<=0){
+            System.out.println(bigDecimal.multiply(new BigDecimal(1024)).divide(base,2, BigDecimal.ROUND_HALF_UP));
+            return bigDecimal.multiply(new BigDecimal(1024)).divide(base,2, BigDecimal.ROUND_HALF_UP) + "b";
+        }else if(bigDecimal.compareTo(base = base.multiply(new BigDecimal(1024)))<=0){
+            System.out.println(bigDecimal.multiply(new BigDecimal(1024)).divide(base,2, BigDecimal.ROUND_HALF_UP));
+            return bigDecimal.multiply(new BigDecimal(1024)).divide(base,2, BigDecimal.ROUND_HALF_UP) + "kb";
+        }else if(bigDecimal.compareTo(base = base.multiply(new BigDecimal(1024)))<=0){
+            System.out.println(bigDecimal.multiply(new BigDecimal(1024)).divide(base,2, BigDecimal.ROUND_HALF_UP));
+            return bigDecimal.multiply(new BigDecimal(1024)).divide(base,2, BigDecimal.ROUND_HALF_UP) + "MB";
+        }else if(bigDecimal.compareTo(base = base.multiply(new BigDecimal(1024)))<=0){
+            System.out.println(bigDecimal.multiply(new BigDecimal(1024)).divide(base,2, BigDecimal.ROUND_HALF_UP));
+            return bigDecimal.multiply(new BigDecimal(1024)).divide(base,2, BigDecimal.ROUND_HALF_UP) + "GB";
+        }/*else if(bigDecimal.compareTo(base = base.multiply(new BigDecimal(1024)))<=0){
+            System.out.println(bigDecimal.divide(base,2, BigDecimal.ROUND_HALF_UP));
+            return bigDecimal.divide(base,2, BigDecimal.ROUND_HALF_UP) + "GGb";
+        }*/
+        return "213";
+    }
 
+    /**
+     *  记录日志用
+     * @param dir
+     * @param fileName
+     * @param content
+     */
+    public static void recorMsgd(String dir,String fileName, String content){
+        try {
             File file = new File(dir);
             if (!file.exists()) {
                 file.mkdirs();
                 new File(fileName);
             }
-
             //打开一个写文件器，构造函数中的第二个参数true表示以追加形式写文件
             FileWriter writer = new FileWriter(fileName, true);
             writer.write("\r\n"+content);

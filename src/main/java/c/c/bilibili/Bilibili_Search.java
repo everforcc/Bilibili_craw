@@ -33,10 +33,7 @@ public class Bilibili_Search {
         int total_count = 1;
         Document allhtml = null;
         String urlPath = "https://search.bilibili.com/all?keyword="+encode(searchWord)+"&from_source=nav_search_new&page=";
-
         HttpURLConnection conn = Request_Heard.requestHeard_FlvUrl(urlPath,"GET");
-
-
         try {
             allhtml = Jsoup.parse(conn.getInputStream(), "UTF-8", urlPath+1);
         } catch (IOException e) {

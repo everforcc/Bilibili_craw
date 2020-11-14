@@ -7,6 +7,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,38 +17,35 @@ import java.util.Map;
  * Yukino
  * 2020/3/3
  */
-public class Bilibili_Flv {
+public class Bilibili_Video_Flv {
 
     /**
      * UP主ID
      */
-    private  String poster_uid;
+    //private static String poster_uid;
 
-    Print_Record println;
+    private static Print_Record println = Print_Record.getInstanse("");;
 
     // aid和bid转换使用
-    BilHelper bilHelper = new BilHelper();
+    private static BilHelper bilHelper = new BilHelper();
 
     /**
      * 下载指定av号
      */
-    public Bilibili_Flv() {
+    Bilibili_Video_Flv() {
         // 可以不传参数，下载给个号就行
     }
 
     /**
      * 根据up id下载全集
-     * @param poster_uid
      */
-    public Bilibili_Flv(String poster_uid) {
+    /*Bilibili_Video_Flv(String poster_uid) {
         println = Print_Record.getInstanse(poster_uid);
         this.poster_uid = poster_uid;
-    }
-
-
+    }*/
 
     // 下载单个视频
-    public void downAV(String aid)throws Exception{
+    static void downAV(String aid){
         ThreadGroupDown threadGroupDown = new ThreadGroupDown(downNeedMsg(aid));
         threadGroupDown.run();
     }
@@ -57,7 +55,7 @@ public class Bilibili_Flv {
      * 2.获取视频个数
      * 3.重新构造请求地址
      */
-    public void requestFlow() {
+    static void requestFlow(String poster_uid) {
         try {
             String flv_vlist = (String) flvCount(Request_Method.js_commom(ConstantURL.allFlvUrl(poster_uid,1,1),null,"GET"), Constant.count);// 1.获取用户视频总数
             println.println("flv_vlist:"+flv_vlist);
@@ -112,7 +110,7 @@ public class Bilibili_Flv {
      * @param type
      * @return
      */
-    public Object flvCount(String json, String type){
+    private static Object flvCount(String json, String type){
         JSONObject jsonObject = JSONObject.fromObject(json);
 
         if(!"0".equals(jsonObject.get("code").toString())){
@@ -151,7 +149,7 @@ public class Bilibili_Flv {
      * @param cidJson
      * @return
      */
-    public List<Map<String,String>> flvMsgList(String cidJson){
+    private static List<Map<String,String>> flvMsgList(String cidJson){
         List<Map<String,String>> cid_list = new ArrayList<Map<String,String>>();
         Map<String,String> cid_map;
 
@@ -191,7 +189,7 @@ public class Bilibili_Flv {
      * @param json
      * @return
      */
-    public List<String> flvUrlList(String json){
+    private static List<String> flvUrlList(String json){
         // 这个位置已经找到了视频的地址，应该不会储问题
         JSONObject jsonObject = JSONObject.fromObject(json);
         if(!"0".equals(jsonObject.get("code").toString())){
@@ -220,9 +218,8 @@ public class Bilibili_Flv {
      * 5.根据av号返回下载所需信息
      * @param aid
      * @return
-     * @throws Exception
      */
-    public List<String[]> downNeedMsg(String aid)throws Exception{
+    private static List<String[]> downNeedMsg(String aid) {
         println = Print_Record.getInstanse(aid);
         println.println("");
         aid = bilHelper.inputToAV(aid);
@@ -231,7 +228,13 @@ public class Bilibili_Flv {
         // js();
         // 3.获取cid相关信息  AV号码相关的cid集合
         // 单独设置请求头
-        List<Map<String, String>> cidMapList = flvMsgList(Request_Method.js_headers(ConstantURL.getCidUrl(aid),Constant.GET)); // 3.根据av号查询出对应的真实cid
+        List<Map<String, String>> cidMapList = null; // 3.根据av号查询出对应的真实cid
+        try {
+            cidMapList = flvMsgList(Request_Method.js_headers(ConstantURL.getCidUrl(aid), Constant.GET));
+        } catch (Exception e) {
+            println.printErrln("获取cid时出现异常:"+aid);
+            e.printStackTrace();
+        }
         List<String[]> downMsg = new ArrayList<>();
         if(null!=cidMapList&&!cidMapList.isEmpty()) {
             for (Map<String, String> map : cidMapList) { // cid集合
@@ -240,7 +243,13 @@ public class Bilibili_Flv {
                 // 根据cid和aid请求flv地址
                 // js() 请求具体视频的地址
                 // 4.获取到视频的具体地址
-                List<String> url_list = flvUrlList(Request_Method.js_headers(ConstantURL.getFlvUrl(aid, cid), Constant.GET)); // 4.根据av号和cid获取真实视频的地址
+                List<String> url_list = null; // 4.根据av号和cid获取真实视频的地址
+                try {
+                    url_list = flvUrlList(Request_Method.js_headers(ConstantURL.getFlvUrl(aid, cid), Constant.GET));
+                } catch (Exception e) {
+                    println.printErrln("获取视频时时出现异常---aid:" + aid + "，cid:" + cid);
+                    e.printStackTrace();
+                }
 
                 //  这个是返回的就是集合，但是见到的都是一个的，所以先这样没问题
                 for (int j = 0; j < url_list.size(); j++) { // 视频地址集合，有主要的有备用的，目前只取了主要的
@@ -248,11 +257,12 @@ public class Bilibili_Flv {
                     println.println("具体视频url:" + flvUrl);
                     //5.下载  后缀名待完善 , 再加个aid 为好
                     // 目录结构 视频根目录加上 归属人
-                    String dir = "视频\\" + map.get("owner");
+                    String dir = Constant.dir_video + File.separator + map.get("owner") + File.separator + map.get("title") ;
                     // 命名规则
-                    String fileName = "aid" + aid + "_cid" + cid + "_" + map.get("title") + "_" + map.get("part") + ".flv";
+                    // String fileName = "aid" + aid + "_cid" + cid + "_" + map.get("title") + "_" + map.get("part") + ".flv";
+                    String fileName = map.get("title") + "_" + map.get("part") + Bilibili_Down.qualityStr + ".flv";
                     // 下载所需的信息
-                    downMsg.add(new String[]{flvUrl, aid, dir, fileName, Constant.GET});
+                    downMsg.add(new String[]{flvUrl, "av"+ aid, dir, fileName, Constant.GET});
                 }
             }
         }

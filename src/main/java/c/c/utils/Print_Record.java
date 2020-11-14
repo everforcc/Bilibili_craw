@@ -28,30 +28,28 @@ public class Print_Record {
         return print_record;
     }
 
+
+
     public void println(String msg){
-        // System.out.println("通过帮助类输出----------");
         String location="";
         StackTraceElement[] stacks = Thread.currentThread().getStackTrace();
         // 这里还可以根据包名 来分类 保存日志
         location = "[["+stacks[2].getClassName() + "](" + stacks[2].getMethodName() + ")" + "" + stacks[2].getLineNumber() + "]";
-        // System.out.println(location);
         msg = ToolTime.nowTime("yyyy-MM-dd hh:mm:ss ")+" : " + location + " --- " +msg ;
         System.out.println( msg );
 
-        Method_down.record(Constant.rootFilePath + "log\\" ,fileName,msg);
+        Method_down.recorMsgd(Constant.rootFilePath + "log\\" ,fileName,msg);
     }
 
     public void printErrln(String msg){
-        // System.out.println("通过帮助类输出----------");
         String location="";
         StackTraceElement[] stacks = Thread.currentThread().getStackTrace();
         // 这里还可以根据包名 来分类 保存日志
         location = "[["+stacks[2].getClassName() + "](" + stacks[2].getMethodName() + ")" + "" + stacks[2].getLineNumber() + "]";
-        // System.out.println(location);
         msg = ToolTime.nowTime("yyyy-MM-dd hh:mm:ss ")+" err : " + location + " --- " +msg ;
         System.err.println( msg );
 
-        Method_down.record(Constant.rootFilePath + "log\\" ,fileName,msg);
+        Method_down.recorMsgd(Constant.rootFilePath + "log\\" ,fileName,msg);
     }
 
 }

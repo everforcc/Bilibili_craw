@@ -1,0 +1,12 @@
+:authority: upos-sz-mirrorkodo.bilivideo.com
+:method: GET
+:path: /upgcxcode/72/08/185070872/185070872_da2-1-112.flv?e=ig8euxZM2rNcNbh1hzTBhwdlhzRz7bUVhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&uipk=5&nbs=1&deadline=1605344936&gen=playurl&os=kodobv&oi=3083012074&trid=5b7722a693084ffbaab8604a6ec57da4p&platform=pc&upsig=5d904e09aa42fb4c604358fdbc8d9e57&uparams=e,uipk,nbs,deadline,gen,os,oi,trid,platform&mid=58572396&orderid=0,3&agrr=0&logo=80000000
+:scheme: https
+accept: */*
+accept-encoding: gzip, deflate, br
+accept-language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7
+referer: https://www.bilibili.com/bangumi/play/ep324142?theme=movie
+sec-fetch-mode: no-cors
+sec-fetch-site: cross-site
+user-agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36
+x-requested-with: ShockwaveFlash/29.0.0.171

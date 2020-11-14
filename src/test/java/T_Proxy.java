@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class T_Proxy {
 
-
+/*
     IpProxyUtils ipProxyUtils = new IpProxyUtils();
 
     @Test
@@ -18,7 +18,8 @@ public class T_Proxy {
             System.out.println("第"+i+"次");
             String ip = "121.239.208.184";
             int port = 8118;
-            int code = ipProxyUtils.isValid(ip, port);
+            // int code = ipProxyUtils.isValid(ip, port);
+            int code = 0 ;
             System.out.println(code);
             if (code == 200) {
                 System.out.println("ip:" + ip + "port:" + port + ",可用");
@@ -51,5 +52,5 @@ public class T_Proxy {
         Date endDate = new Date();
         double time = endDate.getTime() - startDate.getTime();
         System.out.println("耗时：" + time / 1000 + "s");
-    }
+    }*/
 }
