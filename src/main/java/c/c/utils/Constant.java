@@ -11,8 +11,8 @@ public class Constant {
     /**
      * 设置为自己的文件夹
      */
-    public static final String rootFilePath = "E:" + File.separator + "test" + File.separator + "github" + File.separator ;
-    static String cookie="l=v; _uuid=8B9D4BFE-64EF-B8B6-E901-BC64AA36FA6B81905infoc; buvid3=34DEA7B4-4819-4329-841A-F1D908941268138392infoc; sid=6bgvpmoi; DedeUserID=58572396; DedeUserID__ckMd5=20e54bd3090b9e60; SESSDATA=40c8ae33%2C1616331012%2Caa953*91; bili_jct=d9767064501a2b1a310c59e20f1e3721; CURRENT_FNVAL=80; blackside_state=1; rpdid=|(J|)J|uullJ0J'uY||~~m|Ru; bsource=search_baidu; bp_video_offset_58572396=438132817916329216; bp_t_offset_58572396=438132817916329216";
+    public static final String rootFilePath = "E:\\test\\github\\" ;
+    static String cookie="";
 
     public static String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/"+ ToolTime.nowTime("yyyyMMdd")+" Firefox/29.0";
     public static String androidUserAgent = "Mozilla/5.0 (Linux; U; Android 4.4.2; en-us; LGMS323 Build/KOT49I.MS32310c) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/69.0.3497.100 Mobile Safari/537.36";

@@ -125,22 +125,25 @@ public class Method_down {
         // 也可以进一步优化，比如速度超过1024优化为b,kb,M，G等  1024~n 次方  有个方法找出接近2的n次方 hashmap     可以用递归取结果的方式 =0 i 累加
         BigDecimal bigDecimal = fileLength.divide(new BigDecimal(time / 1000),2, BigDecimal.ROUND_HALF_UP);
         println.println("耗时：" + time / 1000 + "s" + ",速度:" + calSize(bigDecimal) + "/s" );
+        // 可以转码但是需要本地ffmpeg的支持，没有的话就注释掉
+        // ChangeVedioCover.createFileCover(file);
     }
 
     private static String calSize(BigDecimal bigDecimal){
         BigDecimal base = new BigDecimal("1");
-        if(bigDecimal.compareTo(base = base.multiply(new BigDecimal(1024)))<=0){
-            System.out.println(bigDecimal.multiply(new BigDecimal(1024)).divide(base,2, BigDecimal.ROUND_HALF_UP));
-            return bigDecimal.multiply(new BigDecimal(1024)).divide(base,2, BigDecimal.ROUND_HALF_UP) + "b";
-        }else if(bigDecimal.compareTo(base = base.multiply(new BigDecimal(1024)))<=0){
-            System.out.println(bigDecimal.multiply(new BigDecimal(1024)).divide(base,2, BigDecimal.ROUND_HALF_UP));
-            return bigDecimal.multiply(new BigDecimal(1024)).divide(base,2, BigDecimal.ROUND_HALF_UP) + "kb";
-        }else if(bigDecimal.compareTo(base = base.multiply(new BigDecimal(1024)))<=0){
-            System.out.println(bigDecimal.multiply(new BigDecimal(1024)).divide(base,2, BigDecimal.ROUND_HALF_UP));
-            return bigDecimal.multiply(new BigDecimal(1024)).divide(base,2, BigDecimal.ROUND_HALF_UP) + "MB";
-        }else if(bigDecimal.compareTo(base = base.multiply(new BigDecimal(1024)))<=0){
-            System.out.println(bigDecimal.multiply(new BigDecimal(1024)).divide(base,2, BigDecimal.ROUND_HALF_UP));
-            return bigDecimal.multiply(new BigDecimal(1024)).divide(base,2, BigDecimal.ROUND_HALF_UP) + "GB";
+        BigDecimal twoPower10 = new BigDecimal("1");
+        if(bigDecimal.compareTo(base = base.multiply(twoPower10))<=0){
+            System.out.println(bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP));
+            return bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP) + "b";
+        }else if(bigDecimal.compareTo(base = base.multiply(twoPower10))<=0){
+            System.out.println(bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP));
+            return bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP) + "kb";
+        }else if(bigDecimal.compareTo(base = base.multiply(twoPower10))<=0){
+            System.out.println(bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP));
+            return bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP) + "MB";
+        }else if(bigDecimal.compareTo(base = base.multiply(twoPower10))<=0){
+            System.out.println(bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP));
+            return bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP) + "GB";
         }/*else if(bigDecimal.compareTo(base = base.multiply(new BigDecimal(1024)))<=0){
             System.out.println(bigDecimal.divide(base,2, BigDecimal.ROUND_HALF_UP));
             return bigDecimal.divide(base,2, BigDecimal.ROUND_HALF_UP) + "GGb";

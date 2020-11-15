@@ -24,7 +24,7 @@ public class T_Flv {
 
     @Test
     public void t1(){
-        //                           BV1ti4y1u7wR
+        // 支持bv ，av ， ss ep up主的号
         /*Bilibili_Down.downVideo("BV1ti4y1u7wR", Quality.quality_360);
         Bilibili_Down.downVideo("BV1ti4y1u7wR", Quality.quality_480);
         Bilibili_Down.downVideo("BV1ti4y1u7wR", Quality.quality_720);
@@ -32,30 +32,7 @@ public class T_Flv {
         Bilibili_Down.downVideo("BV1ti4y1u7wR", Quality.quality_1080_up);*/
         //Bilibili_Down.downVideo("ss26175", Quality.quality_1080_60);
 
-        Bilibili_Down.downVideo("ss32394", Quality.quality_1080_60);
-    }
-
-
-
-
-
-
-    @Test
-    public void binary(){
-        // Integer.highestOneBit(i)
-        int a=10;
-        System.out.println(Integer.toBinaryString(a));
-        System.out.println(tableSizeFor(a));
-    }
-    static final int MAXIMUM_CAPACITY = 1 << 30;
-    static final int tableSizeFor(int cap) {
-        int n = cap - 1;
-        n |= n >>> 1;
-        n |= n >>> 2;
-        n |= n >>> 4;
-        n |= n >>> 8;
-        n |= n >>> 16;
-        return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
+        Bilibili_Down.downVideo("22226490", Quality.quality_1080_60);
     }
 
 

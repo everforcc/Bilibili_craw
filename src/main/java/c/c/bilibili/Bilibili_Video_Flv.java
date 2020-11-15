@@ -1,12 +1,9 @@
 package c.c.bilibili;
 
-import c.c.thread.ThreadDownFlv;
 import c.c.thread.ThreadGroupDown;
 import c.c.utils.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.junit.Test;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
