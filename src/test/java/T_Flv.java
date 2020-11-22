@@ -32,7 +32,7 @@ public class T_Flv {
         Bilibili_Down.downVideo("BV1ti4y1u7wR", Quality.quality_1080_up);*/
         //Bilibili_Down.downVideo("ss26175", Quality.quality_1080_60);
 
-        Bilibili_Down.downVideo("22226490", Quality.quality_1080_60);
+        Bilibili_Down.downVideo("BV1Ny4y167Uj", Quality.quality_1080_60);
     }
 
 
