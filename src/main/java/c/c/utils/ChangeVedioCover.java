@@ -136,7 +136,7 @@ public class ChangeVedioCover {
         }
     }
 
-    private static void execCmd(String cmd) {
+    public static void execCmd(String cmd) {
         print_record.println("cmd: " + cmd);
         ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/C", cmd);
         Process process = null;

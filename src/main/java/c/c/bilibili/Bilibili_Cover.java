@@ -51,7 +51,7 @@ public class Bilibili_Cover {
                 System.out.println(element.attr("content"));
                 String url=element.attr("content");
                 //如果匹配到了下载
-                Method_down.downByUrl(element.attr("content"),"封面\\",avnum+"."+url.substring(url.lastIndexOf(".")+1,url.length()));//传图片后坠
+                Method_down.downByUrl(element.attr("content"),"封面\\",avnum+"." + url.substring(url.lastIndexOf(".")+1,url.length()));//传图片后坠
             }
         }
     }

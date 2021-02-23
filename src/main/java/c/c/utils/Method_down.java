@@ -1,6 +1,7 @@
 package c.c.utils;
 
 import c.c.utils.Constant;
+import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -22,7 +23,7 @@ public class Method_down {
     private static Print_Record println = Print_Record.getInstanse("");
 
     /**
-     * 下载自定义文件名称
+     * 下载自定义文件名称  图片
      * @param url
      * @param fileName
      * @throws Exception
@@ -30,7 +31,7 @@ public class Method_down {
     public static void downByUrl(String url,String dir,String fileName) throws Exception{
         URL uri = new URL(url);
         InputStream in = uri.openStream();
-        commonDownFile(uri.openStream(),Constant.rootFilePath+dir+"\\",fileName,new BigDecimal(1));
+        commonDownFile(uri.openStream(),Constant.rootFilePath+dir+"\\",fileName,new BigDecimal(in.available()));
     }
 
     /**
@@ -65,6 +66,12 @@ public class Method_down {
         file.renameTo(new File(Constant.rootFilePath+newName));
         println.println(Constant.rootFilePath+oldName + "改名为:" + Constant.rootFilePath+newName);
     }*/
+
+    private static void commonDownFile1(InputStream in,String filePath,String fileName,BigDecimal fileLength)throws Exception{
+        println.println( "开始" );
+        FileUtils.copyToFile(in,new File("D://2.flv"));
+        println.println( "结束");
+    }
 
     /**
      *  公共的下载文件的方法
@@ -130,8 +137,8 @@ public class Method_down {
     }
 
     private static String calSize(BigDecimal bigDecimal){
-        BigDecimal base = new BigDecimal("1");
-        BigDecimal twoPower10 = new BigDecimal("1");
+        BigDecimal base = new BigDecimal(1);
+        BigDecimal twoPower10 = new BigDecimal(1 << 10);
         if(bigDecimal.compareTo(base = base.multiply(twoPower10))<=0){
             System.out.println(bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP));
             return bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP) + "b";
@@ -152,7 +159,7 @@ public class Method_down {
     }
 
     /**
-     *  记录日志用
+     *  记录日志用 dir 和filename 重复了
      * @param dir
      * @param fileName
      * @param content

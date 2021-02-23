@@ -47,21 +47,25 @@ public class Bilibili_ep_Flv {
                     Map<String,String> mapAry = map.get(index);
                     String url = ConstantURL.epUrlPlayurl(mapAry.get("id"), mapAry.get("aid"), mapAry.get("bvid"), mapAry.get("cid"));
                     print_record.println("url---"+url);
-                    String id = start + epid;
+                    String id = start + mapAry.get("id");
                     // 用url地址获取视频地址
                     String epUrl = epUrlByJson(url,id);
                     print_record.println("epUrl---"+epUrl);
+                    String dir = "";
                     if(start.equals("ep")){
-                       start = Constant.dir_comic;
+                        dir = Constant.dir_comic;
                     }else {
-                       start = Constant.dir_movie;
+                        dir = Constant.dir_movie;
                     }
-                    String dir = start + File.separator + mapAry.get("h1Title") + File.separator;
+                    // 文件命名和目录
+                    String title = Common_Method.checkFileName(mapAry.get("title"));
+                    dir += File.separator + title + File.separator;
                     String fileName = mapAry.get("titleFormat")+mapAry.get("longTitle") + ".flv";
                     // 开始下载视频
                     downMsg.add(new String[]{epUrl, id, dir, fileName, Constant.GET});
                 }
             }
+            print_record.println("待下载视频个数:"+downMsg.size());
             if(downMsg.size()!=0) {
                 ThreadGroupDown threadGroupDown = new ThreadGroupDown(downMsg);
                 threadGroupDown.run();
@@ -90,15 +94,17 @@ public class Bilibili_ep_Flv {
         int i = 0;
         if (matcher.find()) {
             json = matcher.group(0);
+            // 替换掉前缀和后缀，不用计算的方式，那样比较慢
+            json = json.replaceAll(regexStart,"").replaceAll(regexEnd,"");
             i++;
         }
         if(i==1) {
             // 这里截取json
-            json = json.substring(json.indexOf("{"),json.lastIndexOf("}"));
-            json = json.substring(0,json.lastIndexOf("}")+1);
-            System.out.println(json);
+            /*json = json.substring(json.indexOf("{"),json.lastIndexOf("}"));
+            json = json.substring(0,json.lastIndexOf("}")+1);*/
+            print_record.println(json);
             JSONObject jsonObjectAllMsg = (JSONObject)JSON.parseObject(json); //多电影可能是这个位置
-            String h1Title = jsonObjectAllMsg.getString("h1Title");
+            //String h1Title = jsonObjectAllMsg.getString("h1Title");
             JSONArray jsonArray = jsonObjectAllMsg.getJSONArray("epList");
             for(int index = 0;index<jsonArray.size();index++) {
                 Map<String, String> map = new HashMap<>();
@@ -110,8 +116,8 @@ public class Bilibili_ep_Flv {
                 map.put("badgeColor", jsonObjectVideoMsg.getString("badgeColor"));
                 map.put("titleFormat", jsonObjectVideoMsg.getString("titleFormat"));
                 JSONObject jsonObjectMediaInfo = jsonObjectAllMsg.getJSONObject("mediaInfo");
-                map.put("longTitle", jsonObjectMediaInfo.getString("title"));
-                map.put("h1Title", h1Title );
+                map.put("longTitle", jsonObjectMediaInfo.getString("longTitle"));
+                map.put("title", jsonObjectMediaInfo.getString("title") );
                 mapAry.put(index, map);
             }
             return  mapAry;

@@ -13,6 +13,9 @@ import java.util.Set;
  */
 public class Request_Heard {
 
+    //  下面的都是请求头等信息不同,有空合并了
+    //  range
+
     // 记录日志
     private static Print_Record println = Print_Record.getInstanse("");
 
@@ -41,7 +44,7 @@ public class Request_Heard {
                 conn.setRequestProperty("sec-fetch-mode", "no-cors");
                 conn.setRequestProperty("sec-fetch-site", "cross-site");
             }else {
-                println.println("id格式异常");
+                println.println("id格式异常:" + id);
                 throw new Exception("id格式异常");
             }
         }

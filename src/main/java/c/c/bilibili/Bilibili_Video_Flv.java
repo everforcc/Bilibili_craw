@@ -254,10 +254,13 @@ public class Bilibili_Video_Flv {
                     println.println("具体视频url:" + flvUrl);
                     //5.下载  后缀名待完善 , 再加个aid 为好
                     // 目录结构 视频根目录加上 归属人
-                    String dir = Constant.dir_video + File.separator + map.get("owner") + File.separator + map.get("title") ;
+                    String title = Common_Method.checkFileName(map.get("title"));
+                    // 文件路径组成
+                    String dir = Constant.dir_video + File.separator + map.get("owner") + File.separator + title ;
+                    dir = dir.replace(".","");
                     // 命名规则
                     // String fileName = "aid" + aid + "_cid" + cid + "_" + map.get("title") + "_" + map.get("part") + ".flv";
-                    String fileName = map.get("title") + "_" + map.get("part") + Bilibili_Down.qualityStr + ".flv";
+                    String fileName = "AV"+ aid + map.get("title") + "_" + map.get("part") + Bilibili_Down.qualityStr + ".flv";
                     // 下载所需的信息
                     downMsg.add(new String[]{flvUrl, "av"+ aid, dir, fileName, Constant.GET});
                 }
