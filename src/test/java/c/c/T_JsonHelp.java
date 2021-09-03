@@ -1,4 +1,5 @@
-import c.c.utils.JsonHelp;
+package c.c;
+
 import org.junit.Test;
 
 /**
@@ -193,12 +194,12 @@ public class T_JsonHelp {
             "\t}\n" +
             "}";
 
-    @Test
+    /*@Test
     public void tjson(){
         //System.out.println(json);
         JsonHelp jsonHelp = new JsonHelp(json);
         String str = jsonHelp.obj("data").obj("page").str("count");
         System.out.println(str);
-    }
+    }*/
 
 }

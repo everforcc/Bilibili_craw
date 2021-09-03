@@ -7,6 +7,12 @@
     <groupId>c</groupId>
     <artifactId>c</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <!-- java版本 -->
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -28,6 +34,8 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
         </dependency>
+
+        <!-- 这两个json用一个就好了，当初没计划好 -->
         <!-- 解析json JSONObject -->
         <dependency>
             <groupId>net.sf.json-lib</groupId>
@@ -36,10 +44,17 @@
             <classifier>jdk15</classifier>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>SSM.com.fastjson</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.13</version>
+        </dependency>-->
+
+        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.78</version>
         </dependency>
 
         <dependency>
@@ -61,6 +76,32 @@
             <version>2.5</version>
         </dependency>
 
+        <!-- 非web项目需要导入以下三个包 -->
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.25</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.5</version>
+            <!--<scope>test</scope>-->
+        </dependency>
+
+
+
     </dependencies>
+
+
 
 </project>

@@ -5,12 +5,8 @@ import c.c.utils.*;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
-import java.io.*;
-import java.net.URL;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -96,6 +92,7 @@ public class Bilibili_ep_Flv {
             json = matcher.group(0);
             // 替换掉前缀和后缀，不用计算的方式，那样比较慢
             json = json.replaceAll(regexStart,"").replaceAll(regexEnd,"");
+            // 这里可以用加括号组1的方式，但是这个接口已经不能用了，所以不改了
             i++;
         }
         if(i==1) {

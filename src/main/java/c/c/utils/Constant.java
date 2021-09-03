@@ -11,7 +11,7 @@ public class Constant {
     /**
      * 设置为自己的文件夹
      */
-    public static final String rootFilePath = "E:\\test\\github\\" ;
+    public static final String rootFilePath = "C:\\environment\\test\\github\\" ;
     static String cookie="";
 
     public static String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/"+ ToolTime.nowTime("yyyyMMdd")+" Firefox/29.0";

@@ -1,3 +1,5 @@
+package c.c;
+
 import c.c.bilibili.Bilibili_Album;
 import org.junit.Test;
 

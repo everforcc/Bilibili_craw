@@ -1,3 +1,5 @@
+package c.c;
+
 import c.c.utils.IpProxyUtils;
 import org.junit.Test;
 
