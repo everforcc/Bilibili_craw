@@ -5,6 +5,7 @@
 .idea
 # Log file
 *.log
+log
 target
 
 # BlueJ files
