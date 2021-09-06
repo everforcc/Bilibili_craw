@@ -1,0 +1,6 @@
+
+# aid转cid
+GET https://api.bilibili.com/x/web-interface/view?aid=170001
+Accept: application/json
+
+###

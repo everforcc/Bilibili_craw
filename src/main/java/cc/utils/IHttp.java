@@ -27,4 +27,8 @@ public interface IHttp {
         return null;
     };
 
+    default void downFile(String urlPath, String type, Map<String,String> map,String... params){
+
+    }
+
 }

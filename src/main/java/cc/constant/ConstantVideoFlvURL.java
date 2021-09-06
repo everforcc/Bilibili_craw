@@ -12,6 +12,7 @@ public class ConstantVideoFlvURL {
      * 网页视频根目录
      */
     public static final String videoUrl = "";
+    public static final String charset = "utf-8";
 
     /**
      * av，bv互转地址
@@ -32,5 +33,9 @@ public class ConstantVideoFlvURL {
      * 参数 avid,cid,qn
      */
     public static final String aidCidToRealVideoUrl = "https://api.bilibili.com/x/player/playurl?fnval=2&otype=json&fnver=0&player=1&avid=%s&cid=%s&qn=%s";
+    public static final String aidCidToRealVideoUrlType = "GET";
+
+    public static final String downFileUrlType = "GET";
+    public static final String downFileType = ".flv";
 
 }

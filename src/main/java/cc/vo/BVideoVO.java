@@ -26,6 +26,7 @@ public class BVideoVO {
     @Data
     public static class CidVO{
         private String cid;
+        private String part;
 
         @Data
         public static class DimensionVO{
