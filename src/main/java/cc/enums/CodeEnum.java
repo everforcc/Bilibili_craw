@@ -9,8 +9,9 @@ public enum CodeEnum implements ECode{
 
     //public static String Manage = "1";
 
+    INPUT_WRONG("input","录入数据有误"),
     JSON_NULL("json","json返回数据为空"),
-    JSON_Wrong("json","json传递参数有误"),
+    JSON_Wrong("json","json传递参数有误,错误信息 >>> "),
     AID_NULL("aid","aid不能为空"),
     AID_Wrong("aid","aid返回数据为空"),
     BVID_NULL("bvid","bvid不能为空"),

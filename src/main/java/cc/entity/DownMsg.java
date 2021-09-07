@@ -17,9 +17,10 @@ public class DownMsg {
     // 下载文件需要的信息
     private String url;
     private String type;
-    private Map<String,String> header;
+    private Map<String,String> header;//也可设置子类只有url，path不同，不用存太多headers信息，父类存一个即可
     private String filePath;
     private String fileName;
+    private String charset;
 
     /**
      * 备用信息

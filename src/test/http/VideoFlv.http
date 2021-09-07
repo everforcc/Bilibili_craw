@@ -1,6 +1,18 @@
 
-# aid转cid
+### 地址 https://www.bilibili.com/video/
+GET https://www.bilibili.com/video/BV1CV411z7z8
+user-agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/"+ ToolTime.nowTime("yyyyMMdd")+" Firefox/29.0
+
+### aid转cid
 GET https://api.bilibili.com/x/web-interface/view?aid=170001
 Accept: application/json
+
+### 测试vp
+GET https://www.google.com.hk/
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36
+
+### 封面
+GET http://i2.hdslb.com/bfs/archive/1ada8c32a9d168e4b2ee3e010f24789ba3353785.jpg
 
 ###

@@ -98,7 +98,13 @@
             <!--<scope>test</scope>-->
         </dependency>
 
-
+        <!-- xsoup -->
+        <!-- https://mvnrepository.com/artifact/us.codecraft/xsoup -->
+        <dependency>
+            <groupId>us.codecraft</groupId>
+            <artifactId>xsoup</artifactId>
+            <version>0.3.2</version>
+        </dependency>
 
     </dependencies>
 

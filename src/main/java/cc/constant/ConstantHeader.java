@@ -39,4 +39,9 @@ public class ConstantHeader {
         mapFlv.put("cookie",COOKIE);
     }
 
+    public static Map<String,String> web = new HashMap<>();
+    static {
+        web.put("user-agent",USER_AGENT);
+    }
+
 }

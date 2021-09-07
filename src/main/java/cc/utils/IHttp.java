@@ -1,5 +1,7 @@
 package cc.utils;
 
+import cc.entity.DownMsg;
+
 import java.util.Map;
 
 /**
@@ -27,7 +29,7 @@ public interface IHttp {
         return null;
     };
 
-    default void downFile(String urlPath, String type, Map<String,String> map,String... params){
+    default void downFile(DownMsg downMsg){
 
     }
 

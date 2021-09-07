@@ -11,9 +11,10 @@ public class ConstantVideoFlvURL {
     /**
      * 网页视频根目录
      */
-    public static final String videoUrl = "";
+    public static final String videoUrl = "https://www.bilibili.com/video/av%s";
     public static final String charset = "utf-8";
-
+    public static final String type = "GET";
+    public static final String imgXsoupPath = "//meta[12]/@content";
     /**
      * av，bv互转地址
      */

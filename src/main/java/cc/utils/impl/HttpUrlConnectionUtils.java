@@ -1,5 +1,6 @@
 package cc.utils.impl;
 
+import cc.entity.DownMsg;
 import cc.utils.IFile;
 import cc.utils.IHttp;
 import org.apache.commons.io.FileUtils;
@@ -43,12 +44,12 @@ public class HttpUrlConnectionUtils implements IHttp {
     }
 
     @Override
-    public void downFile(String urlPath, String type, Map<String,String> map,String... params){
+    public void downFile(DownMsg downMsg){
         try {
-            HttpURLConnection conn = common(urlPath,type,map,params);
+            HttpURLConnection conn = common(downMsg.getUrl(),downMsg.getType(),downMsg.getHeader(),downMsg.getOtherMsg());
             conn.setDoOutput(true);
             conn.setDoInput(true);//读取数据
-            iFile.downFile(conn.getInputStream(),new File(params[1]+params[2]));
+            iFile.downFile(conn.getInputStream(),new File(downMsg.getFilePath() + downMsg.getFileName()));
         }catch (Exception e){
             e.printStackTrace();
         }

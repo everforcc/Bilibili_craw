@@ -15,7 +15,9 @@ public interface ECode {
     default boolean codeExceptionMsg(){
         throw new CodeException(msg());
     }
-
+    default void wrong(){
+        isEffect(true);
+    }
     /**
      * eg: 正确情况是200，就该写 !"200".equals(msg)
      * @param flag
@@ -28,7 +30,7 @@ public interface ECode {
 
     default void isEffect(boolean flag,String msg){
         if(flag) {
-            throw new CodeException(msg);
+            throw new CodeException(msg() + msg);
         }
     }
 
