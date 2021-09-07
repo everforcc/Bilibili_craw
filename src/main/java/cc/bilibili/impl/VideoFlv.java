@@ -109,7 +109,6 @@ public class VideoFlv implements IVideo {
             downMsg.setType(ConstantVideoFlvURL.downFileUrlType);
             downMsg.setHeader(ConstantHeader.mapFlv);
             downMsgList.add(downMsg);
-
         }
         return downMsgList;
     }

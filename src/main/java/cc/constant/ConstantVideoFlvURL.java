@@ -15,6 +15,7 @@ public class ConstantVideoFlvURL {
     public static final String charset = "utf-8";
     public static final String type = "GET";
     public static final String imgXsoupPath = "//meta[12]/@content";
+    public static final String pic = "pic";
     /**
      * av，bv互转地址
      */

@@ -16,6 +16,7 @@ public class Cover implements ICover {
 
     private static IHttp iHttp = new JsoupUtils();
     private static IHttp down = new HttpUrlConnectionUtils();
+
     private static DownMsg downMsg = new DownMsg();
     private static String htmlByAid(String aid){
         String url = String.format(ConstantVideoFlvURL.videoUrl,aid);
@@ -36,8 +37,9 @@ public class Cover implements ICover {
             String html = htmlByAid(aid);
             String imgUrl = getImgUrl(html);
             downMsg.setUrl(imgUrl);
-            downMsg.setFilePath("pic");
-            downMsg.setFileName("1.jpg");
+            downMsg.setFilePath(ConstantVideoFlvURL.pic);
+            // 后缀名可以截取得到
+            downMsg.setFileName(aid + ".jpg");
             downMsg.setHeader(ConstantHeader.web);
             downMsg.setType(ConstantVideoFlvURL.type);
             down(downMsg);
