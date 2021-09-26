@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * @author guokailong 2021-09-06
+ * @author everforcc 2021-09-06
  */
 public class ApacheFileUtils implements IFile {
 

@@ -8,7 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * @author guokailong 2021-09-06
+ * @author everforcc 2021-09-06
  */
 public class CheckInput {
 

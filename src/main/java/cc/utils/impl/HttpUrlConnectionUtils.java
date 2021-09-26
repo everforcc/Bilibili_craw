@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.Map;
 
 /**
- * @author 郭凯龙
+ * @author everforcc
  * @data 2021/9/3 0003
  */
 public class HttpUrlConnectionUtils implements IHttp {

@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document;
 import us.codecraft.xsoup.Xsoup;
 
 /**
- * @author guokailong 2021-09-07
+ * @author everforcc 2021-09-07
  */
 public class XsoupUtils {
 

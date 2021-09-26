@@ -3,7 +3,7 @@ package cc.exception;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @author 郭凯龙
+ * @author everforcc
  * @data 2021/9/3 0003
  */
 public interface ECode {

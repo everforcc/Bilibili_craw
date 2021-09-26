@@ -3,7 +3,7 @@ package cc.enums;
 import cc.exception.ECode;
 
 /**
- * @author guokailong 2021-09-01
+ * @author everforcc 2021-09-01
  */
 public enum CodeEnum implements ECode{
 

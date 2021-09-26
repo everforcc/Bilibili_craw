@@ -10,7 +10,7 @@ import cc.utils.impl.HttpUrlConnectionUtils;
 import cc.utils.impl.JsoupUtils;
 
 /**
- * @author guokailong 2021-09-07
+ * @author everforcc 2021-09-07
  */
 public class Cover implements ICover {
 
