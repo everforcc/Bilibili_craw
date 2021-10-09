@@ -28,7 +28,7 @@ public class UPAlbum implements IAlbum {
     private static void countByupid(String upid){
         //String url = String.format(ConstantAlbum.doc_list,upid,"5");
         String url = String.format(ConstantAlbum.upload_count,upid);
-        String json = iHttp.get(url,ConstantVideoFlvURL.type, ConstantHeader.webJSON);
+        String json = iHttp.get(url,ConstantVideoFlvURL.GET, ConstantHeader.webJSON);
         log.info(json);
         JSONObject jsonObject = checkJson(json);
 
@@ -40,7 +40,7 @@ public class UPAlbum implements IAlbum {
 
     private static void allMsg(){
         String url = String.format(ConstantAlbum.doc_list,bAlbumVO.getUpid(),bAlbumVO.getCount().getAll_count());
-        String json = iHttp.get(url,ConstantVideoFlvURL.type, ConstantHeader.webJSONCookie);
+        String json = iHttp.get(url,ConstantVideoFlvURL.GET, ConstantHeader.webJSONCookie);
         log.info(json);
         JSONObject jsonObject = checkJson(json);
 
@@ -61,7 +61,7 @@ public class UPAlbum implements IAlbum {
                 // 后缀名可以截取得到
                 downMsg.setFileName(doc.getTitle() + i++ + FileUtils.subFileSuffix(pic.getImg_src()));
                 downMsg.setHeader(ConstantHeader.web);
-                downMsg.setType(ConstantVideoFlvURL.type);
+                downMsg.setType(ConstantVideoFlvURL.GET);
 
                 downFile(downMsg);
             }

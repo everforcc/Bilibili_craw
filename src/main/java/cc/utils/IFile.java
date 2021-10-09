@@ -16,4 +16,8 @@ public interface IFile {
 
     };
 
+    default String readStrToFile(String str, File file){
+        return "";
+    };
+
 }

@@ -29,4 +29,13 @@ public class ApacheFileUtils implements IFile {
         }
     };
 
+    public String readStrToFile(String str, File file){
+        try {
+            return FileUtils.readFileToString(file,Constant.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    };
+
 }

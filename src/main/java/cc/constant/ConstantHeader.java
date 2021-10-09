@@ -69,4 +69,15 @@ public class ConstantHeader {
          */
     }
 
+    // "referer", "https://www.bilibili.com/bangumi/play/" + id
+    public static Map<String,String> epFlv = new HashMap<>();
+    static {
+        epFlv.put("Accept", " */*");
+        epFlv.put("Accept-Language", " zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7");
+        epFlv.put("referer", "https://www.bilibili.com/bangumi/play/ss26175");// 需要添加
+        epFlv.put("sec-fetch-mode", "no-cors");
+        epFlv.put("sec-fetch-site", "cross-site");
+        epFlv.put("x-requested-with", "ShockwaveFlash/29.0.0.171");
+    }
+
 }

@@ -22,7 +22,7 @@ public class AVCover implements ICover {
     private static DownMsg downMsg = new DownMsg();
     private static String htmlByAid(String aid){
         String url = String.format(ConstantVideoFlvURL.videoUrl,aid);
-        String html = iHttp.get(url,ConstantVideoFlvURL.type, ConstantHeader.web);
+        String html = iHttp.get(url,ConstantVideoFlvURL.GET, ConstantHeader.web);
         return html;
     }
 
@@ -45,7 +45,7 @@ public class AVCover implements ICover {
             // 后缀名可以截取得到
             downMsg.setFileName(aid + ".jpg");
             downMsg.setHeader(ConstantHeader.web);
-            downMsg.setType(ConstantVideoFlvURL.type);
+            downMsg.setType(ConstantVideoFlvURL.GET);
             downFile(downMsg);
         }catch (Exception e){
             e.printStackTrace();

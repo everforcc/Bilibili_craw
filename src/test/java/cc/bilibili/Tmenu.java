@@ -35,9 +35,15 @@ public class Tmenu {
     }
 
     @Test
-    public void UPAlbum(){
-        // upid
+    public void fUPAlbum(){
+        // upid album
         UPAlbum.flow("6591412");
+    }
+
+    @Test
+    public void fep(){
+        // upid album
+
     }
 
 }

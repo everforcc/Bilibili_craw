@@ -1,10 +1,8 @@
 package cc.bilibili.impl;
 
+import c.c.utils.Method_down;
 import cc.bilibili.IVideo;
-import cc.constant.ConstantDir;
-import cc.constant.ConstantHeader;
-import cc.constant.ConstantQuality;
-import cc.constant.ConstantVideoFlvURL;
+import cc.constant.*;
 import cc.entity.DownMsg;
 import cc.enums.CodeEnum;
 import cc.utils.IHttp;
@@ -23,7 +21,8 @@ import java.util.List;
  */
 @Slf4j
 public class AVFlv implements IVideo {
-
+    private static DownMsg downMsg = new DownMsg();
+    private static BVideoVO bVideoVO;
     private static final IHttp iHttp = new HttpUrlConnectionUtils();
 
     // 下载短视频，flv格式，
@@ -41,13 +40,15 @@ public class AVFlv implements IVideo {
         // 1. 根据aid获取cid json
         String cidJson = getCidJsonByAid(aid);
         // 2. cid转换VO
-        BVideoVO bVideoVO = getCidVO(cidJson);
+        bVideoVO = getCidVO(cidJson);
         // 3. 文件信息
         // 3.1 获取文件地址
         // 3.2 组织问价信息
         List<DownMsg> downMsgList = getFileMsg(bVideoVO,constantQuality);
         // 4. 下载文件,当前为单个下载，所有信息都有了，可以调整
-        down(downMsgList);
+        downFile(downMsgList);
+
+        saveJson();
     }
 
     /**
@@ -93,7 +94,7 @@ public class AVFlv implements IVideo {
         String aid = bVideoVO.getAid();
         List<BVideoVO.CidVO> cidVOList =  bVideoVO.getPages();
         for(BVideoVO.CidVO cidVO:cidVOList) {
-            DownMsg downMsg = new DownMsg();
+            downMsg = new DownMsg();
             // 校验
             // 组装链接
             String urlPath = String.format(ConstantVideoFlvURL.aidCidToRealVideoUrl, aid, cidVO.getCid(), constantQuality);
@@ -158,12 +159,28 @@ public class AVFlv implements IVideo {
         return jsonObject;
     }
 
-    static void down(List<DownMsg> downMsgList){
+    static void downFile(List<DownMsg> downMsgList){
         // 地址，文件路径，文件名。type，headers
         /*for(DownMsg downMsg:downMsgList) {
             iHttp.downFile(downMsg);
         }*/
-        downMsgList.forEach(iHttp::downFile);
+        //downMsgList.forEach(iHttp::downFile);
+        for(DownMsg downMsg:downMsgList){
+            try {
+                Method_down.downFlv(downMsg.getUrl(), "av36953163", "craw\\电影\\正片\\正片0.flv", downMsg.getFileName(), ConstantVideoFlvURL.GET);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void saveJson(){
+        downMsg.setContent(bVideoVO.toString());
+        //downMsg.setFilePath(bVideoVO.getOwner().getMid(),bVideoVO.getAid(),ConstantDir.album);
+        videoPath(bVideoVO,downMsg,bVideoVO.getAid());
+        // 后缀名可以截取得到
+        downMsg.setFileName(ConstantDir.album + Constant.JSON);
+        iHttp.saveFile(downMsg);
     }
 
     public static void main(String[] args) {

@@ -13,7 +13,7 @@ public class ConstantVideoFlvURL {
      */
     public static final String videoUrl = "https://www.bilibili.com/video/av%s";
     public static final String charset = "utf-8";
-    public static final String type = "GET";
+    public static final String GET = "GET";
     public static final String POST = "POST";
 
     /**

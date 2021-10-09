@@ -63,6 +63,15 @@ public class HttpUrlConnectionUtils implements IHttp {
         }
     }
 
+    public String readFile(DownMsg downMsg){
+        try {
+            return iFile.readStrToFile(downMsg.getContent(),new File(downMsg.getFilePath() + downMsg.getFileName()));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     private HttpURLConnection common(String urlPath, String type, Map<String, String> map, String... params) throws IOException {
         URL url = new URL(urlPath);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

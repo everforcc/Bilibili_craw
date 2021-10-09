@@ -1,0 +1,351 @@
+{
+  "loginInfo": {},
+  "isLogin": false,
+  "couponSelected": null,
+  "payGlobal": null,
+  "loaded": true,
+  "ver": {},
+  "ssr": {},
+  "h1Title": "美丽心灵",
+  "mediaInfo": {
+    "activity": {
+      "id": 0,
+      "title": "",
+      "pendantOpsImg": "",
+      "pendantOpsLink": ""
+    },
+    "alias": "",
+    "areas": [{
+      "id": 3,
+      "name": "美国"
+    }],
+    "bkg_cover": "",
+    "cover": "\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Fbangumi\u002F768c214644d9d76b39f7c8724ff0850a05de730f.jpg",
+    "episodes": [{
+      "aid": 36953163,
+      "badge": "会员",
+      "badge_info": {
+        "bg_color": "#FB7299",
+        "bg_color_night": "#BB5B76",
+        "text": "会员"
+      },
+      "badge_type": 0,
+      "bvid": "BV1Mt411R7LE",
+      "cid": 64923354,
+      "cover": "http:\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Farchive\u002F5fe1cdcafc4ea388da4a4a31b3612af4222dbb22.jpg",
+      "dimension": {
+        "height": 0,
+        "rotate": 0,
+        "width": 0
+      },
+      "duration": 8123070,
+      "from": "bangumi",
+      "id": 257469,
+      "link": "https:\u002F\u002Fwww.bilibili.com\u002Fbangumi\u002Fplay\u002Fep257469?theme=movie",
+      "long_title": "",
+      "pub_time": 1543572000,
+      "pv": 0,
+      "release_date": "",
+      "rights": {
+        "allow_demand": 0,
+        "allow_dm": 1,
+        "allow_download": 0,
+        "area_limit": 0
+      },
+      "share_copy": "《美丽心灵》你就是我的真理",
+      "share_url": "https:\u002F\u002Fwww.bilibili.com\u002Fbangumi\u002Fplay\u002Fep257469",
+      "short_link": "https:\u002F\u002Fb23.tv\u002Fep257469",
+      "status": 13,
+      "subtitle": "已观看278.8万次",
+      "title": "正片",
+      "vid": "",
+      "hasSkip": false
+    }],
+    "evaluate": "本片是关于20世纪伟大数学家小约翰•福布斯-纳什的人物传记片。小约翰•福布斯-纳什（拉塞尔•克劳）在念研究生时，便发表了著名的博弈理论，该理论虽只有短短26页，却在经济、军事等领域产生了深远的影响。但就在小约翰•福布斯-纳什蜚声国际时，他的出众直觉因为精神分裂症受到困扰，然而这并没阻止他向学术上的最高层进军的步伐，在深爱他的妻子艾丽西亚（珍妮弗•康纳利）的鼓励和帮助下，他走得虽然艰缓，却始终没有停步......",
+    "freya": {
+      "icon_show": 1
+    },
+    "jp_title": "",
+    "link": "http:\u002F\u002Fwww.bilibili.com\u002Fbangumi\u002Fmedia\u002Fmd4313282\u002F",
+    "media_id": 4313282,
+    "mode": 1,
+    "new_ep": {
+      "desc": "2001年12月13日上映",
+      "id": 257469,
+      "is_new": 0,
+      "title": "正片"
+    },
+    "payment": {
+      "discount": 100,
+      "pay_type": {
+        "allow_discount": 0,
+        "allow_pack": 0,
+        "allow_ticket": 0,
+        "allow_time_limit": 0,
+        "allow_vip_discount": 0,
+        "forbid_bb": 0
+      },
+      "price": "0.0",
+      "promotion": "",
+      "tip": "大会员专享观看特权哦~",
+      "view_start_time": 0,
+      "vip_discount": 100,
+      "vip_first_promotion": "",
+      "vip_promotion": "开通大会员抢先看"
+    },
+    "positive": {
+      "id": 35573,
+      "title": "正片"
+    },
+    "publish": {
+      "is_finish": 1,
+      "is_started": 1,
+      "pub_time": "2018-11-30 18:00:00",
+      "pub_time_show": "2018年11月30日18:00",
+      "unknow_pub_date": 0,
+      "weekday": 0
+    },
+    "rating": {
+      "score": 9.8,
+      "count": 3549
+    },
+    "record": "文像进字(2005)1515号",
+    "rights": {
+      "allowBp": false,
+      "allowBpRank": false,
+      "allowReview": true,
+      "isPreview": true,
+      "appOnly": false,
+      "limitNotFound": false,
+      "isCoverShow": false,
+      "canWatch": true,
+      "copyright": "bilibili"
+    },
+    "season_id": 26175,
+    "season_title": "美丽心灵",
+    "seasons": [],
+    "series": "",
+    "share_copy": "《美丽心灵》你就是我的真理",
+    "share_sub_title": "你就是我的真理",
+    "share_url": "https:\u002F\u002Fwww.bilibili.com\u002Fbangumi\u002Fplay\u002Fss26175",
+    "show": {
+      "wide_screen": 0
+    },
+    "square_cover": "",
+    "stat": {
+      "coins": 18052,
+      "danmakus": 33153,
+      "favorite": 0,
+      "favorites": 323142,
+      "likes": 0,
+      "reply": 2526,
+      "share": 6603,
+      "views": 2788422
+    },
+    "status": 13,
+    "subtitle": "已观看278.8万次",
+    "title": "美丽心灵",
+    "total": 0,
+    "type": 2,
+    "up_info": {
+      "avatar": "http:\u002F\u002Fi2.hdslb.com\u002Fbfs\u002Fface\u002F90163fee73aef056cc4521eaab4a8408711d56f6.jpg",
+      "follower": 5901199,
+      "is_follow": 0,
+      "mid": 15773384,
+      "pendant": {
+        "image": "http:\u002F\u002Fi2.hdslb.com\u002Fbfs\u002Fgarb\u002Fitem\u002Ff741cdb01d763e42fbd0a38a071612b446bbf94d.png",
+        "name": "白蛇2：青蛇劫起",
+        "pid": 6507
+      },
+      "theme_type": 0,
+      "uname": "哔哩哔哩电影",
+      "verify_type": 3,
+      "vip_status": 1,
+      "vip_type": 2
+    },
+    "id": 4313282,
+    "ssId": 26175,
+    "jpTitle": "",
+    "ssType": 2,
+    "ssTypeFormat": {
+      "name": "电影",
+      "homeLink": "\u002F\u002Fwww.bilibili.com\u002Fmovie\u002F"
+    },
+    "multiMode": false,
+    "forceWide": false,
+    "specialCover": "",
+    "squareCover": "",
+    "playerRecord": "文像进字(2005)1515号",
+    "pub": {
+      "time": "2018-11-30 18:00:00",
+      "timeShow": "2018年11月30日18:00",
+      "isStart": true,
+      "isFinish": true,
+      "unknow": false
+    },
+    "upInfo": {
+      "mid": 15773384,
+      "avatar": "\u002F\u002Fi2.hdslb.com\u002Fbfs\u002Fface\u002F90163fee73aef056cc4521eaab4a8408711d56f6.jpg",
+      "name": "哔哩哔哩电影",
+      "isAnnualVip": true,
+      "pendantId": -1,
+      "pendantName": "",
+      "pendantImage": ""
+    },
+    "newestEp": {
+      "id": 257469,
+      "desc": "2001年12月13日上映",
+      "isNew": false
+    },
+    "payMent": {
+      "price": "0.0",
+      "tip": "大会员专享观看特权哦~",
+      "promotion": "",
+      "vipProm": "开通大会员抢先看",
+      "vipFirstProm": "",
+      "discount": 1,
+      "vipDiscount": 1,
+      "sixType": {
+        "allowTicket": false,
+        "allowTimeLimit": false,
+        "allowDiscount": false,
+        "allowVipDiscount": false
+      }
+    },
+    "payPack": {
+      "title": "",
+      "appNoPayText": "",
+      "appPayText": "",
+      "url": ""
+    },
+    "count": {
+      "coins": 0,
+      "danmus": 0,
+      "follows": 0,
+      "views": 0,
+      "likes": 0
+    },
+    "pgcType": "cinema",
+    "epSpMode": true,
+    "newEpSpMode": true,
+    "mainSecTitle": "选集",
+    "premiereInfo": {},
+    "sectionBottomDesc": ""
+  },
+  "epList": [{
+    "loaded": true,
+    "id": 257469,
+    "badge": "会员",
+    "badgeType": 0,
+    "badgeColor": "#FB7299",
+    "epStatus": 13,
+    "aid": 36953163,
+    "bvid": "BV1Mt411R7LE",
+    "cid": 64923354,
+    "from": "bangumi",
+    "cover": "\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Farchive\u002F5fe1cdcafc4ea388da4a4a31b3612af4222dbb22.jpg",
+    "title": "正片",
+    "titleFormat": "正片",
+    "vid": "",
+    "longTitle": "",
+    "hasNext": false,
+    "i": 0,
+    "sectionType": 0,
+    "releaseDate": "",
+    "skip": {},
+    "hasSkip": false,
+    "rights": {
+      "allow_demand": 0,
+      "allow_dm": 1,
+      "allow_download": 0,
+      "area_limit": 0
+    },
+    "stat": {}
+  }],
+  "epInfo": {
+    "loaded": true,
+    "id": 257469,
+    "badge": "会员",
+    "badgeType": 0,
+    "badgeColor": "#FB7299",
+    "epStatus": 13,
+    "aid": 36953163,
+    "bvid": "BV1Mt411R7LE",
+    "cid": 64923354,
+    "from": "bangumi",
+    "cover": "\u002F\u002Fi0.hdslb.com\u002Fbfs\u002Farchive\u002F5fe1cdcafc4ea388da4a4a31b3612af4222dbb22.jpg",
+    "title": "正片",
+    "titleFormat": "正片",
+    "vid": "",
+    "longTitle": "",
+    "hasNext": false,
+    "i": 0,
+    "sectionType": 0,
+    "releaseDate": "",
+    "skip": {},
+    "hasSkip": false,
+    "rights": {
+      "allow_demand": 0,
+      "allow_dm": 1,
+      "allow_download": 0,
+      "area_limit": 0
+    },
+    "stat": {}
+  },
+  "sections": [],
+  "orderSections": [],
+  "ssList": [],
+  "userState": {
+    "loaded": false,
+    "vipInfo": {},
+    "history": {}
+  },
+  "ssPayMent": {},
+  "epPayMent": null,
+  "player": {
+    "loaded": false,
+    "miniOn": false,
+    "limitType": 0
+  },
+  "sponsor": {
+    "allReady": false,
+    "allState": 0,
+    "allRank": [],
+    "allMine": null,
+    "allCount": 0,
+    "weekReady": false,
+    "weekState": 0,
+    "weekRank": [],
+    "weekMine": null,
+    "weekCount": 0
+  },
+  "ssRecom": {
+    "status": "loading",
+    "data": []
+  },
+  "showBv": false,
+  "interact": {
+    "shown": false,
+    "btnText": "",
+    "callback": null
+  },
+  "nextEp": null,
+  "playerEpList": {
+    "code": 0,
+    "message": "",
+    "result": {
+      "main_section": {
+        "episodes": []
+      }
+    }
+  },
+  "isOriginal": false,
+  "premiereCountDown": "",
+  "premiereStatus": {},
+  "premiereEp": {},
+  "likeMap": {},
+  "uperMap": {},
+  "hasPlayableEp": true,
+  "webPlayer": {},
+  "insertScripts": ["\u002F\u002Fs1.hdslb.com\u002Fbfs\u002Fstatic\u002Fpgc\u002Fnano\u002F1.video-nano.40ae768379769ba0c1e7c4afa7d59abe99adbf4f.js", "\u002F\u002Fs1.hdslb.com\u002Fbfs\u002Fstatic\u002Fpgc\u002Fnano\u002Fvideo-nano.40ae768379769ba0c1e7c4afa7d59abe99adbf4f.js"]
+}

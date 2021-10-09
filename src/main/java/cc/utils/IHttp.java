@@ -37,4 +37,8 @@ public interface IHttp {
 
     }
 
+    default String readFile(DownMsg downMsg){
+        return "";
+    }
+
 }

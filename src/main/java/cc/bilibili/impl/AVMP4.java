@@ -34,7 +34,7 @@ public class AVMP4 implements IVideo {
         // 3.2 组织问价信息
         List<DownMsg> downMsgList = getFileMsg(bVideoVO);
         // 4. 下载文件,当前为单个下载，所有信息都有了，可以调整
-        down(downMsgList);
+        downFile(downMsgList);
     }
 
     private static List<DownMsg> getFileMsg(BVideoVO bVideoVO){

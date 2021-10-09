@@ -1,0 +1,81 @@
+{
+  "code": 0,
+  "message": "success",
+  "result": {
+    "accept_format": "hdflv2,flv,flv720,flv480,mp4",
+    "code": 0,
+    "seek_param": "start",
+    "is_preview": 0,
+    "fnval": 0,
+    "video_project": true,
+    "fnver": 0,
+    "type": "FLV",
+    "bp": 0,
+    "result": "suee",
+    "seek_type": "offset",
+    "vip_type": 2,
+    "from": "local",
+    "video_codecid": 7,
+    "durl": [{
+      "size": 4209487073,
+      "ahead": "",
+      "length": 8123112,
+      "vhead": "",
+      "backup_url": ["https://upos-sz-mirrorkodoo1.bilivideo.com/upgcxcode/54/33/64923354/64923354_da8-1-112.flv?e=ig8euxZM2rNcNbU1nwdVhwdl7WR3hwdVhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&uipk=5&nbs=1&deadline=1633797413&gen=playurlv2&os=kodoo1bv&oi=2362328470&trid=75ce86ceb67d474cb6688a760f76032ap&platform=pc&upsig=8075f2a43fcdb2268b197f16c5ac8f98&uparams=e,uipk,nbs,deadline,gen,os,oi,trid,platform&mid=58572396&bvc=vod&nettype=0&orderid=1,3&agrr=0&logo=40000000", "https://upos-sz-mirrorkodoo1.bilivideo.com/upgcxcode/54/33/64923354/64923354_da8-1-112.flv?e=ig8euxZM2rNcNbU1nwdVhwdl7WR3hwdVhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&uipk=5&nbs=1&deadline=1633797413&gen=playurlv2&os=kodoo1bv&oi=2362328470&trid=75ce86ceb67d474cb6688a760f76032ap&platform=pc&upsig=8075f2a43fcdb2268b197f16c5ac8f98&uparams=e,uipk,nbs,deadline,gen,os,oi,trid,platform&mid=58572396&bvc=vod&nettype=0&orderid=2,3&agrr=0&logo=40000000"],
+      "url": "https://upos-sz-mirrorkodoo1.bilivideo.com/upgcxcode/54/33/64923354/64923354_da8-1-112.flv?e=ig8euxZM2rNcNbU1nwdVhwdl7WR3hwdVhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&uipk=5&nbs=1&deadline=1633797413&gen=playurlv2&os=kodoo1bv&oi=2362328470&trid=75ce86ceb67d474cb6688a760f76032ap&platform=pc&upsig=8075f2a43fcdb2268b197f16c5ac8f98&uparams=e,uipk,nbs,deadline,gen,os,oi,trid,platform&mid=58572396&bvc=vod&nettype=0&orderid=0,3&agrr=0&logo=80000000",
+      "order": 1,
+      "md5": ""
+    }],
+    "no_rexcode": 0,
+    "format": "hdflv2",
+    "support_formats": [{
+      "display_desc": "1080P",
+      "superscript": "高码率",
+      "need_login": true,
+      "format": "hdflv2",
+      "description": "高清 1080P+",
+      "need_vip": true,
+      "quality": 112,
+      "new_description": "1080P 高码率"
+    }, {
+      "display_desc": "1080P",
+      "superscript": "",
+      "need_login": true,
+      "format": "flv",
+      "description": "高清 1080P",
+      "quality": 80,
+      "new_description": "1080P 高清"
+    }, {
+      "display_desc": "720P",
+      "superscript": "",
+      "need_login": true,
+      "format": "flv720",
+      "description": "高清 720P",
+      "quality": 64,
+      "new_description": "720P 高清"
+    }, {
+      "display_desc": "480P",
+      "superscript": "",
+      "format": "flv480",
+      "description": "清晰 480P",
+      "quality": 32,
+      "new_description": "480P 清晰"
+    }, {
+      "display_desc": "360P",
+      "superscript": "",
+      "format": "mp4",
+      "description": "流畅 360P",
+      "quality": 16,
+      "new_description": "360P 流畅"
+    }],
+    "message": "",
+    "accept_quality": [112, 80, 64, 32, 16],
+    "quality": 112,
+    "timelength": 8123112,
+    "has_paid": true,
+    "vip_status": 1,
+    "clip_info_list": [],
+    "accept_description": ["高清 1080P+", "高清 1080P", "高清 720P", "清晰 480P", "流畅 360P"],
+    "status": 13
+  }
+}
