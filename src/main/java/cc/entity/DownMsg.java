@@ -1,6 +1,6 @@
 package cc.entity;
 
-import cc.constant.Constant;
+import cc.constant.ConstantDir;
 import cc.utils.FileUtils;
 import lombok.Data;
 
@@ -33,7 +33,7 @@ public class DownMsg {
 
     // 文件目录比如 [归属人，aid，某些] 分为多级目录，每层级分别校验
     public void setFilePath(String... dir) {
-        String filePath = Constant.fileRootPath;
+        String filePath = ConstantDir.fileRootPath;
         for(String s:dir){
             filePath += FileUtils.checkFileNameAndPath(s) + File.separator;
         }

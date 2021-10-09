@@ -1,6 +1,7 @@
 package cc.bilibili.impl;
 
 import cc.bilibili.IVideo;
+import cc.constant.ConstantDir;
 import cc.constant.ConstantHeader;
 import cc.constant.ConstantVideoFlvURL;
 import cc.entity.DownMsg;
@@ -53,7 +54,7 @@ public class VideoFlv implements IVideo {
      * @param aid
      * @return
      */
-    private static String getCidJsonByAid(String aid){
+    static String getCidJsonByAid(String aid){
         // 不能为空
         CodeEnum.AID_NULL.isEffect("".equals(aid));
         // 根据id请求必须有返回数据
@@ -67,7 +68,7 @@ public class VideoFlv implements IVideo {
      * @param json
      * @return
      */
-    private static BVideoVO getCidVO(String json){
+    static BVideoVO getCidVO(String json){
         // 校验
         JSONObject jsonObject = checkJson(json);
         // 校验过后取出需要的数据
@@ -103,7 +104,8 @@ public class VideoFlv implements IVideo {
 
             // 组织文件信息
             downMsg.setUrl(realUrl);
-            downMsg.setFilePath("短视频",bVideoVO.getOwner().getName());
+            videoPath(bVideoVO,downMsg,aid);
+            // downMsg.setFilePath(ConstantDir.av,up,aid,ConstantDir.video);
             // TODO 可以手动格式化个格式 [AV][PART].flv
             downMsg.setFileName(bVideoVO.getAid() + cidVO.getPart() + ConstantVideoFlvURL.downFileType);
             downMsg.setType(ConstantVideoFlvURL.downFileUrlType);
@@ -111,6 +113,21 @@ public class VideoFlv implements IVideo {
             downMsgList.add(downMsg);
         }
         return downMsgList;
+    }
+
+    static void videoPath(BVideoVO bVideoVO,DownMsg downMsg,String aid){
+        String up =String.format(ConstantDir.up,bVideoVO.getOwner().getMid(),bVideoVO.getOwner().getName());
+        downMsg.setFilePath(ConstantDir.av,up,aid);
+    }
+
+    static void videoPath(DownMsg downMsg,String aid){
+        // 1. 根据aid获取cid json
+        // String cidJson = getCidJsonByAid(aid);
+        // 2. cid转换VO
+        BVideoVO bVideoVO = getCidVO(getCidJsonByAid(aid));
+
+        String up =String.format(ConstantDir.up,bVideoVO.getOwner().getMid(),bVideoVO.getOwner().getName());
+        downMsg.setFilePath(ConstantDir.av,up,aid);
     }
 
     /**
@@ -151,7 +168,7 @@ public class VideoFlv implements IVideo {
 
     public static void main(String[] args) {
         //flow(null); 170001
-        flow("170001");
+        flow("5912713");
     }
 
 }

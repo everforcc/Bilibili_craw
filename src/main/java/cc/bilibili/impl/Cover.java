@@ -1,6 +1,7 @@
 package cc.bilibili.impl;
 
 import cc.bilibili.ICover;
+import cc.constant.ConstantDir;
 import cc.constant.ConstantHeader;
 import cc.constant.ConstantVideoFlvURL;
 import cc.entity.DownMsg;
@@ -8,6 +9,9 @@ import cc.utils.IHttp;
 import cc.utils.XsoupUtils;
 import cc.utils.impl.HttpUrlConnectionUtils;
 import cc.utils.impl.JsoupUtils;
+import cc.vo.BVideoVO;
+
+import static cc.bilibili.impl.VideoFlv.*;
 
 /**
  * @author everforcc 2021-09-07
@@ -37,7 +41,9 @@ public class Cover implements ICover {
             String html = htmlByAid(aid);
             String imgUrl = getImgUrl(html);
             downMsg.setUrl(imgUrl);
-            downMsg.setFilePath(ConstantVideoFlvURL.pic);
+
+            videoPath(downMsg,aid);
+            // downMsg.setFilePath(ConstantDir.av,up,aid,ConstantDir.cover);
             // 后缀名可以截取得到
             downMsg.setFileName(aid + ".jpg");
             downMsg.setHeader(ConstantHeader.web);
@@ -49,7 +55,7 @@ public class Cover implements ICover {
     }
 
     public static void main(String[] args) {
-        flow("170001");
+        flow("5912713");
     }
 
 }
