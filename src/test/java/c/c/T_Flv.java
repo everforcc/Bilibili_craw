@@ -35,6 +35,9 @@ public class T_Flv {
         //Bilibili_Down.downVideo("ss26175", Quality.quality_1080_60);
 
         Bilibili_Down.downVideo("ss26175", Quality.quality_1080_60);//BV1Ny4y167Uj
+        // ep测试 ep324142 ok 20211009
+        // ss测试 ss26175
+        // 20211009，再测试看看，之前是不行的只能下载几分钟
     }
 
 
