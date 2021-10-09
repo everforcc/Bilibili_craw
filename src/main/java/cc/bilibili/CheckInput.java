@@ -24,7 +24,7 @@ public class CheckInput {
      */
 
     // av就返回av，bv就算出av，链接就取出av或bv算出av
-    public static String check(String input){
+    public static String checkAV(String input){
         if(StringUtils.isBlank(input)){
             return null;
         }
@@ -32,9 +32,9 @@ public class CheckInput {
         if(input.startsWith("https:")){
             String ab = forHttps(input);
             System.out.println("ab >>> " + ab);
-            return check(ab);
+            return checkAV(ab);
         }else if(input.startsWith("av")||input.startsWith("AV")){
-            return check(input.substring(2,input.length()));
+            return checkAV(input.substring(2,input.length()));
         }else if(input.matches("(BV1.{2}4.{1}1.{1}7.{2})")){
             return String.valueOf(Bilibili_base58.dec(input));
         }else if(input.matches("\\d{1,}")){
@@ -43,6 +43,16 @@ public class CheckInput {
         // 录入有误，放到枚举里面
         CodeEnum.INPUT_WRONG.wrong();
         return null;
+    }
+
+    // 检查ep的录入
+    public static void checkEP(){
+
+    }
+
+    // 检查ss的录入
+    public static void checkSS(){
+
     }
 
     private static String forHttps(String url){
@@ -64,7 +74,7 @@ public class CheckInput {
         String aid = "AV975288337";
         String id = "975288337";
         String bid = "BV1k44y187oM";
-        System.out.println("forHttps(url) >>> " + check(url));
+        System.out.println("forHttps(url) >>> " + checkAV(url));
     }
 
 }

@@ -20,7 +20,9 @@ public class DownMsg {
     private Map<String,String> header;//也可设置子类只有url，path不同，不用存太多headers信息，父类存一个即可
     private String filePath;
     private String fileName;
+    private String filetype;
     private String charset;
+    private String content;
 
     /**
      * 备用信息
@@ -31,6 +33,11 @@ public class DownMsg {
 //        return filePath;
 //    }
 
+    /**
+     * upid/{av,album}/号/内容{图片，视频}，json
+     * ep
+     * ss
+     */
     // 文件目录比如 [归属人，aid，某些] 分为多级目录，每层级分别校验
     public void setFilePath(String... dir) {
         String filePath = ConstantDir.fileRootPath;

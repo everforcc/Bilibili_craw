@@ -14,6 +14,7 @@ public class ConstantVideoFlvURL {
     public static final String videoUrl = "https://www.bilibili.com/video/av%s";
     public static final String charset = "utf-8";
     public static final String type = "GET";
+    public static final String POST = "POST";
 
     /**
      * 封面地址
@@ -42,7 +43,8 @@ public class ConstantVideoFlvURL {
     public static final String aidCidToRealVideoUrlType = "GET";
 
     public static final String downFileUrlType = "GET";
-    public static final String downFileType = ".flv";
+    public static final String downFileTypeFlv = ".flv";
+    public static final String downFileTypeMP4 = ".mp4";
 
     //
     /**

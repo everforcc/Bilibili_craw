@@ -2,7 +2,7 @@ package c.c;
 
 import c.c.bilibili.Bilibili_Cover;
 import org.junit.Test;
-public class T_Cover {
+public class T_AV_Cover {
     @Test
     public void a1(){
         try {

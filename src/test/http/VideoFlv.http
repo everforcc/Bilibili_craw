@@ -16,5 +16,7 @@ user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 GET http://i2.hdslb.com/bfs/archive/1ada8c32a9d168e4b2ee3e010f24789ba3353785.jpg
 
 ### https://www.bilibili.com/bangumi/play/ep324142?theme=movie
-GET https://www.bilibili.com/bangumi/play/ep324142?theme=movie
+GET https://api.vc.bilibili.com/link_draw/v1/doc/doc_list?uid=6591412&page_num=0&biz=all&page_size=9
 user-agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/"+ ToolTime.nowTime("yyyyMMdd")+" Firefox/29.0
+accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+cookie: l=v; LIVE_BUVID=AUTO8516337468985782; PVID=1; _uuid=77A98D54-1BBE-9155-C059-5892BF94FD4597774infoc; buvid3=20920408-59A5-488E-9D54-3B53E6003C62167644infoc; CURRENT_BLACKGAP=1; CURRENT_FNVAL=80; CURRENT_QUALITY=0; sid=c7r6xx4g; rpdid=|(kJYkJk)R~|0J'uYJJ~luJ|k; fingerprint=c2937db130cfeea09af0f65820d419de; buvid_fp=20920408-59A5-488E-9D54-3B53E6003C62167644infoc; buvid_fp_plain=CFCF288B-F583-44B8-BAEA-60B745E45342185010infoc; DedeUserID=58572396; DedeUserID__ckMd5=20e54bd3090b9e60; SESSDATA=a6864586%2C1649303960%2C0d3c1*a1; bili_jct=ccf2812adba4582641e0d266cc7831ae

@@ -1,7 +1,6 @@
 package cc.bilibili.impl;
 
 import cc.bilibili.ICover;
-import cc.constant.ConstantDir;
 import cc.constant.ConstantHeader;
 import cc.constant.ConstantVideoFlvURL;
 import cc.entity.DownMsg;
@@ -9,14 +8,13 @@ import cc.utils.IHttp;
 import cc.utils.XsoupUtils;
 import cc.utils.impl.HttpUrlConnectionUtils;
 import cc.utils.impl.JsoupUtils;
-import cc.vo.BVideoVO;
 
-import static cc.bilibili.impl.VideoFlv.*;
+import static cc.bilibili.impl.AVFlv.*;
 
 /**
  * @author everforcc 2021-09-07
  */
-public class Cover implements ICover {
+public class AVCover implements ICover {
 
     private static IHttp iHttp = new JsoupUtils();
     private static IHttp down = new HttpUrlConnectionUtils();
@@ -32,7 +30,7 @@ public class Cover implements ICover {
         return XsoupUtils.matchStr(html,ConstantVideoFlvURL.imgXsoupPath);
     }
 
-    private static void down(DownMsg downMsg){
+    static void downFile(DownMsg downMsg){
         down.downFile(downMsg);
     }
 
@@ -48,14 +46,14 @@ public class Cover implements ICover {
             downMsg.setFileName(aid + ".jpg");
             downMsg.setHeader(ConstantHeader.web);
             downMsg.setType(ConstantVideoFlvURL.type);
-            down(downMsg);
+            downFile(downMsg);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
     public static void main(String[] args) {
-        flow("5912713");
+        flow("");
     }
 
 }

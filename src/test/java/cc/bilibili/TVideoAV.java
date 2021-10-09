@@ -1,6 +1,7 @@
 package cc.bilibili;
 
-import cc.bilibili.impl.VideoFlv;
+import cc.bilibili.impl.AVFlv;
+import cc.constant.ConstantQuality;
 import org.junit.Test;
 
 /**
@@ -10,7 +11,7 @@ public class TVideoAV {
 
     @Test
     public void f(){
-        VideoFlv.flow("5912713");
+        AVFlv.flow("5912713", ConstantQuality.quality_1080);
     }
 
 }

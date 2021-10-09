@@ -1,16 +1,16 @@
 package cc.bilibili;
 
-import cc.bilibili.impl.Cover;
+import cc.bilibili.impl.AVCover;
 import org.junit.Test;
 
 /**
  * @author everforcc 2021-10-09
  */
-public class TCover {
+public class TAVCover {
 
     @Test
     public void f(){
-        Cover.flow("5912713");
+        AVCover.flow("5912713");
     }
 
 }

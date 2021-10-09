@@ -1,5 +1,7 @@
 package cc.utils;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Yukino
  * 2020/3/3
@@ -40,6 +42,17 @@ public class FileUtils {
             return fileName.substring(0,250);
         }
         return fileName;
+    }
+
+    public static String subFileSuffix(String url){
+        if(StringUtils.isEmpty(url)){
+            return ".";
+        }
+        return url.substring(url.lastIndexOf("."),url.length());
+    }
+
+    public static void main(String[] args) {
+        System.out.println(subFileSuffix("https://i0.hdslb.com/bfs/album/e66a76476c597e4b300034b964f8fce34f834630.jpg"));
     }
 
 }

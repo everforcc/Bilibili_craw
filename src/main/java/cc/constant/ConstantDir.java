@@ -7,7 +7,7 @@ package cc.constant;
 public class ConstantDir {
 
     // 记录公共的信息 C:\test\github
-    public static String fileRootPath = "C:/test/github/test/";
+    public static String fileRootPath = "C:/test/github/craw/";
 
     /**
      * 定义目录结构

@@ -33,4 +33,8 @@ public interface IHttp {
 
     }
 
+    default void saveFile(DownMsg downMsg){
+
+    }
+
 }

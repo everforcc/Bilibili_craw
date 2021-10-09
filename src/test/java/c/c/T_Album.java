@@ -20,16 +20,4 @@ public class T_Album {
         }
     }
 
-    //参数up id
-    Bilibili_Album bilibili_album2 = new Bilibili_Album("23400436");
-    @Test
-    public void donwUP2(){
-        try {
-            // 再加个相册的分类和 标题
-            bilibili_album2.requestFlow();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
 }

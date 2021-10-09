@@ -3,6 +3,7 @@ package cc.bilibili.impl;
 import cc.bilibili.IVideo;
 import cc.constant.ConstantDir;
 import cc.constant.ConstantHeader;
+import cc.constant.ConstantQuality;
 import cc.constant.ConstantVideoFlvURL;
 import cc.entity.DownMsg;
 import cc.enums.CodeEnum;
@@ -21,7 +22,7 @@ import java.util.List;
  * @data 2021/9/3 0003
  */
 @Slf4j
-public class VideoFlv implements IVideo {
+public class AVFlv implements IVideo {
 
     private static final IHttp iHttp = new HttpUrlConnectionUtils();
 
@@ -36,7 +37,7 @@ public class VideoFlv implements IVideo {
      * 3.下载
      */
 
-    public static void flow(String aid){
+    public static void flow(String aid,String constantQuality){
         // 1. 根据aid获取cid json
         String cidJson = getCidJsonByAid(aid);
         // 2. cid转换VO
@@ -44,7 +45,7 @@ public class VideoFlv implements IVideo {
         // 3. 文件信息
         // 3.1 获取文件地址
         // 3.2 组织问价信息
-        List<DownMsg> downMsgList = getFileMsg(bVideoVO);
+        List<DownMsg> downMsgList = getFileMsg(bVideoVO,constantQuality);
         // 4. 下载文件,当前为单个下载，所有信息都有了，可以调整
         down(downMsgList);
     }
@@ -87,7 +88,7 @@ public class VideoFlv implements IVideo {
      * @param bVideoVO
      * @return
      */
-    private static List<DownMsg> getFileMsg(BVideoVO bVideoVO){
+    private static List<DownMsg> getFileMsg(BVideoVO bVideoVO,String constantQuality){
         List<DownMsg> downMsgList = new ArrayList<>();
         String aid = bVideoVO.getAid();
         List<BVideoVO.CidVO> cidVOList =  bVideoVO.getPages();
@@ -95,7 +96,7 @@ public class VideoFlv implements IVideo {
             DownMsg downMsg = new DownMsg();
             // 校验
             // 组装链接
-            String urlPath = String.format(ConstantVideoFlvURL.aidCidToRealVideoUrl, aid, cidVO.getCid(), "120");
+            String urlPath = String.format(ConstantVideoFlvURL.aidCidToRealVideoUrl, aid, cidVO.getCid(), constantQuality);
             // 请求
             String videoJson = iHttp.get(urlPath, ConstantVideoFlvURL.aidCidToRealVideoUrlType, ConstantHeader.map,ConstantVideoFlvURL.charset);
 //            System.out.println("cidVO.getCid():" + cidVO.getCid());
@@ -107,12 +108,25 @@ public class VideoFlv implements IVideo {
             videoPath(bVideoVO,downMsg,aid);
             // downMsg.setFilePath(ConstantDir.av,up,aid,ConstantDir.video);
             // TODO 可以手动格式化个格式 [AV][PART].flv
-            downMsg.setFileName(bVideoVO.getAid() + cidVO.getPart() + ConstantVideoFlvURL.downFileType);
+            downMsg.setFileName(bVideoVO.getAid() + cidVO.getPart() + ConstantVideoFlvURL.downFileTypeFlv);
             downMsg.setType(ConstantVideoFlvURL.downFileUrlType);
             downMsg.setHeader(ConstantHeader.mapFlv);
             downMsgList.add(downMsg);
         }
         return downMsgList;
+    }
+
+    /**
+     * 视频真实url
+     * @param json
+     * @return
+     */
+    private static String getRealFlvUrl(String json){
+        JSONObject jsonObject = checkJson(json);
+        // url在json中的位置
+        JSONObject realUrlObj = (JSONObject)jsonObject.getJSONObject("data").getJSONArray("durl").get(0);
+        String realUrl = realUrlObj.getString("url");
+        return realUrl;
     }
 
     static void videoPath(BVideoVO bVideoVO,DownMsg downMsg,String aid){
@@ -131,26 +145,12 @@ public class VideoFlv implements IVideo {
     }
 
     /**
-     * 视频真实url
-     * @param json
-     * @return
-     */
-    private static String getRealFlvUrl(String json){
-        JSONObject jsonObject = checkJson(json);
-        // url在json中的位置
-        JSONObject realUrlObj = (JSONObject)jsonObject.getJSONObject("data").getJSONArray("durl").get(0);
-        String realUrl = realUrlObj.getString("url");
-        return realUrl;
-    }
-
-
-    /**
      * 校验所有的json
      *
      * @param json
      * @return
      */
-    private static JSONObject checkJson(String json){
+    static JSONObject checkJson(String json){
         CodeEnum.JSON_NULL.isEffect("".equals(json));
         JSONObject jsonObject = JSON.parseObject(json);
         String code = jsonObject.getString("code");
@@ -158,7 +158,7 @@ public class VideoFlv implements IVideo {
         return jsonObject;
     }
 
-    private static void down(List<DownMsg> downMsgList){
+    static void down(List<DownMsg> downMsgList){
         // 地址，文件路径，文件名。type，headers
         /*for(DownMsg downMsg:downMsgList) {
             iHttp.downFile(downMsg);
@@ -168,7 +168,7 @@ public class VideoFlv implements IVideo {
 
     public static void main(String[] args) {
         //flow(null); 170001
-        flow("5912713");
+        flow("", ConstantQuality.quality_1080);
     }
 
 }

@@ -12,4 +12,8 @@ public interface IFile {
 
     };
 
+    default void saveStrToFile(String str, File file){
+
+    };
+
 }
