@@ -14,6 +14,10 @@ public class ConstantVideoFlvURL {
     public static final String videoUrl = "https://www.bilibili.com/video/av%s";
     public static final String charset = "utf-8";
     public static final String type = "GET";
+
+    /**
+     * 封面地址
+     */
     public static final String imgXsoupPath = "//meta[12]/@content";
     public static final String pic = "pic";
     /**
@@ -39,5 +43,11 @@ public class ConstantVideoFlvURL {
 
     public static final String downFileUrlType = "GET";
     public static final String downFileType = ".flv";
+
+    //
+    /**
+     * 获得720直接播放的地址
+     */
+    public static final String aidCidToRealVideoUrl_720 = "https://api.bilibili.com/x/player/playurl?fourk=1&platform=html5&high_quality=1&qn=120&aid=%s&bvid=%s&cid=%s";
 
 }

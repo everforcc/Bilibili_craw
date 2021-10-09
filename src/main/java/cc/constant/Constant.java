@@ -6,7 +6,7 @@ package cc.constant;
  */
 public class Constant {
 
-    // 记录公共的信息
-    public static String fileRootPath = "C:/soft/github/test/";
+    // 记录公共的信息 C:\test\github
+    public static String fileRootPath = "C:/test/github/test/";
 
 }

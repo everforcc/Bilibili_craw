@@ -43,8 +43,6 @@ public class Cover implements ICover {
             downMsg.setHeader(ConstantHeader.web);
             downMsg.setType(ConstantVideoFlvURL.type);
             down(downMsg);
-
-
         }catch (Exception e){
             e.printStackTrace();
         }
