@@ -1,5 +1,6 @@
 package cc.bilibili.impl;
 
+import cc.bilibili.CheckInput;
 import cc.bilibili.ICover;
 import cc.constant.ConstantHeader;
 import cc.constant.ConstantVideoFlvURL;
@@ -36,6 +37,7 @@ public class AVCover implements ICover {
 
     public static void flow(String aid){
         try {
+            aid = CheckInput.checkAV(aid);
             String html = htmlByAid(aid);
             String imgUrl = getImgUrl(html);
             downMsg.setUrl(imgUrl);

@@ -1,5 +1,6 @@
 package cc.bilibili.impl;
 
+import cc.bilibili.CheckInput;
 import cc.bilibili.IVideo;
 import cc.constant.ConstantHeader;
 import cc.constant.ConstantVideoFlvURL;
@@ -25,6 +26,7 @@ public class AVMP4 implements IVideo {
      */
 
     public static void flow(String aid){
+        aid = CheckInput.checkAV(aid);
         // 1. 根据aid获取cid json
         String cidJson = getCidJsonByAid(aid);
         // 2. cid转换VO

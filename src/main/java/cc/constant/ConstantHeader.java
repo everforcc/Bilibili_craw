@@ -9,6 +9,8 @@ import java.util.Map;
  */
 public class ConstantHeader {
 
+    private static String COOKIE_VALUE = "";
+
     public static String cookie = "cookie";
     public static String referer = "referer";
     public static String USER_AGENT = "user-agent";
@@ -18,7 +20,6 @@ public class ConstantHeader {
     private static String USER_AGENT_VALUE = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36";
     private static String ACCEPT_ENCODING = "gzip, deflate, br";//"gzip, deflate, br"; gzip, 会加速传输，但是会压缩文件
     private static String ACCEPT_LANGUAGE = "zh-CN,zh;q=0.9";
-    private static String COOKIE_VALUE = "";
     private static String keepConnection = "keep-alive";
     private static String Host = "upos-sz-mirrorcos.bilivideo.com";
 

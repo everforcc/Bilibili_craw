@@ -1,6 +1,7 @@
 package cc.bilibili.impl;
 
 import c.c.utils.Method_down;
+import cc.bilibili.CheckInput;
 import cc.bilibili.IVideo;
 import cc.constant.*;
 import cc.entity.DownMsg;
@@ -38,6 +39,7 @@ public class AVFlv implements IVideo {
 
     public static void flow(String aid,String constantQuality){
 
+        aid = CheckInput.checkAV(aid);
         // 1. 根据aid获取cid json
         String cidJson = getCidJsonByAid(aid);
         // 2. cid转换VO
