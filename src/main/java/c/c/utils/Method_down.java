@@ -111,7 +111,7 @@ public class Method_down {
         BigDecimal rate = new BigDecimal(0.01);
         BigDecimal tempRate = new BigDecimal(0);
         while ((length = in.read(buf, 0, buf.length)) != -1) {
-            if(fileLength.compareTo(new BigDecimal(0))>1) {
+            if(fileLength.compareTo(new BigDecimal(0))>0) {
                 tempLength = tempLength.add(new BigDecimal(length));
                 // 每 1% 跳出一行数据
                 tempRate = new BigDecimal(df.format(tempLength.multiply(new BigDecimal(100)).divide(fileLength, 1, BigDecimal.ROUND_DOWN)));

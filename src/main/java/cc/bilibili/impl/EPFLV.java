@@ -19,7 +19,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static cc.bilibili.impl.AVFlv.checkJson;
-import static cc.bilibili.impl.AVFlv.downFile;
 
 /**
  * @author everforcc 2021-10-09
@@ -46,7 +45,7 @@ public class EPFLV implements IVideo {
         // 根据id请求必须有返回数据
         // 根据aid拿到cid的数据
         String urlPath = String.format(ConstantEPFlvURL.rootUrl,ep);
-        html = iHttp.get(urlPath,ConstantVideoFlvURL.aidToCidType, ConstantHeader.mapFlv,ConstantVideoFlvURL.charset);
+        html = iHttp.get(urlPath,ConstantVideoFlvURL.aidToCidType, ConstantHeader.epFlv,inputEP);
         saveHtml(html,ep,Constant.HTML);
         return html;
     }
@@ -86,19 +85,19 @@ public class EPFLV implements IVideo {
         // TODO 校验json
         EPVideoVO epVideoVO = JSON.parseObject(json,EPVideoVO.class);
         int i = 0;
-        for(EPVideoVO.ep ep: epVideoVO.getEpList()){
-            String url = String.format(ConstantEPFlvURL.epUrlPlayurl,ep.getId(),ep.getAid(),ep.getBvid(),ep.getCid(),ConstantQuality.quality_1080_60);
+        for(EPVideoVO.ep epVideoEp: epVideoVO.getEpList()){
+            String url = String.format(ConstantEPFlvURL.epUrlPlayurl,epVideoEp.getId(),epVideoEp.getAid(),epVideoEp.getBvid(),epVideoEp.getCid(),ConstantQuality.quality_1080_60);
             log.info("url:" + url);
-            String realVideojson = iHttp.get(url,ConstantVideoFlvURL.GET, ConstantHeader.epFlv);
+            String realVideojson = iHttp.get(url,ConstantVideoFlvURL.GET, ConstantHeader.epFlv,epVideoEp.getAid());
 
             log.info("realVideojson:" + realVideojson);
             String realFlvUrlurl = getRealFlvUrl(realVideojson);
             log.info("realFlvUrlurl:" + realFlvUrlurl);
             downMsg.setUrl(realFlvUrlurl);
-            downMsg.setFilePath(ConstantDir.ep,ep.getTitle());
+            downMsg.setFilePath(ConstantDir.ep,ep,epVideoEp.getTitle());
             // downMsg.setFilePath(ConstantDir.av,up,aid,ConstantDir.video);
             // TODO 可以手动格式化个格式 [AV][PART].flv
-            downMsg.setFileName(ep.getTitle() + i++ + ConstantVideoFlvURL.downFileTypeFlv);
+            downMsg.setFileName(epVideoVO.getH1Title() + i++ + ConstantVideoFlvURL.downFileTypeFlv);
             downMsg.setType(ConstantVideoFlvURL.downFileUrlType);
             downMsg.setHeader(ConstantHeader.mapFlv);
             downMsgList.add(downMsg);
@@ -130,6 +129,21 @@ public class EPFLV implements IVideo {
         downHTML.setFilePath(ConstantDir.ep,ep);
         downHTML.setFileName(ep + type);
         return down.readFile(downHTML);
+    }
+
+    private static void downFile(List<DownMsg> downMsgList){
+        // 地址，文件路径，文件名。type，headers
+        for(DownMsg downMsg:downMsgList) {
+            down.downFile(downMsg);
+        }
+        //downMsgList.forEach(iHttp::downFile);
+        /*for(DownMsg downMsg:downMsgList){
+            try {
+                Method_down.downFlv(downMsg.getUrl(), "av36953163", "craw\\电影\\正片\\正片-4.flv", downMsg.getFileName(), ConstantVideoFlvURL.GET);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }*/
     }
 
     public static void main(String[] args) {

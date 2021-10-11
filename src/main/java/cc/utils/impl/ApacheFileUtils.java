@@ -13,9 +13,9 @@ import java.io.InputStream;
  */
 public class ApacheFileUtils implements IFile {
 
-    public void downFile(InputStream inputStream, File file){
+    public void downFile(InputStream inputStream, String filePath, String fileName){
         try {
-            FileUtils.copyToFile(inputStream,file);
+            FileUtils.copyToFile(inputStream,new File(filePath + fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }

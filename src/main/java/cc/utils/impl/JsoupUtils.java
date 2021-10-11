@@ -1,11 +1,9 @@
 package cc.utils.impl;
 
-import c.c.utils.Constant;
+import cc.constant.ConstantHeader;
 import cc.utils.IHttp;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
 import java.io.IOException;
 import java.util.Map;
 
@@ -23,12 +21,32 @@ public class JsoupUtils implements IHttp {
 
         Connection connection = Jsoup.connect(urlPath).method(method).ignoreContentType(true);// 获取连接,不检查格式
 
-        if(map.containsKey("cookie")){
+        if(map.containsKey(ConstantHeader.cookie)){
             // jsoup的cookie必须这样设置
-            connection.cookie("cookie",map.get("cookie"));
+            connection.cookie(ConstantHeader.cookie,map.get(ConstantHeader.cookie));
         }
 
-        connection.data(map);
+        if(map.containsKey(ConstantHeader.USER_AGENT)){
+            // jsoup的cookie必须这样设置
+            connection.userAgent(map.get(ConstantHeader.USER_AGENT));
+        }
+
+        if(map!=null&&map.size()>0){
+            for(Map.Entry entry : map.entrySet()){
+                String key = (String) entry.getKey();
+                    String value = (String) entry.getValue();
+                    if("Accept-Encoding".equalsIgnoreCase(key)&&value.contains("gzip")){
+                        //gzip = true; // 需要解压
+                    }
+                    // 短视频转发
+                    if("referer".equalsIgnoreCase(key)){
+                        //gzip = true; // 需要解压
+                        value += params[0];
+                    }
+                connection.header(key,value);
+            }
+        }
+        //connection.data(map);
         Connection.Response login = null;// 获取响应
         try {
             login = connection.execute();
