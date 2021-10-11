@@ -1,9 +1,6 @@
 package cc.bilibili;
 
-import cc.bilibili.impl.AVFlv;
-import cc.bilibili.impl.AVMP4;
-import cc.bilibili.impl.AVCover;
-import cc.bilibili.impl.UPAlbum;
+import cc.bilibili.impl.*;
 import cc.constant.ConstantQuality;
 import org.junit.Test;
 
@@ -42,8 +39,8 @@ public class Tmenu {
 
     @Test
     public void fep(){
-        // upid album
-
+        // ep
+        EPFLV.flow("ss26175");
     }
 
 }

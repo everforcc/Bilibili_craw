@@ -61,12 +61,12 @@ public class InputStreamUtils implements IFile {
                 // 每 1% 跳出一行数据
                 tempRate = new BigDecimal(df.format(tempLength.multiply(new BigDecimal(100)).divide(fileLength, 1, BigDecimal.ROUND_DOWN)));
                 if (tempRate.compareTo(rate) == 1) {
-                    log.info(fileName + ":" + tempRate + "%");
+                    log.info(fileName + ": " + tempRate + "%");
                     rate = tempRate;
                     Date tempEnddate = new Date();
                     double tempTime = tempEnddate.getTime() - tempBegindate.getTime();
                     BigDecimal bigDecimal = percent.divide(new BigDecimal(tempTime / 1000),2, BigDecimal.ROUND_HALF_UP);
-                    log.info("耗时：" + tempTime / 1000 + "s" + ",速度:" + calSize(bigDecimal) + "/s" );
+                    log.info("耗时: " + tempTime / 1000 + "s" + ", 速度: " + calSize(bigDecimal) + "/s" );
                     tempBegindate = new Date();
                 }
             }
@@ -93,16 +93,16 @@ public class InputStreamUtils implements IFile {
         BigDecimal base = new BigDecimal(1);
         BigDecimal twoPower10 = new BigDecimal(1 << 10);
         if(bigDecimal.compareTo(base = base.multiply(twoPower10))<=0){
-            System.out.println(bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP));
+            //System.out.println(bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP));
             return bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP) + "b";
         }else if(bigDecimal.compareTo(base = base.multiply(twoPower10))<=0){
-            System.out.println(bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP));
+            //System.out.println(bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP));
             return bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP) + "kb";
         }else if(bigDecimal.compareTo(base = base.multiply(twoPower10))<=0){
-            System.out.println(bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP));
+            //System.out.println(bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP));
             return bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP) + "MB";
         }else if(bigDecimal.compareTo(base = base.multiply(twoPower10))<=0){
-            System.out.println(bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP));
+            //System.out.println(bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP));
             return bigDecimal.multiply(twoPower10).divide(base,2, BigDecimal.ROUND_HALF_UP) + "GB";
         }/*else if(bigDecimal.compareTo(base = base.multiply(new BigDecimal(1024)))<=0){
             System.out.println(bigDecimal.divide(base,2, BigDecimal.ROUND_HALF_UP));

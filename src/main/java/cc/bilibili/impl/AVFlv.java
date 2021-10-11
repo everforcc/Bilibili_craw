@@ -37,6 +37,7 @@ public class AVFlv implements IVideo {
      */
 
     public static void flow(String aid,String constantQuality){
+
         // 1. 根据aid获取cid json
         String cidJson = getCidJsonByAid(aid);
         // 2. cid转换VO
