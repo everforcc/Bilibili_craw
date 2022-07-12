@@ -1,7 +1,7 @@
 package cc.entity;
 
 import cc.constant.ConstantDir;
-import cc.utils.FileUtils;
+import cc.utils.file.FileNameUtils;
 import lombok.Data;
 
 import java.io.File;
@@ -16,6 +16,7 @@ public class DownMsg {
 
     // 下载文件需要的信息
     private String url;
+    private String aid;
     private String type;
     private Map<String,String> header;//也可设置子类只有url，path不同，不用存太多headers信息，父类存一个即可
     private String filePath;
@@ -42,8 +43,12 @@ public class DownMsg {
     public void setFilePath(String... dir) {
         String filePath = ConstantDir.fileRootPath;
         for(String s:dir){
-            filePath += FileUtils.checkFileNameAndPath(s) + File.separator;
+            filePath += FileNameUtils.checkFileNameAndPath(s) + File.separator;
         }
+        this.filePath = filePath;
+    }
+
+    public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
 
@@ -52,7 +57,7 @@ public class DownMsg {
 //    }
 
     public void setFileName(String fileName) {
-        fileName = FileUtils.checkFileNameAndPath(fileName);
+        fileName = FileNameUtils.checkFileNameAndPath(fileName);
         this.fileName = fileName;
     }
 }
