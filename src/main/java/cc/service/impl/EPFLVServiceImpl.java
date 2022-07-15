@@ -17,17 +17,16 @@ public class EPFLVServiceImpl implements IEPFLVService {
     @Override
     public void dEp(String input) {
         EPFLV epflv = new EPFLV();
-
         // 1. 校验
         String ep = input;
-
         // 2.获得html
         String html = epflv.getHTMLByep(ep);
         // 3.正则匹配到js
-        String json = epflv.matchJSON(html);
+        String json = epflv.matchJSON(ep, html);
         // 4. 拿到url组装下载信息
         List<DownMsg> downMsgList = epflv.getFileMsg(json);
         // 5. down
-        epflv.downFile(downMsgList);
+        downMsgList.forEach(System.out::println);
+        //epflv.downFile(downMsgList);
     }
 }

@@ -2,7 +2,8 @@ package cc.entity;
 
 import cc.constant.ConstantDir;
 import cc.utils.file.FileNameUtils;
-import lombok.Data;
+import com.alibaba.fastjson.JSONObject;
+import lombok.*;
 
 import java.io.File;
 import java.util.Map;
@@ -11,13 +12,16 @@ import java.util.Map;
  * @author everforcc
  * @data 2021/9/3 0003
  */
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class DownMsg {
 
     // 下载文件需要的信息
     private String url;
     private String aid;
-    private String type;
+    private String reqType;
     private Map<String,String> header;//也可设置子类只有url，path不同，不用存太多headers信息，父类存一个即可
     private String filePath;
     private String fileName;
@@ -41,11 +45,11 @@ public class DownMsg {
      */
     // 文件目录比如 [归属人，aid，某些] 分为多级目录，每层级分别校验
     public void setFilePath(String... dir) {
-        String filePath = ConstantDir.fileRootPath;
+        StringBuilder filePath = new StringBuilder(ConstantDir.fileRootPath);
         for(String s:dir){
-            filePath += FileNameUtils.checkFileNameAndPath(s) + File.separator;
+            filePath.append(FileNameUtils.checkFileNameAndPath(s)).append(File.separator);
         }
-        this.filePath = filePath;
+        this.filePath = filePath.toString();
     }
 
     public void setFilePath(String filePath) {
@@ -59,5 +63,10 @@ public class DownMsg {
     public void setFileName(String fileName) {
         fileName = FileNameUtils.checkFileNameAndPath(fileName);
         this.fileName = fileName;
+    }
+
+    @Override
+    public String toString() {
+        return JSONObject.toJSONString(this);
     }
 }

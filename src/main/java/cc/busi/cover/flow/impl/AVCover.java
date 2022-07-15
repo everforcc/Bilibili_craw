@@ -86,7 +86,7 @@ public class AVCover implements ICover {
         // 后缀名可以截取得到
         downMsg.setFileName("[av" + aid + "].jpg");
         downMsg.setHeader(ConstantHeader.web);
-        downMsg.setType(ConstantVideoFlvURL.GET);
+        downMsg.setReqType(ConstantVideoFlvURL.GET);
         return downMsg;
     }
 

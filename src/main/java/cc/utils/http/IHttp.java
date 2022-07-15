@@ -17,28 +17,24 @@ public interface IHttp {
      * default 只需要实现需要的
      */
 
-    default String get(){
+    default String get() {
         return null;
-    };
+    }
 
-    default String get(String urlPath, String type, Map<String,String> map,String... params){
+
+    default String get(String urlPath, String type, Map<String, String> map, String... params) {
         return null;
-    };
+    }
 
-    default String post(){
+
+    default String post() {
         return null;
-    };
+    }
 
-    default void downFile(DownMsg downMsg){
+
+    default void downFile(DownMsg downMsg) {
 
     }
 
-    default void saveFile(DownMsg downMsg){
-
-    }
-
-    default String readFile(DownMsg downMsg){
-        return "";
-    }
 
 }

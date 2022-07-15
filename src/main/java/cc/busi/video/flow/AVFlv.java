@@ -9,7 +9,9 @@ import cc.constant.ConstantDir;
 import cc.constant.ConstantHeader;
 import cc.constant.ConstantVideoFlvURL;
 import cc.entity.DownMsg;
-import cc.utils.Method_down;
+import cc.utils.file.IFileByte;
+import cc.utils.file.IFileChar;
+import cc.utils.file.impl.InputStreamUtils;
 import cc.utils.http.IHttp;
 import cc.utils.http.impl.HttpUrlConnectionUtils;
 import com.alibaba.fastjson.JSON;
@@ -28,6 +30,8 @@ public class AVFlv implements IVideo {
 
     // 请求工具
     private static final IHttp iHttp = new HttpUrlConnectionUtils();
+
+    private IFileByte iFileByte = new InputStreamUtils();
 
     /**
      * 1. 从用户录入转为AV号
@@ -96,7 +100,7 @@ public class AVFlv implements IVideo {
         for (BVideoVO.CidVO cidVO : cidVOList) {
             DownMsg downMsg = new DownMsg();
             // 设置番号
-            downMsg.setAid(aid);
+            downMsg.setAid("av" + aid);
             // 校验
             // 组装cid链接
             String urlPath = String.format(ConstantVideoFlvURL.aidCidToRealVideoUrl, aid, cidVO.getCid(), constantQuality);
@@ -109,7 +113,7 @@ public class AVFlv implements IVideo {
             // 文件地址
             downMsg.setUrl(realUrl);
             // 链接请求方式
-            downMsg.setType(ConstantVideoFlvURL.downFileUrlType);
+            downMsg.setReqType(ConstantVideoFlvURL.downFileUrlType);
             //videoPath(bVideoVO, downMsg, aid);
             // 文件路径
             String up = String.format(ConstantDir.up, bVideoVO.getOwner().getMid(), bVideoVO.getOwner().getName());
@@ -151,7 +155,8 @@ public class AVFlv implements IVideo {
     public void downFile(List<DownMsg> downMsgList) {
         for (DownMsg downMsg : downMsgList) {
             try {
-                Method_down.downFlv(downMsg.getUrl(), "av" + downMsg.getAid(), downMsg.getFilePath(), downMsg.getFileName(), downMsg.getType());
+                iFileByte.downFlv(downMsg);
+                //iHttp.downFile(downMsg);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -170,7 +175,8 @@ public class AVFlv implements IVideo {
         downMsg.setFilePath(filePath);
         // 后缀名可以截取得到
         downMsg.setFileName(ConstantDir.video + ConstantCommon.JSON);
-        iHttp.saveFile(downMsg);
+
+        IFileChar.saveStrToFile(downMsg);
     }
 
 }

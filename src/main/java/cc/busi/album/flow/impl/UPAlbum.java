@@ -6,6 +6,7 @@ import cc.busi.check.CheckReturn;
 import cc.constant.*;
 import cc.entity.DownMsg;
 import cc.utils.file.FileNameUtils;
+import cc.utils.file.IFileChar;
 import cc.utils.http.IHttp;
 import cc.utils.http.impl.HttpUrlConnectionUtils;
 import cc.utils.http.impl.JsoupUtils;
@@ -89,7 +90,7 @@ public class UPAlbum implements IAlbum {
                 // 后缀名可以截取得到
                 downMsg.setFileName(doc.getTitle() + i++ + FileNameUtils.subFileSuffix(pic.getImg_src()));
                 downMsg.setHeader(ConstantHeader.web);
-                downMsg.setType(ConstantVideoFlvURL.GET);
+                downMsg.setReqType(ConstantVideoFlvURL.GET);
 
                 downFile(downMsg);
             }
@@ -116,7 +117,7 @@ public class UPAlbum implements IAlbum {
         downMsg.setFilePath(bAlbumVO.getUpid(), ConstantDir.album);
         // 后缀名可以截取得到
         downMsg.setFileName(ConstantDir.album + ConstantCommon.JSON);
-        down.saveFile(downMsg);
+        IFileChar.saveStrToFile(downMsg);
     }
 
 }

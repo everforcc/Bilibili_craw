@@ -19,7 +19,6 @@ public class Compile {
         log.debug("1");
         log.info("2");
         log.error("3");
-
     }
 
 }

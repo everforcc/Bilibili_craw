@@ -5,10 +5,12 @@
  * Copyright
  */
 
-package cc.utils;
+package cc.busi.config;
 
 import cc.constant.ConstantCommon;
+import cc.entity.DownMsg;
 import cc.utils.date.ToolTime;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.OutputStream;
@@ -20,17 +22,20 @@ import java.util.Map;
 import java.util.Set;
 
 @Slf4j
-public class Request_Heard {
+public class Bilibili_Heard {
 
     /**
      * 下载视频的 请求头 链接等信息
      *
-     * @param flvUrl        请求地址
-     * @param id            番号id
-     * @param requestMethod 请求方法
+     * @param flvUrl  请求地址
+     * @param downMsg 文件信息
      */
-    public static HttpURLConnection requestHeard_downFlv(String flvUrl, String id, String requestMethod) throws Exception {
+
+    @SneakyThrows
+    public static HttpURLConnection requestHeard_downFlv(String flvUrl, DownMsg downMsg) {
         log.info("---" + flvUrl);
+        String id = downMsg.getAid();
+        String requestMethod = downMsg.getReqType();
         URL url = new URL(flvUrl);
         //2, 打开连接
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -64,7 +69,8 @@ public class Request_Heard {
      * @param flvUrl 请求地址
      * @param id     番号id
      */
-    public static HttpURLConnection requestHeard_downEPFlv(String flvUrl, String id) throws Exception {
+    @SneakyThrows
+    public static HttpURLConnection requestHeard_downEPFlv(String flvUrl, String id) {
         log.info("---" + flvUrl);
         URL url = new URL(flvUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

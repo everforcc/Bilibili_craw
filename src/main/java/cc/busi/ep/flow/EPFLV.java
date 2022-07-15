@@ -6,11 +6,13 @@ import cc.busi.ep.dto.EPVideoVO;
 import cc.constant.*;
 import cc.entity.DownMsg;
 import cc.enums.CodeExceptionEnum;
+import cc.utils.file.IFileChar;
 import cc.utils.http.IHttp;
 import cc.utils.http.impl.HttpUrlConnectionUtils;
 import cc.utils.http.impl.JsoupUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 
@@ -25,10 +27,8 @@ import java.util.regex.Pattern;
 @Slf4j
 public class EPFLV implements IVideo {
 
-    private static String ep;
-    private static DownMsg downHTML = new DownMsg();
-    private static DownMsg downMsg = new DownMsg();
     private static IHttp iHttp = new JsoupUtils();
+
     private static IHttp down = new HttpUrlConnectionUtils();
 
     /**
@@ -38,9 +38,9 @@ public class EPFLV implements IVideo {
      * @return
      */
     public String getHTMLByep(String inputEP) {
-        ep = inputEP;
+        String ep = inputEP;
         String html;
-        if (StringUtils.isNotBlank(html = readHtml(ep, ConstantCommon.HTML))) {
+        if (StringUtils.isNotBlank(html = readMsg(ep, ConstantCommon.HTML))) {
             log.info("已存在，不重复读取");
             return html;
         }
@@ -61,9 +61,9 @@ public class EPFLV implements IVideo {
      * @param html
      * @return
      */
-    public String matchJSON(String html) {
+    public String matchJSON(String ep, String html) {
         String json;
-        if (StringUtils.isNotBlank(json = readHtml(ep, ConstantCommon.JSON))) {
+        if (StringUtils.isNotBlank(json = readMsg(ep, ConstantCommon.JSON))) {
             log.info("JSON已存在，不重复读取");
             return json;
         }
@@ -75,7 +75,7 @@ public class EPFLV implements IVideo {
         if (matcher.find()) {
             json = matcher.group(1);
             log.info("json:" + json);
-            saveHtml(json, ep, ConstantCommon.JSON);
+            saveJson(json, ep, ConstantCommon.JSON);
         }
         return json;
     }
@@ -90,8 +90,16 @@ public class EPFLV implements IVideo {
         List<DownMsg> downMsgList = new ArrayList<>();
         // TODO 校验json
         EPVideoVO epVideoVO = JSON.parseObject(json, EPVideoVO.class);
+        String h1Title = epVideoVO.getH1Title();
+        if (StringUtils.isEmpty(h1Title)) {
+            throw new RuntimeException("h1Title 为空请调整");
+        }
+        String epName = h1Title.substring(0, h1Title.indexOf("："));
+
         int i = 0;
         for (EPVideoVO.ep epVideoEp : epVideoVO.getEpList()) {
+            // 下载文件信息
+            DownMsg downMsg = new DownMsg();
             String url = String.format(ConstantEPFlvURL.epUrlPlayurl, epVideoEp.getId(), epVideoEp.getAid(), epVideoEp.getBvid(), epVideoEp.getCid(), ConstantQuality.quality_1080_60);
             log.info("url:" + url);
             String realVideojson = iHttp.get(url, ConstantVideoFlvURL.GET, ConstantHeader.epFlv, epVideoEp.getAid());
@@ -100,11 +108,13 @@ public class EPFLV implements IVideo {
             String realFlvUrlurl = getRealFlvUrl(realVideojson);
             log.info("realFlvUrlurl:" + realFlvUrlurl);
             downMsg.setUrl(realFlvUrlurl);
-            downMsg.setFilePath(ConstantDir.ep, ep, epVideoEp.getTitle());
+
+
+            downMsg.setFilePath(ConstantDir.ep, epName, "[ep" + epVideoEp.getId() + "]", epVideoEp.getTitle());
             // downMsg.setFilePath(ConstantDir.av,up,aid,ConstantDir.video);
             // TODO 可以手动格式化个格式 [AV][PART].flv
-            downMsg.setFileName(epVideoVO.getH1Title() + i++ + ConstantVideoFlvURL.downFileTypeFlv);
-            downMsg.setType(ConstantVideoFlvURL.downFileUrlType);
+            downMsg.setFileName(epVideoEp.getTitleFormat() + ConstantVideoFlvURL.downFileTypeFlv);
+            downMsg.setReqType(ConstantVideoFlvURL.downFileUrlType);
             downMsg.setHeader(ConstantHeader.mapFlv);
             downMsgList.add(downMsg);
         }
@@ -129,16 +139,38 @@ public class EPFLV implements IVideo {
     }
 
     private static void saveHtml(String str, String ep, String type) {
+        DownMsg downHTML = new DownMsg();
         downHTML.setContent(str);
         downHTML.setFilePath(ConstantDir.ep, ep);
         downHTML.setFileName(ep + type);
-        down.saveFile(downHTML);
+        IFileChar.saveStrToFile(downHTML);
     }
 
-    private static String readHtml(String ep, String type) {
+    private static void saveJson(String str, String ep, String type) {
+        DownMsg downHTML = new DownMsg();
+        JSONObject jsonObject = JSONObject.parseObject(str);
+        str = JSON.toJSONString(jsonObject, SerializerFeature.PrettyFormat);
+        downHTML.setContent(str);
         downHTML.setFilePath(ConstantDir.ep, ep);
         downHTML.setFileName(ep + type);
-        return down.readFile(downHTML);
+        IFileChar.saveStrToFile(downHTML);
+    }
+
+    /**
+     * 读取文件信息
+     *
+     * @param ep   业务id
+     * @param type 文件类型
+     * @return 读取结果
+     */
+    private static String readMsg(String ep, String type) {
+        DownMsg downHTML = new DownMsg();
+        downHTML.setFilePath(ConstantDir.ep, ep);
+        downHTML.setFileName(ep + type);
+        if (!IFileChar.exist(downHTML)) {
+            return null;
+        }
+        return IFileChar.readFileToString(downHTML);
     }
 
     /**
@@ -151,6 +183,9 @@ public class EPFLV implements IVideo {
         for (DownMsg downMsg : downMsgList) {
             down.downFile(downMsg);
         }
+
+        //down.downFile(downMsgList.get(0));
+
         //downMsgList.forEach(iHttp::downFile);
         /*for(DownMsg downMsg:downMsgList){
             try {

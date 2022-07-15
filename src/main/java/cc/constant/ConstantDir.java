@@ -9,7 +9,7 @@ public class ConstantDir {
     /**
      * 下载的文件夹
      */
-    public static String fileRootPath = "E:/filesystem/project/Bilibili_craw/";
+    public static String fileRootPath = "E:\\filesystem\\project\\Bilibili_craw\\";
 
     /**
      * 定义目录结构

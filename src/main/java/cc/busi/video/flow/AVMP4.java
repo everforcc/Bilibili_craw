@@ -77,7 +77,7 @@ public class AVMP4 implements IVideo {
             downMsg.setFilePath(up, ConstantDir.av_mp4, aid);
 
             downMsg.setFileName(bVideoVO.getAid() + cidVO.getPart() + ConstantVideoFlvURL.downFileTypeMP4);
-            downMsg.setType(ConstantVideoFlvURL.downFileTypeMP4);
+            downMsg.setReqType(ConstantVideoFlvURL.downFileTypeMP4);
             downMsg.setHeader(ConstantHeader.mapFlv);
             downMsgList.add(downMsg);
         }
