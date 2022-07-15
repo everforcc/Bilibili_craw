@@ -14,8 +14,17 @@ public class EPFLVController {
 
     IEPFLVService iepflvService = new EPFLVServiceImpl();
 
-    public void dEp(String input){
+    /**
+     * 请使用第一集的id
+     *
+     * @param input 第一集的id
+     */
+    public void dEp(String input) {
         iepflvService.dEp(input);
+    }
+
+    public void dEp(String input, int index) {
+        iepflvService.dEp(input, index);
     }
 
 }

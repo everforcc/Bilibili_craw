@@ -25,7 +25,7 @@ public class EPFLVControllerTests {
     @Test
     public void oneEp() {
         String input = "ep7823";
-        epflvController.dEp(input);
+        epflvController.dEp(input, 1);
     }
 
 }

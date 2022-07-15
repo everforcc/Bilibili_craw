@@ -11,6 +11,7 @@ import cc.utils.http.IHttp;
 import cc.utils.http.impl.HttpUrlConnectionUtils;
 import cc.utils.http.impl.JsoupUtils;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,7 +53,7 @@ public class EPFLV implements IVideo {
         // 根据aid拿到cid的数据
         String urlPath = String.format(ConstantEPFlvURL.rootUrl, ep);
         html = iHttp.get(urlPath, ConstantVideoFlvURL.aidToCidType, ConstantHeader.epFlv, inputEP);
-        saveHtml(html, ep, ConstantCommon.HTML);
+        saveHtml(html, ep);
         return html;
     }
 
@@ -65,6 +67,7 @@ public class EPFLV implements IVideo {
         String json;
         if (StringUtils.isNotBlank(json = readMsg(ep, ConstantCommon.JSON))) {
             log.info("JSON已存在，不重复读取");
+            log.info("json:" + json);
             return json;
         }
 
@@ -75,7 +78,7 @@ public class EPFLV implements IVideo {
         if (matcher.find()) {
             json = matcher.group(1);
             log.info("json:" + json);
-            saveJson(json, ep, ConstantCommon.JSON);
+            saveJson(json, ep);
         }
         return json;
     }
@@ -86,8 +89,17 @@ public class EPFLV implements IVideo {
      * @param json
      * @return
      */
-    public List<DownMsg> getFileMsg(String json) {
-        List<DownMsg> downMsgList = new ArrayList<>();
+    public List<DownMsg> getFileMsg(String ep, String json) {
+
+        List<DownMsg> downMsgList;
+
+        if (Objects.nonNull(downMsgList = readDown(ep, ConstantCommon.JSON))) {
+            log.info("JSON已存在，不重复读取");
+            log.info("json:" + downMsgList);
+            return downMsgList;
+        }
+        downMsgList = new ArrayList<>();
+
         // TODO 校验json
         EPVideoVO epVideoVO = JSON.parseObject(json, EPVideoVO.class);
         String h1Title = epVideoVO.getH1Title();
@@ -110,7 +122,7 @@ public class EPFLV implements IVideo {
             downMsg.setUrl(realFlvUrlurl);
 
 
-            downMsg.setFilePath(ConstantDir.ep, epName, "[ep" + epVideoEp.getId() + "]", epVideoEp.getTitle());
+            downMsg.setFilePath(ConstantDir.ep, "ep" + epVideoEp.getId(), epName, epVideoEp.getTitle());
             // downMsg.setFilePath(ConstantDir.av,up,aid,ConstantDir.video);
             // TODO 可以手动格式化个格式 [AV][PART].flv
             downMsg.setFileName(epVideoEp.getTitleFormat() + ConstantVideoFlvURL.downFileTypeFlv);
@@ -118,6 +130,7 @@ public class EPFLV implements IVideo {
             downMsg.setHeader(ConstantHeader.mapFlv);
             downMsgList.add(downMsg);
         }
+        saveDown(downMsgList, ep);
         return downMsgList;
     }
 
@@ -138,21 +151,52 @@ public class EPFLV implements IVideo {
         return realUrl;
     }
 
-    private static void saveHtml(String str, String ep, String type) {
+    /**
+     * 保存html
+     *
+     * @param html html内容
+     * @param ep   番号id
+     *             文件后缀 html
+     */
+    private static void saveHtml(String html, String ep) {
         DownMsg downHTML = new DownMsg();
-        downHTML.setContent(str);
+        downHTML.setContent(html);
         downHTML.setFilePath(ConstantDir.ep, ep);
-        downHTML.setFileName(ep + type);
+        downHTML.setFileName(ep + ConstantCommon.HTML);
         IFileChar.saveStrToFile(downHTML);
     }
 
-    private static void saveJson(String str, String ep, String type) {
+    /**
+     * 保存 文件信息 json
+     *
+     * @param epListJson 视频列表json
+     * @param ep         视频id
+     *                   文件类型 json
+     */
+    private static void saveJson(String epListJson, String ep) {
         DownMsg downHTML = new DownMsg();
-        JSONObject jsonObject = JSONObject.parseObject(str);
-        str = JSON.toJSONString(jsonObject, SerializerFeature.PrettyFormat);
-        downHTML.setContent(str);
+        JSONObject jsonObject = JSONObject.parseObject(epListJson);
+        epListJson = JSON.toJSONString(jsonObject, SerializerFeature.PrettyFormat);
+        downHTML.setContent(epListJson);
         downHTML.setFilePath(ConstantDir.ep, ep);
-        downHTML.setFileName(ep + type);
+        downHTML.setFileName(ep + ConstantCommon.JSON);
+        IFileChar.saveStrToFile(downHTML);
+    }
+
+    /**
+     * 保存down信息
+     *
+     * @param downMsgList 组织好的下载信息
+     * @param ep
+     */
+    private static void saveDown(List<DownMsg> downMsgList, String ep) {
+        //List<DownMsg> downMsgList = new ArrayList<>();
+        DownMsg downHTML = new DownMsg();
+        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(downMsgList));
+        String downJson = JSON.toJSONString(jsonArray, SerializerFeature.PrettyFormat);
+        downHTML.setContent(downJson);
+        downHTML.setFilePath(ConstantDir.ep, ep);
+        downHTML.setFileName(ep + "down" + ConstantCommon.JSON);
         IFileChar.saveStrToFile(downHTML);
     }
 
@@ -171,6 +215,25 @@ public class EPFLV implements IVideo {
             return null;
         }
         return IFileChar.readFileToString(downHTML);
+    }
+
+    /**
+     * 读取下载文件的信息
+     *
+     * @param ep   文件号
+     * @param type 类型
+     * @return
+     */
+    private static List<DownMsg> readDown(String ep, String type) {
+        DownMsg downHTML = new DownMsg();
+        downHTML.setFilePath(ConstantDir.ep, ep);
+        downHTML.setFileName(ep + "down" + type);
+        if (!IFileChar.exist(downHTML)) {
+            return null;
+        }
+        String json = IFileChar.readFileToString(downHTML);
+
+        return JSONArray.parseArray(json, DownMsg.class);
     }
 
     /**
@@ -194,6 +257,20 @@ public class EPFLV implements IVideo {
                 e.printStackTrace();
             }
         }*/
+    }
+
+    public void downFile(List<DownMsg> downMsgList, int index) {
+        // 地址，文件路径，文件名。type，headers
+        int size = downMsgList.size();
+        // 录入1说明看第一集,坐标为0
+        if (index < 1 || index > size) {
+            log.info("请正确录入第几集, 当前一共有 【{}】", size);
+            return;
+        }
+        index--;
+        log.info("准备下载第 【{}】 集", index);
+        down.downFile(downMsgList.get(index));
+
     }
 
 }
