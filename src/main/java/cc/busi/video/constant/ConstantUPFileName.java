@@ -19,6 +19,6 @@ public class ConstantUPFileName {
     /* av换cid json */
     public static String d3_up_video_cid_json_name = "[av%s]_[json]_[aidToCid]%s";
     /* cid换 视频真实地址 json */
-    public static String d3_up_video_real_json_name = "[av%s]_[json]_[realVideo]%s";
+    public static String d3_up_video_real_json_name = "[av%s]_[json]_[%s]_[realVideo]%s";
 
 }

@@ -8,6 +8,7 @@ import cc.busi.video.constant.ConstantVideoFlvURL;
 import cc.busi.video.vo.BVideoVO;
 import cc.constant.*;
 import cc.entity.DownMsg;
+import cc.enums.VideoType;
 import cc.utils.file.IFileByte;
 import cc.utils.file.IFileChar;
 import cc.utils.file.impl.InputStreamUtils;
@@ -116,11 +117,9 @@ public class AVFlv implements IVideo {
             // 文件路径
             String d2_up_idFormat = String.format(ConstantDir.d2_up_idFormat, bVideoVO.getOwner().getMid(), bVideoVO.getOwner().getName());
             downMsg.setFilePath(ConstantDir.d1_up, d2_up_idFormat, ConstantDir.d3_up_video, aid);
-
             // 文件名
             String fileName = String.format(ConstantUPFileName.d3_up_video_name, bVideoVO.getAid(), title, cidVO.getPart(), ConstantFile.FLV);
             downMsg.setFileName(fileName);
-
             // 请求头
             downMsg.setHeader(ConstantHeader.mapFlv);
             downMsgList.add(downMsg);
@@ -197,7 +196,7 @@ public class AVFlv implements IVideo {
      * @param downMsgList 视频真实地址信息
      * @param filePath    下载信息
      */
-    public void saveCidJson(List<DownMsg> downMsgList, String filePath, String aid) {
+    public void saveCidJson(List<DownMsg> downMsgList, String filePath, String aid, VideoType type) {
         DownMsg downMsg = new DownMsg();
 
         JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(downMsgList));
@@ -206,12 +205,12 @@ public class AVFlv implements IVideo {
         downMsg.setContent(content);
         downMsg.setFilePath(filePath);
         // 后缀名固定为json
-        String d3_up_video_cid_json_name = String.format(ConstantUPFileName.d3_up_video_real_json_name, aid, ConstantFile.JSON);
+        String d3_up_video_cid_json_name = String.format(ConstantUPFileName.d3_up_video_real_json_name, aid, type, ConstantFile.JSON);
         downMsg.setFileName(d3_up_video_cid_json_name);
         // 如果不存在就保存
-        if (!IFileChar.exist(downMsg)) {
-            IFileChar.saveStrToFile(downMsg);
-        }
+        //if (!IFileChar.exist(downMsg)) {
+        IFileChar.saveStrToFile(downMsg);
+        //}
     }
 
 

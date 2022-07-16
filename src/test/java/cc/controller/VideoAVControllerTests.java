@@ -7,6 +7,7 @@
 
 package cc.controller;
 
+import cc.enums.VideoType;
 import org.junit.Test;
 
 public class VideoAVControllerTests {
@@ -28,8 +29,14 @@ public class VideoAVControllerTests {
      */
     @Test
     public void dAVMP4() {
-        String avCode = "";
+        String avCode = "BV17f4y1o7Fw";
         videoAVController.mp4(avCode);
+    }
+
+    @Test
+    public void flow() {
+        String avCode = "BV1Kr4y1E7w3";
+        videoAVController.flow(avCode, VideoType.MP4);
     }
 
 }

@@ -9,12 +9,12 @@ public class ConstantVideoFlvURL {
     // 视频相关的地址
 
     /**
-     * 网页视频根目录
+     * 1. aid格式化视频地址
      */
     public static final String videoUrl = "https://www.bilibili.com/video/av%s";
 
     /**
-     * 封面地址
+     * 2. 封面地址
      */
     public static final String imgXsoupPath = "//meta[12]/@content";
     public static final String pic = "pic";
@@ -31,7 +31,7 @@ public class ConstantVideoFlvURL {
     //http://i2.hdslb.com/bfs/archive/baf3a437486008249cdd0ab4c66ad8612ae7f21e.png  穹妹
 
     /**
-     * av，bv互转地址
+     * 3. av，bv互转地址
      */
     public static final String bvidToMsg = "http://api.bilibili.com/x/web-interface/archive/stat?bvid=%s";
     /*
@@ -39,18 +39,18 @@ public class ConstantVideoFlvURL {
     */
 
     /**
-     * av转cid
+     * 4. av转cid
      */
     public static final String aidToCid = "https://api.bilibili.com/x/web-interface/view?aid=%s";
 
     /**
-     * 前面参数固定
+     * 5. 用aid和cid获取真实视频地址
      * 参数 avid,cid,qn
      */
     public static final String aidCidToRealVideoUrl = "https://api.bilibili.com/x/player/playurl?fnval=2&otype=json&fnver=0&player=1&avid=%s&cid=%s&qn=%s";
 
     /**
-     * 获得720直接播放的地址
+     * 6. 获得720直接播放的地址
      */
     public static final String aidCidToRealVideoUrl_720 = "https://api.bilibili.com/x/player/playurl?fourk=1&platform=html5&high_quality=1&qn=120&aid=%s&bvid=%s&cid=%s";
 

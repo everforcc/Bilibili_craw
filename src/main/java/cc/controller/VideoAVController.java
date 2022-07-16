@@ -8,6 +8,7 @@
 package cc.controller;
 
 import cc.constant.ConstantQuality;
+import cc.enums.VideoType;
 import cc.service.IVideoAVService;
 import cc.service.impl.VideoAVServiceImpl;
 
@@ -27,6 +28,10 @@ public class VideoAVController {
      */
     public void mp4(String input) {
         iVideoAVService.mp4(input);
+    }
+
+    public void flow(String input, VideoType videoType) {
+        iVideoAVService.flow(input, ConstantQuality.quality_1080, videoType);
     }
 
     /**

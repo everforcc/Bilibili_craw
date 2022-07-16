@@ -2,9 +2,10 @@ package cc.busi.video.flow;
 
 import cc.busi.IVideo;
 import cc.busi.check.CheckReturn;
+import cc.busi.video.constant.ConstantUPFileName;
+import cc.busi.video.constant.ConstantVideoFlvURL;
 import cc.busi.video.vo.BVideoVO;
 import cc.constant.*;
-import cc.busi.video.constant.ConstantVideoFlvURL;
 import cc.entity.DownMsg;
 import cc.utils.http.IHttp;
 import cc.utils.http.impl.HttpUrlConnectionUtils;
@@ -43,6 +44,7 @@ public class AVMP4 implements IVideo {
 
     /**
      * 获取视频真实地址
+     *
      * @param bVideoVO
      * @return
      */
@@ -54,12 +56,12 @@ public class AVMP4 implements IVideo {
         String bvid = bVideoVO.getBvid();
         // 3. cid集合
         List<BVideoVO.CidVO> cidVOList = bVideoVO.getPages();
-
+        String title = bVideoVO.getTitle();
         // 4. 便利cid下载
         for (BVideoVO.CidVO cidVO : cidVOList) {
             DownMsg downMsg = new DownMsg();
             // 设置番号
-            downMsg.setAid(aid);
+            downMsg.setAid("av" + aid);
             // 校验
             // 这个位置请求mp4地址的链接
             String urlPath = String.format(ConstantVideoFlvURL.aidCidToRealVideoUrl_720, aid, bvid, cidVO.getCid());
@@ -69,14 +71,18 @@ public class AVMP4 implements IVideo {
             // 获得mp4的播放地址
             String realUrl = getRealFlvUrl(videoJson);
             log.info("realUrl: 【{}】", realUrl);
-            // 组织文件信息
+            // 视频文件真实地址
             downMsg.setUrl(realUrl);
+            // 请求方式
+            downMsg.setReqType(ConstantReqType.GET);
+            // 文件路径
+            String d2_up_idFormat = String.format(ConstantDir.d2_up_idFormat, bVideoVO.getOwner().getMid(), bVideoVO.getOwner().getName());
+            downMsg.setFilePath(ConstantDir.d1_up, d2_up_idFormat, ConstantDir.d3_up_video, aid);
+            // 文件名
+            String fileName = String.format(ConstantUPFileName.d3_up_video_name, bVideoVO.getAid(), title, cidVO.getPart(), ConstantFile.MP4);
+            downMsg.setFileName(fileName);
 
-            String up = String.format(ConstantDir.d2_up_idFormat, bVideoVO.getOwner().getMid(), bVideoVO.getOwner().getName());
-            downMsg.setFilePath(up, ConstantDir.av_mp4, aid);
-
-            downMsg.setFileName(bVideoVO.getAid() + cidVO.getPart() + ConstantFile.MP4);
-            downMsg.setReqType(ConstantFile.MP4);
+            // 请求头
             downMsg.setHeader(ConstantHeader.mapFlv);
             downMsgList.add(downMsg);
         }

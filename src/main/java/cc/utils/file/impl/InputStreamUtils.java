@@ -72,7 +72,6 @@ public class InputStreamUtils implements IFileByte {
         if (fileLength.compareTo(new BigDecimal(1)) < 1) {
             fileLength = new BigDecimal(conn.getHeaderField("Content-Length"));
         }
-        log.info("视频大小:" + calSize(fileLength));
         // 文件如何拆分的问题，估计最后还是的计算，但是结果可以就好
         // 增加1023 加载自身一位正好1 k
         // 可以分批下载到本地再合并，多个线程
@@ -94,6 +93,7 @@ public class InputStreamUtils implements IFileByte {
     public void downByUrl(String url, String dir, String fileName) {
         URL uri = new URL(url);
         InputStream in = uri.openStream();
+        // 小文件可能不准,获取不到准确的文件大小
         commonDownFile(uri.openStream(), dir, fileName, new BigDecimal(in.available()));
     }
 
@@ -103,11 +103,10 @@ public class InputStreamUtils implements IFileByte {
      * @param inputstream 输入流
      * @param filePath    文件路径
      * @param fileName    文件名
-     * @throws Exception 抛出异常
      */
     @SneakyThrows
     private static void commonDownFile(InputStream inputstream, String filePath, String fileName, BigDecimal fileLength) {
-        log.info("视频大小:" + calSize(fileLength));
+        log.info("文件大小:" + calSize(fileLength));
         // 总时间
         Date begindate = new Date();
 
@@ -140,9 +139,17 @@ public class InputStreamUtils implements IFileByte {
             if (fileLength.compareTo(new BigDecimal(0)) > 0) {
                 tempLength = tempLength.add(new BigDecimal(length));
                 // 每 1% 跳出一行数据
+                /**
+                 * 1. tempLength 是每次读取的字节数
+                 * 2. tempLength*100
+                 * 3. 结果除以 文件总长 截断保留一位小数
+                 * 4.
+                 */
+                log.info("tempLength: 【{}】", tempLength);
+                log.info("fileLength: 【{}】", fileLength);
                 tempRate = new BigDecimal(df.format(tempLength.multiply(new BigDecimal(100)).divide(fileLength, 1, RoundingMode.DOWN)));
                 if (tempRate.compareTo(rate) > 0) {
-                    log.info(fileName + ":" + tempRate + "%");
+                    log.info("文件下载进度【{}】【{}%】", fileName, tempRate);
                     rate = tempRate;
                 }
             }
@@ -181,23 +188,50 @@ public class InputStreamUtils implements IFileByte {
         if (bigDecimal.compareTo(base = base.multiply(twoPower10)) <= 0) {
             // bigDecimal单位是 byte, 这里*1024/1024 结果还是 byte
             String result = bigDecimal.multiply(twoPower10).divide(base, 2, RoundingMode.HALF_UP) + "b";
-            log.info("文件大小 【{}】", result);
+            //log.info("文件大小 【{}】", result);
             return result;
         } else if (bigDecimal.compareTo(base = base.multiply(twoPower10)) <= 0) {
             // bigDecimal单位是 byte, 这里*1024/1024/1024 结果是 kb
             String result = bigDecimal.multiply(twoPower10).divide(base, 2, RoundingMode.HALF_UP) + "kb";
-            log.info("文件大小 【{}】", result);
+            //log.info("文件大小 【{}】", result);
             return result;
         } else if (bigDecimal.compareTo(base = base.multiply(twoPower10)) <= 0) {
             String result = bigDecimal.multiply(twoPower10).divide(base, 2, RoundingMode.HALF_UP) + "MB";
-            log.info("文件大小 【{}】", result);
+            //log.info("文件大小 【{}】", result);
             return result;
         } else if (bigDecimal.compareTo(base = base.multiply(twoPower10)) <= 0) {
             String result = bigDecimal.multiply(twoPower10).divide(base, 2, RoundingMode.HALF_UP) + "GB";
-            log.info("文件大小 【{}】", result);
+            //log.info("文件大小 【{}】", result);
             return result;
         }
         return "-1b 文件过大";
+    }
+
+    public static void main(String[] args) {
+
+        // 文件大小
+        BigDecimal fileLength = new BigDecimal(70.86 * 1024);
+        int size = 70 * 1024;
+        // 格式化结果
+        DecimalFormat df = new DecimalFormat("00");
+
+        int length = 0;
+        BigDecimal tempLength = new BigDecimal(length);
+        BigDecimal rate = new BigDecimal("0.01");
+        BigDecimal tempRate;
+        byte[] buf = new byte[1024];
+        while ((length = (size = size - 1024)) > 0) {
+            if (fileLength.compareTo(new BigDecimal(0)) > 0) {
+                tempLength = tempLength.add(new BigDecimal(length));
+                // 每 1% 跳出一行数据
+                tempRate = new BigDecimal(df.format(tempLength.multiply(new BigDecimal(100)).divide(fileLength, 1, RoundingMode.DOWN)));
+                if (tempRate.compareTo(rate) > 0) {
+                    log.info("文件下载进度【{}%】", tempRate);
+                    rate = tempRate;
+                }
+            }
+            //  fo.write(buf, 0, length);
+        }
     }
 
 }
