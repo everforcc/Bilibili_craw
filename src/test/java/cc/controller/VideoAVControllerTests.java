@@ -18,8 +18,9 @@ public class VideoAVControllerTests {
      */
     @Test
     public void dAVFlv() {
-        String avCode = "BV14v4y1N7Du";
-        videoAVController.flv(avCode);
+        String avCode_77 = "BV1Za41167dX";
+        String avCode = "BV1ST4y1r79B";
+        videoAVController.flv(avCode_77);
     }
 
     /**

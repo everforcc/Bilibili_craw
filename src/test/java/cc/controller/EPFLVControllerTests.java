@@ -16,11 +16,11 @@ public class EPFLVControllerTests {
     /**
      * todo 待完善校验
      */
-    @Test
-    public void allEp() {
-        String input = "ep7823";
-        epflvController.dEp(input);
-    }
+//    @Test
+//    public void allEp() {
+//        String input = "ep7823";
+//        epflvController.dEp(input);
+//    }
 
     @Test
     public void oneEp() {

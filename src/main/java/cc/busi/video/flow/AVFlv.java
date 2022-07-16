@@ -3,11 +3,10 @@ package cc.busi.video.flow;
 import cc.busi.IVideo;
 import cc.busi.check.CheckInput;
 import cc.busi.check.CheckReturn;
+import cc.busi.video.constant.ConstantUPFileName;
+import cc.busi.video.constant.ConstantVideoFlvURL;
 import cc.busi.video.vo.BVideoVO;
-import cc.constant.ConstantCommon;
-import cc.constant.ConstantDir;
-import cc.constant.ConstantHeader;
-import cc.constant.ConstantVideoFlvURL;
+import cc.constant.*;
 import cc.entity.DownMsg;
 import cc.utils.file.IFileByte;
 import cc.utils.file.IFileChar;
@@ -15,7 +14,9 @@ import cc.utils.file.impl.InputStreamUtils;
 import cc.utils.http.IHttp;
 import cc.utils.http.impl.HttpUrlConnectionUtils;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class AVFlv implements IVideo {
     // 请求工具
     private static final IHttp iHttp = new HttpUrlConnectionUtils();
 
+    /* 保存json等信息 */
     private IFileByte iFileByte = new InputStreamUtils();
 
     /**
@@ -56,9 +58,9 @@ public class AVFlv implements IVideo {
         // 根据id请求必须有返回数据
         // 根据aid拿到cid的数据
         String urlPath = String.format(ConstantVideoFlvURL.aidToCid, aid);
-        String cidJson = iHttp.get(urlPath, ConstantVideoFlvURL.aidToCidType, ConstantHeader.map, ConstantVideoFlvURL.charset);
+        String cidJson = iHttp.get(urlPath, ConstantReqType.GET, ConstantHeader.map, ConstantCharset.UTF_8);
         // 校验返回的json
-        CheckReturn.checkJson(cidJson);
+        // CheckReturn.checkJson(cidJson);
         return cidJson;
     }
 
@@ -72,7 +74,7 @@ public class AVFlv implements IVideo {
         // 格式化
         JSONObject jsonObject = JSON.parseObject(json);
         // 校验
-        // CheckReturn.checkJson(jsonObject);
+        CheckReturn.checkJson(jsonObject);
         // 校验过后取出需要的数据
         String bVideoString = jsonObject.getString("data");
         // 转换VO
@@ -95,32 +97,28 @@ public class AVFlv implements IVideo {
         String aid = bVideoVO.getAid();
         // 3. cid集合
         List<BVideoVO.CidVO> cidVOList = bVideoVO.getPages();
-
-        // 4. 便利cid下载
+        String title = bVideoVO.getTitle();
+        // 4. 便利 cid下载
         for (BVideoVO.CidVO cidVO : cidVOList) {
             DownMsg downMsg = new DownMsg();
             // 设置番号
             downMsg.setAid("av" + aid);
-            // 校验
             // 组装cid链接
             String urlPath = String.format(ConstantVideoFlvURL.aidCidToRealVideoUrl, aid, cidVO.getCid(), constantQuality);
-            // 请求
-            String videoJson = iHttp.get(urlPath, ConstantVideoFlvURL.aidCidToRealVideoUrlType, ConstantHeader.map, ConstantVideoFlvURL.charset);
-            // 获取视频真实地址
+            // 请求获取视频真实地址
+            String videoJson = iHttp.get(urlPath, ConstantReqType.GET, ConstantHeader.map, ConstantCharset.UTF_8);
+            // 解析json视频真实地址
             String realUrl = getRealFlvUrl(videoJson);
-
-            // 组织文件信息
-            // 文件地址
+            // 视频文件真实地址
             downMsg.setUrl(realUrl);
             // 链接请求方式
-            downMsg.setReqType(ConstantVideoFlvURL.downFileUrlType);
-            //videoPath(bVideoVO, downMsg, aid);
+            downMsg.setReqType(ConstantReqType.GET);
             // 文件路径
-            String up = String.format(ConstantDir.up, bVideoVO.getOwner().getMid(), bVideoVO.getOwner().getName());
-            downMsg.setFilePath(up, ConstantDir.av_flv, aid);
+            String d2_up_idFormat = String.format(ConstantDir.d2_up_idFormat, bVideoVO.getOwner().getMid(), bVideoVO.getOwner().getName());
+            downMsg.setFilePath(ConstantDir.d1_up, d2_up_idFormat, ConstantDir.d3_up_video, aid);
 
             // 文件名
-            String fileName = String.format(ConstantDir.upFileName, bVideoVO.getAid(), cidVO.getPart(), ConstantVideoFlvURL.downFileTypeFlv);
+            String fileName = String.format(ConstantUPFileName.d3_up_video_name, bVideoVO.getAid(), title, cidVO.getPart(), ConstantFile.FLV);
             downMsg.setFileName(fileName);
 
             // 请求头
@@ -152,7 +150,7 @@ public class AVFlv implements IVideo {
      *
      * @param downMsgList 下载文件信息
      */
-    public void downFile(List<DownMsg> downMsgList) {
+    public void downVideo(List<DownMsg> downMsgList) {
         for (DownMsg downMsg : downMsgList) {
             try {
                 iFileByte.downFlv(downMsg);
@@ -164,19 +162,57 @@ public class AVFlv implements IVideo {
     }
 
     /**
-     * 6. 保存json信息
+     * 6. 下载封面
+     *
+     * @param bVideoVO 封面地址
+     * @param filePath 封面路径
+     */
+    public void downCover(BVideoVO bVideoVO, String filePath) {
+        String d3_up_video_cover_name = String.format(ConstantUPFileName.d3_up_video_cover_name, bVideoVO.getAid(), ConstantFile.JPG);
+        iFileByte.downByUrl(bVideoVO.getPic(), filePath, d3_up_video_cover_name);
+    }
+
+    /**
+     * 7. 保存cid_json信息
      *
      * @param bVideoVO 视频信息
      * @param filePath 下载信息
      */
-    public void saveJson(BVideoVO bVideoVO, String filePath) {
+    public void saveCidJson(BVideoVO bVideoVO, String filePath) {
         DownMsg downMsg = new DownMsg();
         downMsg.setContent(bVideoVO.toString());
         downMsg.setFilePath(filePath);
-        // 后缀名可以截取得到
-        downMsg.setFileName(ConstantDir.video + ConstantCommon.JSON);
-
-        IFileChar.saveStrToFile(downMsg);
+        // 后缀名固定为json
+        String d3_up_video_cid_json_name = String.format(ConstantUPFileName.d3_up_video_cid_json_name, bVideoVO.getAid(), ConstantFile.JSON);
+        downMsg.setFileName(d3_up_video_cid_json_name);
+        // 如果不存在就保存
+        if (!IFileChar.exist(downMsg)) {
+            IFileChar.saveStrToFile(downMsg);
+        }
     }
+
+    /**
+     * 8. 保存视频真实地址_json信息
+     *
+     * @param downMsgList 视频真实地址信息
+     * @param filePath    下载信息
+     */
+    public void saveCidJson(List<DownMsg> downMsgList, String filePath, String aid) {
+        DownMsg downMsg = new DownMsg();
+
+        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(downMsgList));
+        String content = JSONObject.toJSONString(jsonArray, SerializerFeature.PrettyFormat);
+
+        downMsg.setContent(content);
+        downMsg.setFilePath(filePath);
+        // 后缀名固定为json
+        String d3_up_video_cid_json_name = String.format(ConstantUPFileName.d3_up_video_real_json_name, aid, ConstantFile.JSON);
+        downMsg.setFileName(d3_up_video_cid_json_name);
+        // 如果不存在就保存
+        if (!IFileChar.exist(downMsg)) {
+            IFileChar.saveStrToFile(downMsg);
+        }
+    }
+
 
 }

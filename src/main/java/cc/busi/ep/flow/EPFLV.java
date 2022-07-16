@@ -2,6 +2,7 @@ package cc.busi.ep.flow;
 
 import cc.busi.IVideo;
 import cc.busi.check.CheckReturn;
+import cc.busi.ep.constant.ConstantEPFlvURL;
 import cc.busi.ep.dto.EPVideoVO;
 import cc.constant.*;
 import cc.entity.DownMsg;
@@ -33,6 +34,8 @@ public class EPFLV implements IVideo {
 
     private static IHttp down = new HttpUrlConnectionUtils();
 
+    private static final String downSplit = "-down";
+
     /**
      * 2.
      *
@@ -42,7 +45,7 @@ public class EPFLV implements IVideo {
     public String getHTMLByep(String inputEP) {
         String ep = inputEP;
         String html;
-        if (StringUtils.isNotBlank(html = readMsg(ep, ConstantCommon.HTML))) {
+        if (StringUtils.isNotBlank(html = readMsg(ep, ConstantFile.HTML))) {
             log.info("已存在，不重复读取");
             return html;
         }
@@ -52,7 +55,7 @@ public class EPFLV implements IVideo {
         // 根据id请求必须有返回数据
         // 根据aid拿到cid的数据
         String urlPath = String.format(ConstantEPFlvURL.rootUrl, ep);
-        html = iHttp.get(urlPath, ConstantVideoFlvURL.aidToCidType, ConstantHeader.epFlv, inputEP);
+        html = iHttp.get(urlPath, ConstantReqType.GET, ConstantHeader.epFlv, inputEP);
         saveHtml(html, ep);
         return html;
     }
@@ -65,7 +68,7 @@ public class EPFLV implements IVideo {
      */
     public String matchJSON(String ep, String html) {
         String json;
-        if (StringUtils.isNotBlank(json = readMsg(ep, ConstantCommon.JSON))) {
+        if (StringUtils.isNotBlank(json = readMsg(ep, ConstantFile.JSON))) {
             log.info("JSON已存在，不重复读取");
             log.info("json:" + json);
             return json;
@@ -93,7 +96,7 @@ public class EPFLV implements IVideo {
 
         List<DownMsg> downMsgList;
 
-        if (Objects.nonNull(downMsgList = readDown(ep, ConstantCommon.JSON))) {
+        if (Objects.nonNull(downMsgList = readDown(ep, ConstantFile.JSON))) {
             log.info("JSON已存在，不重复读取");
             log.info("json:" + downMsgList);
             return downMsgList;
@@ -114,7 +117,7 @@ public class EPFLV implements IVideo {
             DownMsg downMsg = new DownMsg();
             String url = String.format(ConstantEPFlvURL.epUrlPlayurl, epVideoEp.getId(), epVideoEp.getAid(), epVideoEp.getBvid(), epVideoEp.getCid(), ConstantQuality.quality_1080_60);
             log.info("url:" + url);
-            String realVideojson = iHttp.get(url, ConstantVideoFlvURL.GET, ConstantHeader.epFlv, epVideoEp.getAid());
+            String realVideojson = iHttp.get(url, ConstantReqType.GET, ConstantHeader.epFlv, epVideoEp.getAid());
 
             log.info("realVideojson:" + realVideojson);
             String realFlvUrlurl = getRealFlvUrl(realVideojson);
@@ -122,11 +125,11 @@ public class EPFLV implements IVideo {
             downMsg.setUrl(realFlvUrlurl);
 
 
-            downMsg.setFilePath(ConstantDir.ep, "ep" + epVideoEp.getId(), epName, epVideoEp.getTitle());
+            downMsg.setFilePath(ConstantDir.d1_ep, "ep" + epVideoEp.getId(), epName); //epVideoEp.getTitle(),
             // downMsg.setFilePath(ConstantDir.av,up,aid,ConstantDir.video);
             // TODO 可以手动格式化个格式 [AV][PART].flv
-            downMsg.setFileName(epVideoEp.getTitleFormat() + ConstantVideoFlvURL.downFileTypeFlv);
-            downMsg.setReqType(ConstantVideoFlvURL.downFileUrlType);
+            downMsg.setFileName(epVideoEp.getTitleFormat() + ConstantFile.FLV);
+            downMsg.setReqType(ConstantReqType.GET);
             downMsg.setHeader(ConstantHeader.mapFlv);
             downMsgList.add(downMsg);
         }
@@ -161,8 +164,8 @@ public class EPFLV implements IVideo {
     private static void saveHtml(String html, String ep) {
         DownMsg downHTML = new DownMsg();
         downHTML.setContent(html);
-        downHTML.setFilePath(ConstantDir.ep, ep);
-        downHTML.setFileName(ep + ConstantCommon.HTML);
+        downHTML.setFilePath(ConstantDir.d1_ep, ep);
+        downHTML.setFileName(ep + ConstantFile.HTML);
         IFileChar.saveStrToFile(downHTML);
     }
 
@@ -178,8 +181,8 @@ public class EPFLV implements IVideo {
         JSONObject jsonObject = JSONObject.parseObject(epListJson);
         epListJson = JSON.toJSONString(jsonObject, SerializerFeature.PrettyFormat);
         downHTML.setContent(epListJson);
-        downHTML.setFilePath(ConstantDir.ep, ep);
-        downHTML.setFileName(ep + ConstantCommon.JSON);
+        downHTML.setFilePath(ConstantDir.d1_ep, ep);
+        downHTML.setFileName(ep + ConstantFile.JSON);
         IFileChar.saveStrToFile(downHTML);
     }
 
@@ -195,8 +198,8 @@ public class EPFLV implements IVideo {
         JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(downMsgList));
         String downJson = JSON.toJSONString(jsonArray, SerializerFeature.PrettyFormat);
         downHTML.setContent(downJson);
-        downHTML.setFilePath(ConstantDir.ep, ep);
-        downHTML.setFileName(ep + "down" + ConstantCommon.JSON);
+        downHTML.setFilePath(ConstantDir.d1_ep, ep);
+        downHTML.setFileName(ep + downSplit + ConstantFile.JSON);
         IFileChar.saveStrToFile(downHTML);
     }
 
@@ -209,7 +212,7 @@ public class EPFLV implements IVideo {
      */
     private static String readMsg(String ep, String type) {
         DownMsg downHTML = new DownMsg();
-        downHTML.setFilePath(ConstantDir.ep, ep);
+        downHTML.setFilePath(ConstantDir.d1_ep, ep);
         downHTML.setFileName(ep + type);
         if (!IFileChar.exist(downHTML)) {
             return null;
@@ -226,8 +229,8 @@ public class EPFLV implements IVideo {
      */
     private static List<DownMsg> readDown(String ep, String type) {
         DownMsg downHTML = new DownMsg();
-        downHTML.setFilePath(ConstantDir.ep, ep);
-        downHTML.setFileName(ep + "down" + type);
+        downHTML.setFilePath(ConstantDir.d1_ep, ep);
+        downHTML.setFileName(ep + downSplit + type);
         if (!IFileChar.exist(downHTML)) {
             return null;
         }
@@ -267,8 +270,8 @@ public class EPFLV implements IVideo {
             log.info("请正确录入第几集, 当前一共有 【{}】", size);
             return;
         }
-        index--;
         log.info("准备下载第 【{}】 集", index);
+        index--;
         down.downFile(downMsgList.get(index));
 
     }

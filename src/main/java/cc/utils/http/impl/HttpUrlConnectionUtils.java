@@ -1,6 +1,6 @@
 package cc.utils.http.impl;
 
-import cc.constant.ConstantCommon;
+import cc.constant.ConstantFile;
 import cc.entity.DownMsg;
 import cc.utils.file.IFileByte;
 import cc.utils.file.impl.ApacheFileUtils;
@@ -63,7 +63,7 @@ public class HttpUrlConnectionUtils implements IHttp {
         log.info("文件大小: " + fileLength);
 
         // 按照文件大小选择想在接口
-        if (fileLength.compareTo(ConstantCommon.MAXIMUM_SIZE) > 0) {
+        if (fileLength.compareTo(ConstantFile.MAXIMUM_SIZE) > 0) {
             // 小文件还行，大文件用这种方法，无法处理进度
             log.info("使用接口下载 【iFileStream】");
             iFileByteStream.downFile(conn.getInputStream(), downMsg.getFilePath(), downMsg.getFileName(), fileLength);

@@ -3,9 +3,8 @@ package cc.busi.video.flow;
 import cc.busi.IVideo;
 import cc.busi.check.CheckReturn;
 import cc.busi.video.vo.BVideoVO;
-import cc.constant.ConstantDir;
-import cc.constant.ConstantHeader;
-import cc.constant.ConstantVideoFlvURL;
+import cc.constant.*;
+import cc.busi.video.constant.ConstantVideoFlvURL;
 import cc.entity.DownMsg;
 import cc.utils.http.IHttp;
 import cc.utils.http.impl.HttpUrlConnectionUtils;
@@ -65,7 +64,7 @@ public class AVMP4 implements IVideo {
             // 这个位置请求mp4地址的链接
             String urlPath = String.format(ConstantVideoFlvURL.aidCidToRealVideoUrl_720, aid, bvid, cidVO.getCid());
             // 请求获得 mp4的播放地址 的json
-            String videoJson = iHttp.get(urlPath, ConstantVideoFlvURL.aidCidToRealVideoUrlType, ConstantHeader.map, ConstantVideoFlvURL.charset);
+            String videoJson = iHttp.get(urlPath, ConstantReqType.GET, ConstantHeader.map, ConstantCharset.UTF_8);
             log.info("videoJson: 【{}】", videoJson);
             // 获得mp4的播放地址
             String realUrl = getRealFlvUrl(videoJson);
@@ -73,11 +72,11 @@ public class AVMP4 implements IVideo {
             // 组织文件信息
             downMsg.setUrl(realUrl);
 
-            String up = String.format(ConstantDir.up, bVideoVO.getOwner().getMid(), bVideoVO.getOwner().getName());
+            String up = String.format(ConstantDir.d2_up_idFormat, bVideoVO.getOwner().getMid(), bVideoVO.getOwner().getName());
             downMsg.setFilePath(up, ConstantDir.av_mp4, aid);
 
-            downMsg.setFileName(bVideoVO.getAid() + cidVO.getPart() + ConstantVideoFlvURL.downFileTypeMP4);
-            downMsg.setReqType(ConstantVideoFlvURL.downFileTypeMP4);
+            downMsg.setFileName(bVideoVO.getAid() + cidVO.getPart() + ConstantFile.MP4);
+            downMsg.setReqType(ConstantFile.MP4);
             downMsg.setHeader(ConstantHeader.mapFlv);
             downMsgList.add(downMsg);
         }

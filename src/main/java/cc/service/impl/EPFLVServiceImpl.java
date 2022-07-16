@@ -42,7 +42,6 @@ public class EPFLVServiceImpl implements IEPFLVService {
         // 4. 拿到url组装下载信息
         List<DownMsg> downMsgList = epflv.getFileMsg(ep, json);
         // 5. down
-        //downMsgList.forEach(System.out::println);
         epflv.downFile(downMsgList, index);
     }
 }

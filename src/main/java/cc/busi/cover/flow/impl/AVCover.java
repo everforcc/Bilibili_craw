@@ -4,7 +4,8 @@ import cc.busi.check.CheckInput;
 import cc.busi.cover.flow.ICover;
 import cc.constant.ConstantDir;
 import cc.constant.ConstantHeader;
-import cc.constant.ConstantVideoFlvURL;
+import cc.busi.video.constant.ConstantVideoFlvURL;
+import cc.constant.ConstantReqType;
 import cc.entity.DownMsg;
 import cc.utils.http.IHttp;
 import cc.utils.http.impl.HttpUrlConnectionUtils;
@@ -48,7 +49,7 @@ public class AVCover implements ICover {
      */
     public String htmlByAid(String aid) {
         String url = String.format(ConstantVideoFlvURL.videoUrl, aid);
-        return iHttp.get(url, ConstantVideoFlvURL.GET, ConstantHeader.web);
+        return iHttp.get(url, ConstantReqType.GET, ConstantHeader.web);
     }
 
     /**
@@ -79,14 +80,14 @@ public class AVCover implements ICover {
         if (StringUtils.isNotEmpty(filePath)) {
             downMsg.setFilePath(filePath);
         } else {
-            String up = String.format(ConstantDir.up, "pic", "pic");
+            String up = String.format(ConstantDir.d2_up_idFormat, "pic", "pic");
             downMsg.setFilePath(up, ConstantDir.av_flv, aid);
         }
 
         // 后缀名可以截取得到
         downMsg.setFileName("[av" + aid + "].jpg");
         downMsg.setHeader(ConstantHeader.web);
-        downMsg.setReqType(ConstantVideoFlvURL.GET);
+        downMsg.setReqType(ConstantReqType.GET);
         return downMsg;
     }
 

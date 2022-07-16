@@ -21,14 +21,14 @@ public class JsoupUtils implements IHttp {
 
         Connection connection = Jsoup.connect(urlPath).method(method).ignoreContentType(true);// 获取连接,不检查格式
 
-        if(map.containsKey(ConstantHeader.cookie)){
+        if(map.containsKey(ConstantHeader.COOKIE_KEY)){
             // jsoup的cookie必须这样设置
-            connection.cookie(ConstantHeader.cookie,map.get(ConstantHeader.cookie));
+            connection.cookie(ConstantHeader.COOKIE_KEY,map.get(ConstantHeader.COOKIE_KEY));
         }
 
-        if(map.containsKey(ConstantHeader.USER_AGENT)){
+        if(map.containsKey(ConstantHeader.USER_AGENT_KEY)){
             // jsoup的cookie必须这样设置
-            connection.userAgent(map.get(ConstantHeader.USER_AGENT));
+            connection.userAgent(map.get(ConstantHeader.USER_AGENT_KEY));
         }
 
         if(map!=null&&map.size()>0){

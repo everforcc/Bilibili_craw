@@ -7,7 +7,7 @@
 
 package cc.utils.file;
 
-import cc.constant.ConstantCommon;
+import cc.constant.ConstantCharset;
 import cc.entity.DownMsg;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
@@ -24,7 +24,7 @@ public interface IFileChar {
      */
     @SneakyThrows
     static void saveStrToFile(File file, String content) {
-        FileUtils.writeStringToFile(file, content, ConstantCommon.UTF_8);
+        FileUtils.writeStringToFile(file, content, ConstantCharset.UTF_8);
     }
 
     /**
@@ -38,7 +38,7 @@ public interface IFileChar {
     static void saveStrToFile(String dir, String fileName, String content) {
         // 文件对象
         File file = new File(dir + File.separator + fileName);
-        FileUtils.writeStringToFile(file, content, ConstantCommon.UTF_8);
+        FileUtils.writeStringToFile(file, content, ConstantCharset.UTF_8);
     }
 
     /**
@@ -50,7 +50,7 @@ public interface IFileChar {
     static void saveStrToFile(DownMsg downMsg) {
         // 文件对象
         File file = new File(downMsg.getFilePath() + File.separator + downMsg.getFileName());
-        FileUtils.writeStringToFile(file, downMsg.getContent(), ConstantCommon.UTF_8);
+        FileUtils.writeStringToFile(file, downMsg.getContent(), ConstantCharset.UTF_8);
     }
 
     /**
@@ -61,7 +61,7 @@ public interface IFileChar {
      */
     @SneakyThrows
     static String readFileToString(File file) {
-        return FileUtils.readFileToString(file, ConstantCommon.UTF_8);
+        return FileUtils.readFileToString(file, ConstantCharset.UTF_8);
     }
 
     /**
@@ -73,7 +73,7 @@ public interface IFileChar {
     @SneakyThrows
     static String readFileToString(String filePath, String fileName) {
         File file = new File(filePath + File.separator + fileName);
-        return FileUtils.readFileToString(file, ConstantCommon.UTF_8);
+        return FileUtils.readFileToString(file, ConstantCharset.UTF_8);
     }
 
     /**
@@ -85,7 +85,7 @@ public interface IFileChar {
     @SneakyThrows
     static String readFileToString(DownMsg downMsg) {
         File file = new File(downMsg.getFilePath() + File.separator + downMsg.getFileName());
-        return FileUtils.readFileToString(file, ConstantCommon.UTF_8);
+        return FileUtils.readFileToString(file, ConstantCharset.UTF_8);
     }
 
     /**

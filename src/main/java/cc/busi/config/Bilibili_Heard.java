@@ -7,7 +7,8 @@
 
 package cc.busi.config;
 
-import cc.constant.ConstantCommon;
+import cc.constant.ConstantHeader;
+import cc.constant.ConstantReqType;
 import cc.entity.DownMsg;
 import cc.utils.date.ToolTime;
 import lombok.SneakyThrows;
@@ -114,10 +115,10 @@ public class Bilibili_Heard {
 
         // 1. conn.setRequestProperty("Accept-Encoding", " gzip, deflate, br"); //加了这个会莫名其妙的乱码 注意存下来
         // 2. 不选择压缩否则会乱码https://zhuanlan.zhihu.com/p/35643926
-        conn.setRequestProperty("User-Agent", ConstantCommon.userAgent);
-        conn.setRequestProperty("Cookie", ConstantCommon.cookie);
+        conn.setRequestProperty(ConstantHeader.USER_AGENT_KEY, ConstantHeader.USER_AGENT_VALUE);
+        conn.setRequestProperty(ConstantHeader.COOKIE_KEY, ConstantHeader.COOKIE_VALUE);
         try {
-            conn.setRequestMethod(ConstantCommon.GET); //全都是get
+            conn.setRequestMethod(ConstantReqType.GET); //全都是get
         } catch (ProtocolException e) {
             e.printStackTrace();
         }
@@ -129,7 +130,7 @@ public class Bilibili_Heard {
         Set<String> keys = headers.keySet();
         for (String key : keys) {
             String val = conn.getHeaderField(key);
-            log.info(key + "    " + val);
+            log.debug(key + "    " + val);
         }
         log.info("上次修改时间:" + ToolTime.nowTime(conn.getLastModified()));
     }
@@ -148,8 +149,8 @@ public class Bilibili_Heard {
         //2, 打开连接
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         // 模拟浏览器请求
-        conn.setRequestProperty("User-agent", ConstantCommon.userAgent);
-        conn.setRequestProperty("cookie", ConstantCommon.cookie);
+        conn.setRequestProperty(ConstantHeader.USER_AGENT_KEY, ConstantHeader.USER_AGENT_VALUE);
+        conn.setRequestProperty(ConstantHeader.COOKIE_KEY, ConstantHeader.COOKIE_VALUE);
         //3, 设置提交类型
         conn.setRequestMethod(requestMethod);
         //4, 设置允许写出数据,默认是不允许 false

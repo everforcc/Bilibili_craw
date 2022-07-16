@@ -94,7 +94,7 @@ public class InputStreamUtils implements IFileByte {
     public void downByUrl(String url, String dir, String fileName) {
         URL uri = new URL(url);
         InputStream in = uri.openStream();
-        commonDownFile(uri.openStream(), dir + "\\", fileName, new BigDecimal(in.available()));
+        commonDownFile(uri.openStream(), dir, fileName, new BigDecimal(in.available()));
     }
 
     /**

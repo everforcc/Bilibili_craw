@@ -15,6 +15,7 @@ public class UPAlbumControllerTests {
 
     /**
      * todo 待完善校验
+     * 相册的路径和其他的路径都要再说
      */
     @Test
     public void dAVFlv() {

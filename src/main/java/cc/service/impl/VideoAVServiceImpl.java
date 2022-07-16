@@ -9,9 +9,9 @@ package cc.service.impl;
 
 import cc.busi.video.flow.AVFlv;
 import cc.busi.video.flow.AVMP4;
+import cc.busi.video.vo.BVideoVO;
 import cc.entity.DownMsg;
 import cc.service.IVideoAVService;
-import cc.busi.video.vo.BVideoVO;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -35,7 +35,7 @@ public class VideoAVServiceImpl implements IVideoAVService {
         // 1. 从用户录入获取av号
         String avCode = iVideo.urlToAV(input);
 
-        // 2. 用av
+        // 2. 用av换cid
         String cidJson = iVideo.getCidJsonByAid(avCode);
 
         // 3. cid转 对象
@@ -47,14 +47,22 @@ public class VideoAVServiceImpl implements IVideoAVService {
         List<DownMsg> downMsgList = iVideo.getFileMsg(bVideoVO, constantQuality);
 
         // 5. 下载文件,当前为单个下载，所有信息都有了，可以调整
-        iVideo.downFile(downMsgList);
+        iVideo.downVideo(downMsgList);
 
-        if (downMsgList.size() == 0){
+
+        if (downMsgList.size() == 0) {
             return;
         }
         String filePath = downMsgList.get(0).getFilePath();
-        // 6. 保存json
-        iVideo.saveJson(bVideoVO, filePath);
+
+        // 6. 下载封面
+        iVideo.downCover(bVideoVO, filePath);
+
+        // 7. 保存cid json
+        iVideo.saveCidJson(bVideoVO, filePath);
+
+        // 8. 保存视频真实地址 json
+        iVideo.saveCidJson(downMsgList, filePath, bVideoVO.getAid());
     }
 
     @Override
@@ -76,14 +84,14 @@ public class VideoAVServiceImpl implements IVideoAVService {
         List<DownMsg> downMsgList = avmp4.getFileMsg(bVideoVO);
 
         // 5. 下载文件,当前为单个下载，所有信息都有了，可以调整
-        iVideo.downFile(downMsgList);
+        iVideo.downVideo(downMsgList);
 
-        if (downMsgList.size() == 0){
+        if (downMsgList.size() == 0) {
             return;
         }
         String filePath = downMsgList.get(0).getFilePath();
         // 6. 保存json
-        iVideo.saveJson(bVideoVO, filePath);
+        iVideo.saveCidJson(bVideoVO, filePath);
     }
 
     @Override

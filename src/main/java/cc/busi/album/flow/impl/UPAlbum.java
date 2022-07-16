@@ -1,5 +1,6 @@
 package cc.busi.album.flow.impl;
 
+import cc.busi.album.constant.ConstantAlbumUrl;
 import cc.busi.album.dto.BAlbumVO;
 import cc.busi.album.flow.IAlbum;
 import cc.busi.check.CheckReturn;
@@ -36,8 +37,8 @@ public class UPAlbum implements IAlbum {
     public BAlbumVO countByupid(String upid) {
         BAlbumVO bAlbumVO = new BAlbumVO();
         //String url = String.format(ConstantAlbum.doc_list,upid,"5");
-        String url = String.format(ConstantAlbum.upload_count, upid);
-        String json = iHttp.get(url, ConstantVideoFlvURL.GET, ConstantHeader.webJSON);
+        String url = String.format(ConstantAlbumUrl.upload_count, upid);
+        String json = iHttp.get(url, ConstantReqType.GET, ConstantHeader.webJSON);
         log.info(json);
 
         // 格式化
@@ -58,8 +59,8 @@ public class UPAlbum implements IAlbum {
      * @param bAlbumVO 相册信息
      */
     public void allMsg(BAlbumVO bAlbumVO) {
-        String url = String.format(ConstantAlbum.doc_list, bAlbumVO.getUpid(), bAlbumVO.getCount().getAll_count());
-        String json = iHttp.get(url, ConstantVideoFlvURL.GET, ConstantHeader.webJSONCookie);
+        String url = String.format(ConstantAlbumUrl.doc_list, bAlbumVO.getUpid(), bAlbumVO.getCount().getAll_count());
+        String json = iHttp.get(url, ConstantReqType.GET, ConstantHeader.webJSONCookie);
         log.info(json);
 
         // 格式化
@@ -86,11 +87,11 @@ public class UPAlbum implements IAlbum {
                 DownMsg downMsg = new DownMsg();
                 downMsg.setUrl(pic.getImg_src());
 
-                downMsg.setFilePath(upid, ConstantDir.album, doc.getDoc_id());
+                downMsg.setFilePath(upid, ConstantDir.d3_up_album, doc.getDoc_id());
                 // 后缀名可以截取得到
                 downMsg.setFileName(doc.getTitle() + i++ + FileNameUtils.subFileSuffix(pic.getImg_src()));
                 downMsg.setHeader(ConstantHeader.web);
-                downMsg.setReqType(ConstantVideoFlvURL.GET);
+                downMsg.setReqType(ConstantReqType.GET);
 
                 downFile(downMsg);
             }
@@ -114,9 +115,9 @@ public class UPAlbum implements IAlbum {
     public void saveJson(BAlbumVO bAlbumVO) {
         DownMsg downMsg = new DownMsg();
         downMsg.setContent(bAlbumVO.toString());
-        downMsg.setFilePath(bAlbumVO.getUpid(), ConstantDir.album);
+        downMsg.setFilePath(bAlbumVO.getUpid(), ConstantDir.d3_up_album);
         // 后缀名可以截取得到
-        downMsg.setFileName(ConstantDir.album + ConstantCommon.JSON);
+        downMsg.setFileName(ConstantDir.d3_up_album + ConstantFile.JSON);
         IFileChar.saveStrToFile(downMsg);
     }
 

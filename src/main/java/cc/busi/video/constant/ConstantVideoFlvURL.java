@@ -1,4 +1,4 @@
-package cc.constant;
+package cc.busi.video.constant;
 
 /**
  * @author everforcc
@@ -12,9 +12,6 @@ public class ConstantVideoFlvURL {
      * 网页视频根目录
      */
     public static final String videoUrl = "https://www.bilibili.com/video/av%s";
-    public static final String charset = "utf-8";
-    public static final String GET = "GET";
-    public static final String POST = "POST";
 
     /**
      * 封面地址
@@ -42,23 +39,16 @@ public class ConstantVideoFlvURL {
     */
 
     /**
-     *  av转cid
-      */
+     * av转cid
+     */
     public static final String aidToCid = "https://api.bilibili.com/x/web-interface/view?aid=%s";
-    public static final String aidToCidType = "GET";
 
     /**
-     *  前面参数固定
+     * 前面参数固定
      * 参数 avid,cid,qn
      */
     public static final String aidCidToRealVideoUrl = "https://api.bilibili.com/x/player/playurl?fnval=2&otype=json&fnver=0&player=1&avid=%s&cid=%s&qn=%s";
-    public static final String aidCidToRealVideoUrlType = "GET";
 
-    public static final String downFileUrlType = "GET";
-    public static final String downFileTypeFlv = ".flv";
-    public static final String downFileTypeMP4 = ".mp4";
-
-    //
     /**
      * 获得720直接播放的地址
      */
