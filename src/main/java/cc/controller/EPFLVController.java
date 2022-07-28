@@ -27,4 +27,8 @@ public class EPFLVController {
         iepflvService.dEp(input, index);
     }
 
+    public void dEp(String input, int start, int end) {
+        iepflvService.dEp(input, start, end);
+    }
+
 }

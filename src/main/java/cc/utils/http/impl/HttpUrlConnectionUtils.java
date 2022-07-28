@@ -1,5 +1,6 @@
 package cc.utils.http.impl;
 
+import cc.busi.config.Bilibili_Heard;
 import cc.constant.ConstantFile;
 import cc.entity.DownMsg;
 import cc.utils.file.IFileByte;
@@ -23,7 +24,7 @@ import java.util.Map;
 @Slf4j
 public class HttpUrlConnectionUtils implements IHttp {
 
-    private IFileByte iFileByte = new ApacheFileUtils();
+    private IFileByte iFileByteApache = new ApacheFileUtils();
 
     private IFileByte iFileByteStream = new InputStreamUtils();
 
@@ -49,28 +50,38 @@ public class HttpUrlConnectionUtils implements IHttp {
         return content.toString();
     }
 
+    /**
+     * 至少需要四个字段
+     * 1. 地址
+     * 2. 文件路径
+     * 3. 文件名
+     * 4. 请求方式
+     *
+     * @param downMsg 文件信息
+     */
     @SneakyThrows
     @Override
     public void downFile(DownMsg downMsg) {
         // 用url生成请求头
-        HttpURLConnection conn = common(downMsg.getUrl(), downMsg.getReqType(), downMsg.getHeader(), downMsg.getOtherMsg());
+        //HttpURLConnection conn = common(downMsg.getUrl(), downMsg.getReqType(), downMsg.getHeader(), downMsg.getOtherMsg());
+        HttpURLConnection conn = Bilibili_Heard.requestHeard_downFlv(downMsg);
 
         // 获取文件大小
         BigDecimal fileLength = new BigDecimal(conn.getContentLength());
         if (fileLength.compareTo(new BigDecimal(1)) < 1) {
             fileLength = new BigDecimal(conn.getHeaderField("Content-Length"));
         }
-        log.info("文件大小: " + fileLength);
+        //log.info("文件大小: " + fileLength);
 
         // 按照文件大小选择想在接口
-        if (fileLength.compareTo(ConstantFile.MAXIMUM_SIZE) > 0) {
+        //if (fileLength.compareTo(ConstantFile.MAXIMUM_SIZE) > 0) {
             // 小文件还行，大文件用这种方法，无法处理进度
             log.info("使用接口下载 【iFileStream】");
             iFileByteStream.downFile(conn.getInputStream(), downMsg.getFilePath(), downMsg.getFileName(), fileLength);
-        } else {
-            log.info("使用接口下载 【iFile】");
-            iFileByte.downFile(conn.getInputStream(), downMsg.getFilePath(), downMsg.getFileName());
-        }
+//        } else {
+//            log.info("使用接口下载 【iFile】");
+//            iFileByteApache.downFile(conn.getInputStream(), downMsg.getFilePath(), downMsg.getFileName(), fileLength);
+//        }
     }
 
     @SneakyThrows

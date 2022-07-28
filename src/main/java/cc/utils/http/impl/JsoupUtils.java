@@ -1,6 +1,7 @@
 package cc.utils.http.impl;
 
 import cc.constant.ConstantHeader;
+import cc.entity.DownMsg;
 import cc.utils.http.IHttp;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -54,6 +55,13 @@ public class JsoupUtils implements IHttp {
             e.printStackTrace();
         }
         return login.body();
-    };
+    }
+
+    @Override
+    public void downFile(DownMsg downMsg) {
+
+    }
+
+    ;
 
 }

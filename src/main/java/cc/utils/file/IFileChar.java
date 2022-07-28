@@ -14,6 +14,10 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 
+/**
+ * 保存字符信息
+ * 默认使用apache
+ */
 public interface IFileChar {
 
     /**
@@ -90,11 +94,12 @@ public interface IFileChar {
 
     /**
      * 3.1 校验文件是否存在
+     *
      * @param downMsg 文件信息
      * @return 是否存在
      */
     @SneakyThrows
-    static boolean exist(DownMsg downMsg) {
+    static boolean fileExist(DownMsg downMsg) {
         File file = new File(downMsg.getFilePath() + File.separator + downMsg.getFileName());
         return file.exists();
     }

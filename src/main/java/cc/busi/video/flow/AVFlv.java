@@ -9,9 +9,7 @@ import cc.busi.video.vo.BVideoVO;
 import cc.constant.*;
 import cc.entity.DownMsg;
 import cc.enums.VideoType;
-import cc.utils.file.IFileByte;
 import cc.utils.file.IFileChar;
-import cc.utils.file.impl.InputStreamUtils;
 import cc.utils.http.IHttp;
 import cc.utils.http.impl.HttpUrlConnectionUtils;
 import com.alibaba.fastjson.JSON;
@@ -34,7 +32,7 @@ public class AVFlv implements IVideo {
     private static final IHttp iHttp = new HttpUrlConnectionUtils();
 
     /* 保存json等信息 */
-    private IFileByte iFileByte = new InputStreamUtils();
+    //private IFileByte iFileByte = new InputStreamUtils();
 
     /**
      * 1. 从用户录入转为AV号
@@ -152,8 +150,8 @@ public class AVFlv implements IVideo {
     public void downVideo(List<DownMsg> downMsgList) {
         for (DownMsg downMsg : downMsgList) {
             try {
-                iFileByte.downFlv(downMsg);
-                //iHttp.downFile(downMsg);
+                //iFileByte.downFlv(downMsg);
+                iHttp.downFile(downMsg);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -168,7 +166,15 @@ public class AVFlv implements IVideo {
      */
     public void downCover(BVideoVO bVideoVO, String filePath) {
         String d3_up_video_cover_name = String.format(ConstantUPFileName.d3_up_video_cover_name, bVideoVO.getAid(), ConstantFile.JPG);
-        iFileByte.downByUrl(bVideoVO.getPic(), filePath, d3_up_video_cover_name);
+
+        DownMsg downMsg = new DownMsg();
+        downMsg.setFilePath(filePath);
+        downMsg.setFileName(d3_up_video_cover_name);
+        downMsg.setUrl(bVideoVO.getPic());
+        downMsg.setReqType(ConstantReqType.GET);
+
+        //iFileByte.downByUrl(bVideoVO.getPic(), filePath, d3_up_video_cover_name);
+        iHttp.downFile(downMsg);
     }
 
     /**
@@ -185,7 +191,7 @@ public class AVFlv implements IVideo {
         String d3_up_video_cid_json_name = String.format(ConstantUPFileName.d3_up_video_cid_json_name, bVideoVO.getAid(), ConstantFile.JSON);
         downMsg.setFileName(d3_up_video_cid_json_name);
         // 如果不存在就保存
-        if (!IFileChar.exist(downMsg)) {
+        if (!IFileChar.fileExist(downMsg)) {
             IFileChar.saveStrToFile(downMsg);
         }
     }

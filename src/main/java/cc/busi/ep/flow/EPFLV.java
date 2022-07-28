@@ -122,6 +122,10 @@ public class EPFLV implements IVideo {
             log.info("realVideojson:" + realVideojson);
             String realFlvUrlurl = getRealFlvUrl(realVideojson);
             log.info("realFlvUrlurl:" + realFlvUrlurl);
+
+            //
+            downMsg.setAid("ep" + epVideoEp.getAid());
+
             downMsg.setUrl(realFlvUrlurl);
 
 
@@ -214,7 +218,7 @@ public class EPFLV implements IVideo {
         DownMsg downHTML = new DownMsg();
         downHTML.setFilePath(ConstantDir.d1_ep, ep);
         downHTML.setFileName(ep + type);
-        if (!IFileChar.exist(downHTML)) {
+        if (!IFileChar.fileExist(downHTML)) {
             return null;
         }
         return IFileChar.readFileToString(downHTML);
@@ -231,7 +235,7 @@ public class EPFLV implements IVideo {
         DownMsg downHTML = new DownMsg();
         downHTML.setFilePath(ConstantDir.d1_ep, ep);
         downHTML.setFileName(ep + downSplit + type);
-        if (!IFileChar.exist(downHTML)) {
+        if (!IFileChar.fileExist(downHTML)) {
             return null;
         }
         String json = IFileChar.readFileToString(downHTML);
@@ -274,6 +278,18 @@ public class EPFLV implements IVideo {
         index--;
         down.downFile(downMsgList.get(index));
 
+    }
+
+    public void downFile(List<DownMsg> downMsgList, int start, int end) {
+        // 地址，文件路径，文件名。type，headers
+        int size = downMsgList.size();
+        // 录入1说明看第一集,坐标为0
+        for (int i = start - 1; i < end; i++) {
+            i++;
+            log.info("准备下载第 【{}】 集", i);
+            i--;
+            down.downFile(downMsgList.get(i));
+        }
     }
 
 }

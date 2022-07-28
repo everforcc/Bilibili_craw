@@ -27,13 +27,15 @@ public class Bilibili_Heard {
 
     /**
      * 下载视频的 请求头 链接等信息
+     * <p>
+     * flvUrl  请求地址
      *
-     * @param flvUrl  请求地址
      * @param downMsg 文件信息
      */
 
     @SneakyThrows
-    public static HttpURLConnection requestHeard_downFlv(String flvUrl, DownMsg downMsg) {
+    public static HttpURLConnection requestHeard_downFlv(DownMsg downMsg) {
+        String flvUrl = downMsg.getUrl();
         log.info("---" + flvUrl);
         String id = downMsg.getAid();
         String requestMethod = downMsg.getReqType();
@@ -50,7 +52,9 @@ public class Bilibili_Heard {
                 conn.setRequestProperty("Referer", "https://www.bilibili.com/video/" + id);
             } else if (id.startsWith("ep") || id.startsWith("ss")) {
                 conn.setRequestProperty("Accept-Language", " zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7");
-                conn.setRequestProperty("referer", "https://www.bilibili.com/bangumi/play/" + id + "?theme=movie");
+                // ?from_spmid=666.25.episode.0
+                // ?theme=movie
+                conn.setRequestProperty("referer", "https://www.bilibili.com/bangumi/play/" + id + "?from_spmid=666.25.episode.0");
                 conn.setRequestProperty("sec-fetch-mode", "no-cors");
                 conn.setRequestProperty("sec-fetch-site", "cross-site");
             } else {

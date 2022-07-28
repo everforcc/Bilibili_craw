@@ -19,7 +19,7 @@ public class VideoAVControllerTests {
      */
     @Test
     public void dAVFlv() {
-        String avCode_77 = "BV1Za41167dX";
+        String avCode_77 = "BV1tB4y1Y7s2";
         String avCode = "BV1ST4y1r79B";
         videoAVController.flv(avCode_77);
     }
@@ -29,13 +29,13 @@ public class VideoAVControllerTests {
      */
     @Test
     public void dAVMP4() {
-        String avCode = "BV17f4y1o7Fw";
+        String avCode = "BV1tB4y1Y7s2";
         videoAVController.mp4(avCode);
     }
 
     @Test
     public void flow() {
-        String avCode = "BV1Kr4y1E7w3";
+        String avCode = "BV1tB4y1Y7s2";
         videoAVController.flow(avCode, VideoType.MP4);
     }
 

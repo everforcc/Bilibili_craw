@@ -6,11 +6,14 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 
 /**
- * 默认使用apache
+ * 小文件apache,
+ * 大文件 stream
  *
  * @author everforcc 2021-09-06
  */
 public interface IFileByte {
+
+    // 目前只用接口二,下载文件在IHttp里面调用该接口
 
     /**
      * 1. 下载文件
@@ -36,7 +39,7 @@ public interface IFileByte {
     /**
      * 3. 根据url下载文件
      *
-     * @param downMsg  下载对象信息
+     * @param downMsg 下载对象信息
      */
     void downFlv(DownMsg downMsg);
 
