@@ -8,7 +8,7 @@
 package cc.utils.file;
 
 import cc.constant.ConstantCharset;
-import cc.entity.DownMsg;
+import cc.utils.busi.DownMsg;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 

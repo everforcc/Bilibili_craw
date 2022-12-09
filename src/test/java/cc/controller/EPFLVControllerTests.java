@@ -26,8 +26,8 @@ public class EPFLVControllerTests {
     @Test
     public void oneEp() {
         // 东周列国·春秋篇 ep468833
-        String input = "ep468833";
-        epflvController.dEp(input, 30);
+        String input = "ss34228";
+        epflvController.dEp(input, 1);
     }
 
     @Test

@@ -1,7 +1,7 @@
 package cc.utils.file.impl;
 
-import cc.busi.config.Bilibili_Heard;
-import cc.entity.DownMsg;
+import cc.utils.busi.Bilibili_Heard;
+import cc.utils.busi.DownMsg;
 import cc.utils.file.FileNameUtils;
 import cc.utils.file.IFileByte;
 import lombok.SneakyThrows;

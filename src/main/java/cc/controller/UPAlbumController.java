@@ -7,9 +7,12 @@
 
 package cc.controller;
 
-import cc.service.IUPAlbumService;
-import cc.service.impl.UPAlbumServiceImpl;
+import cc.service.album.service.IUPAlbumService;
+import cc.service.album.service.impl.UPAlbumServiceImpl;
 
+/**
+ * up相册
+ */
 public class UPAlbumController {
 
     public void upAlbum(String input) {

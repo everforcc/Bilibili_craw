@@ -8,7 +8,8 @@
 package cc.service;
 
 import cc.constant.ConstantQuality;
-import cc.service.impl.VideoAVServiceImpl;
+import cc.service.av.service.IVideoAVService;
+import cc.service.av.service.impl.VideoAVServiceImpl;
 import org.junit.Test;
 
 public class VideoAVServiceTests {

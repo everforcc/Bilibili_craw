@@ -9,9 +9,12 @@ package cc.controller;
 
 import cc.constant.ConstantQuality;
 import cc.enums.VideoType;
-import cc.service.IVideoAVService;
-import cc.service.impl.VideoAVServiceImpl;
+import cc.service.av.service.IVideoAVService;
+import cc.service.av.service.impl.VideoAVServiceImpl;
 
+/**
+ * up，视频o
+ */
 public class VideoAVController {
 
     IVideoAVService iVideoAVService = new VideoAVServiceImpl();

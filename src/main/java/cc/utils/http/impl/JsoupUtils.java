@@ -1,7 +1,7 @@
 package cc.utils.http.impl;
 
 import cc.constant.ConstantHeader;
-import cc.entity.DownMsg;
+import cc.utils.busi.DownMsg;
 import cc.utils.http.IHttp;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;

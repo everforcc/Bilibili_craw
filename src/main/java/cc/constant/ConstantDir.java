@@ -11,11 +11,13 @@ public class ConstantDir {
 
     /* 1 一级目录 */
     // 1.1 电影
-    public static String d1_ep = "电影";
+    public static String d1_ep = "电影连续剧";
     // 1.2 连续剧
     public static String d1_ss = "连续剧";
     // 1.3 up
     public static String d1_up = "up";
+    // 1.1.2 临时存放 json html 等文件的位置
+    public static String d12_temp = "temp";
 
     /* 2 二级目录 */
     /* 2.3 up id 格式化 */

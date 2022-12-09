@@ -7,7 +7,7 @@
 
 package cc.bilibili;
 
-import cc.busi.video.flow.AVFlv;
+import cc.service.av.flow.impl.AVFlv;
 import org.junit.Test;
 
 public class AVFlvTests {

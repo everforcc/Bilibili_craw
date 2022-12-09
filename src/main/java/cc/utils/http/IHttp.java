@@ -1,6 +1,6 @@
 package cc.utils.http;
 
-import cc.entity.DownMsg;
+import cc.utils.busi.DownMsg;
 
 import java.util.Map;
 

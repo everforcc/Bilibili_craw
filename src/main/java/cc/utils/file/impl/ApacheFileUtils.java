@@ -1,6 +1,6 @@
 package cc.utils.file.impl;
 
-import cc.entity.DownMsg;
+import cc.utils.busi.DownMsg;
 import cc.utils.file.IFileByte;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;

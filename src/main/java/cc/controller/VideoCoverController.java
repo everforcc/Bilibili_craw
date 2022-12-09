@@ -7,9 +7,12 @@
 
 package cc.controller;
 
-import cc.service.IAVCoverService;
-import cc.service.impl.AVCoverServiceImpl;
+import cc.service.cover.service.IAVCoverService;
+import cc.service.cover.service.impl.AVCoverServiceImpl;
 
+/**
+ * 封面
+ */
 public class VideoCoverController {
 
     IAVCoverService iavCoverService = new AVCoverServiceImpl();

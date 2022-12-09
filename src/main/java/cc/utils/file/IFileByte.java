@@ -1,6 +1,6 @@
 package cc.utils.file;
 
-import cc.entity.DownMsg;
+import cc.utils.busi.DownMsg;
 
 import java.io.InputStream;
 import java.math.BigDecimal;

@@ -7,9 +7,12 @@
 
 package cc.controller;
 
-import cc.service.IEPFLVService;
-import cc.service.impl.EPFLVServiceImpl;
+import cc.service.ep.service.IEPFLVService;
+import cc.service.ep.service.impl.EPFLVServiceImpl;
 
+/**
+ * 下载电影，连续剧
+ */
 public class EPFLVController {
 
     IEPFLVService iepflvService = new EPFLVServiceImpl();

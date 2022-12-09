@@ -12,7 +12,7 @@ import java.util.Map;
 public class ConstantHeader {
 
     /* 个人的cookie值 */
-    public static final String COOKIE_VALUE = "";
+    public static final String COOKIE_VALUE = "_uuid=7F299FD1-511E-6A83-6109B-C13CB28D8EAA96521infoc; buvid3=901FE39C-1743-973E-9F92-0D7CFD1E9BD099012infoc; b_nut=1669550496; buvid4=4CF50B5E-17ED-4EF4-E326-6151509491E599012-022112720-Ei5K3XdcNIilHaqCC5VRFw%3D%3D; fingerprint=1636b3cbf3f243fed486b0e2d8039a6f; buvid_fp_plain=undefined; SESSDATA=b189f8ae%2C1685148686%2C0a77e%2Ab2; bili_jct=2bf50a1ace6a39bc206a893887ff6519; DedeUserID=58572396; DedeUserID__ckMd5=20e54bd3090b9e60; hit-new-style-dyn=0; hit-dyn-v2=1; CURRENT_FNVAL=4048; rpdid=|(YYRmY)YRu0J'uYYmlmY)J|; blackside_state=1; nostalgia_conf=-1; b_ut=5; LIVE_BUVID=AUTO1116696305735860; CURRENT_QUALITY=80; i-wanna-go-feeds=-1; i-wanna-go-back=2; buvid_fp=1636b3cbf3f243fed486b0e2d8039a6f; bp_video_offset_58572396=737475215243608000; b_lsid=51710CB8C_184F4A44CC0; sid=70b490cr; bsource=search_baidu; PVID=2";
 
     public static final String COOKIE_KEY = "cookie";
     public static final String REFERER = "referer";
@@ -37,6 +37,7 @@ public class ConstantHeader {
         map.put("user-agent", USER_AGENT_VALUE);
         //map.put("accept-encoding",ACCEPT_ENCODING);
         map.put("accept-language", ACCEPT_LANGUAGE);
+        map.put(COOKIE_KEY, COOKIE_VALUE);
     }
 
     public static Map<String, String> mapFlv = new HashMap<>();

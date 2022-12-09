@@ -1,8 +1,7 @@
 package cc.utils.http.impl;
 
-import cc.busi.config.Bilibili_Heard;
-import cc.constant.ConstantFile;
-import cc.entity.DownMsg;
+import cc.utils.busi.Bilibili_Heard;
+import cc.utils.busi.DownMsg;
 import cc.utils.file.IFileByte;
 import cc.utils.file.impl.ApacheFileUtils;
 import cc.utils.file.impl.InputStreamUtils;
